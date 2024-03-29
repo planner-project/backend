@@ -25,7 +25,7 @@ services:
       - redis-data:/data
 
   app:
-    build: ./
+    build: travel
     ports:
       - "8080:8080"
     env_file:
