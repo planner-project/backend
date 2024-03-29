@@ -22,7 +22,10 @@ jobs:
           cache: gradle
 
       - name: Build with Gradle
-        run: ./gradlew build -x test
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: build -x test
+          gradle-version: 8.1.1
 
       - name: Cache JAR
         id: cache-jar
