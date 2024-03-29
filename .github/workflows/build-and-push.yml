@@ -40,7 +40,7 @@ jobs:
           gradle-version: 8.1.1
 
       - name: Docker image build
-        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/travel-planner:latest .
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }} .
 
       - name: DockerHub login
         uses: docker/login-action@v2
@@ -49,4 +49,4 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PWD }}
 
       - name: DockerHub push
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/travel-planner:latest
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}
