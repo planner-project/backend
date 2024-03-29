@@ -32,7 +32,10 @@ jobs:
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> docker.env
 
       - name: Build with Gradle
-        run: ./gradlew build
+        uses: gradle/gradle-bulid-action@v2
+        with:
+          arguments: build
+          gradle-version: 8.1.1
 
       - name: Checkout
         uses: actions/checkout@v3
