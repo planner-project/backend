@@ -34,7 +34,7 @@ jobs:
       - name: Build with Gradle
         uses: gradle/gradle-bulid-action@v2
         with:
-          arguments: build
+          arguments: ./backed/build
           gradle-version: 8.1.1
 
       - name: Checkout
