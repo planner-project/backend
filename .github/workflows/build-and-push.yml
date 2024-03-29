@@ -52,6 +52,8 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: ${{ env.DOCKER_IMAGE_NAME }}
+          tags: ${{ env.DOCKER_IMAGE_NAME }}/travel-planner:latest
+          file: ./Dockerfile
+          context: .
           build-args: |
             JAR_FILE=build/libs/travel-0.0.1-SNAPSHOT.jar
