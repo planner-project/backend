@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     outputs:
-      cache-key: ${{ steps.cache-jar.outputs.cache-key }}
+      cache_key: ${{ steps.cache-jar.outputs.cache-key }} 
 
     steps:
       - uses: actions/checkout@v3
@@ -33,19 +33,22 @@ jobs:
           echo "SPRING_DATA_REDIS_PORT=${{ secrets.SPRING_DATA_REDIS_PORT }}" >> docker.env
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> docker.env
 
-      - name: Cache JAR
-        id: cache-jar
-        uses: actions/cache@v3
-        with:
-          path: build/libs/*.jar
-          key: ${{ runner.os }}-jar-${{ github.sha }}
-      
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v2
         with:
           arguments: build -x test
           gradle-version: 8.1.1
       
+      - name: Verify JAR File
+        run: ls -lah build/libs/
+
+      - name: Cache JAR
+        id: cache-jar
+        uses: actions/cache@v3
+        with:
+          path: build/libs/travel-0.0.1-SNAPSHOT.jar
+          key: ${{ runner.os }}-jar-${{ github.sha }}
+          
       - name: Prepare cache key for next job
         run: echo "cache-key=${{ runner.os }}-jar-${{ github.sha }}" >> $GITHUB_ENV
 
@@ -67,8 +70,8 @@ jobs:
       - name: Restore JAR from Cache
         uses: actions/cache@v3
         with:
-          path: build/libs/
-          key: ${{ needs.build.outputs.cache-key }}
+          path: build/libs/travel-0.0.1-SNAPSHOT.jar
+          key: ${{ needs.build.outputs.cache_key }}
 
       - name: Verify JAR File
         run: |
@@ -79,4 +82,4 @@ jobs:
         with:
           push: true
           tags: your-username/your-repo:latest
-          build-args: JAR_FILE=build/libs/*.jar
+          build-args: JAR_FILE=build/libs/travel-0.0.1-SNAPSHOT.jar
