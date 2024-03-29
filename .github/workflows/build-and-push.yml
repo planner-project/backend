@@ -8,6 +8,7 @@ on:
 env:
   JAVA_VERSION: '17'
   GRADLE_VERSION: '8.1.1'
+  DOCKER_IMAGE_NAME: 'sieun96/travel-planner:latest'
 
 jobs:
   build:
