@@ -36,7 +36,6 @@ jobs:
         with:
           arguments: build -x test
           gradle-version: 8.1.1
-          working-directory: ./travel
 
       - name: Checkout
         uses: actions/checkout@v3
