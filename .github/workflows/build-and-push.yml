@@ -51,6 +51,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
+          tags: ${{ env.DOCKER_IMAGE_NAME }}/travel:latest
           file: ./Dockerfile
           context: .
           build-args: |
