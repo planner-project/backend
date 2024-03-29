@@ -37,6 +37,9 @@ jobs:
           arguments: build -x test
           gradle-version: 8.1.1
 
+      - name: Log Build Artifacts
+        run: ls -lah build/libs/
+
       - name: Checkout
         uses: actions/checkout@v3
   
@@ -53,7 +56,10 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v3
         with:
+          context: .
           push: true
           tags: sieun96/travel-planner:latest
+          build-args: |
+            JAR_FILE=build/libs/*.jar
   
   
