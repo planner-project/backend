@@ -35,7 +35,7 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           arguments: build
-          gradle-version: 8.6.0
+          gradle-version: 8.1.1
           working-directory: ./backend
 
       - name: Checkout
