@@ -34,13 +34,6 @@ jobs:
           echo "SPRING_DATA_REDIS_PORT=${{ secrets.SPRING_DATA_REDIS_PORT }}" >> docker.env
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> docker.env
 
-      - name: Cache JAR
-        id: cache-jar
-        uses: actions/cache@v3
-        with:
-          path: build/libs/*.jar
-          key: ${{ runner.os }}-jar-${{ github.sha }}
-
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v2
         with:
