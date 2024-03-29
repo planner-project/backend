@@ -44,14 +44,14 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            build/libs/*.jar
+            build/libs/travel-0.0.1-SNAPSHOT.jar
           key: ${{ runner.os }}-jar-${{ github.sha }}
         env:
           cache-name: cache-jar
-
+      
       - name: Prepare cache key for next job
         run: echo "cache-key=${{ runner.os }}-jar-${{ github.sha }}" >> $GITHUB_ENV
-
+      
   docker-build:
     needs: build
     runs-on: ubuntu-latest
@@ -74,11 +74,15 @@ jobs:
             build/libs/*.jar
           key: ${{ needs.build.outputs.cache-key }}
 
+      - name: Verify JAR File
+        run: |
+          ls -lah build/libs/
+          
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: your-username/your-repo:latest
+          tags: sieun97/travel-planner:latest
           context: .
           build-args: |
             JAR_FILE=build/libs/travel-0.0.1-SNAPSHOT.jar
