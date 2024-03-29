@@ -58,7 +58,7 @@ jobs:
           context: .
           push: true
           tags: sieun96/travel-planner:latest
-          build-args: |
-            JAR_FILE=build/libs/*.jar
+#          build-args: |
+#            JAR_FILE=build/libs/*.jar
   
   
