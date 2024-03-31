@@ -25,9 +25,7 @@ services:
       - redis-data:/data
 
   app:
-    build:
-      context: ./
-      dockerfile: Dockerfile
+    image: sieun96/travel-planner:latest
     ports:
       - "8080:8080"
     env_file:
