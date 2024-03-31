@@ -65,5 +65,6 @@ jobs:
             JAR_FILE=build/libs/travel-0.0.1-SNAPSHOT.jar
           platforms: |
             linux/amd64
+            linux/arm64
             windows/amd64
 
