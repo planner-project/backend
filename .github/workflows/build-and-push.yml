@@ -12,7 +12,7 @@ env:
 
 jobs:
   build:
-    runs-on: [ubuntu-latest, self-hosted, windows-latest]
+    runs-on: ubuntu-latest
 
     steps:
       - name: Check out code
@@ -63,4 +63,9 @@ jobs:
           context: .
           build-args: |
             JAR_FILE=build/libs/travel-0.0.1-SNAPSHOT.jar
+          platforms: |
+            linux/amd64
+            linux/arm64
+            linux/arm/v7
+            windows/amd64
 
