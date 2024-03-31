@@ -42,12 +42,6 @@ jobs:
           arguments: build -x test
           gradle-version: ${{ env.GRADLE_VERSION }}
 
-      - name: Cache the JAR
-        uses: actions/cache@v3
-        with:
-          path: build/libs/*.jar
-          key: ${{ runner.os }}-jar-${{ github.sha }}
-
       - name: Log in to Docker Hub
         uses: docker/login-action@v1
         with:
