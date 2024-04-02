@@ -33,7 +33,7 @@ spring:
       ddl-auto: update
 
   datasource:
-    url: ${SPRING_DATASOURCE_URL_LOCAL}
+    url: ${SPRING_DATASOURCE_URL}
     username: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
 
