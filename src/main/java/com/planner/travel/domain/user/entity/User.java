@@ -6,6 +6,9 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import lombok.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Builder
@@ -18,6 +21,14 @@ public class User {
     private Long id;
     @Email
     private String email;
+
     private String password;
-    // 나머지 채워 주시면 됩니다!
+    private String nickname;
+    private LocalDate birthday;
+    private String phoneNumber;
+    private String role;
+    private LocalDateTime signupDate;
+
+
 }
+

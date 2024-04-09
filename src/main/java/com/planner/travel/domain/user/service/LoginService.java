@@ -1,10 +1,13 @@
 package com.planner.travel.domain.user.service;
 
 import com.planner.travel.domain.user.dto.request.LoginRequest;
+import com.planner.travel.domain.user.entity.User;
+import com.planner.travel.domain.user.repository.UserRepository;
 import com.planner.travel.global.jwt.token.TokenGenerator;
 import com.planner.travel.global.jwt.token.TokenType;
 import com.planner.travel.global.util.CookieUtil;
 import com.planner.travel.global.util.RedisUtil;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +22,7 @@ public class LoginService {
     private final TokenGenerator tokenGenerator;
     private final CookieUtil cookieUtil;
     private final RedisUtil redisUtil;
+    private final UserRepository userRepository;
 
     public void login(LoginRequest loginRequest, HttpServletResponse response) {
         /*
@@ -28,6 +32,18 @@ public class LoginService {
             - TokenGenerator.java 를 참고해주세요.
         3. 아래 private 으로 작성한 메서드들을 순차적으로 불러오고, 알맞은 argument 를 넣어주세요.
          */
+        // 1. 이메일로 유저 찾기
+        User user = userRepository.findByEmail(loginRequest.email())
+                .orElseThrow(() -> new EntityNotFoundException("User not found with email: " + loginRequest.email()));
+
+        // 인증 과정
+        authenticateUser(loginRequest);
+
+        // 액세스 토큰 및 리프레시 토큰 생성 및 저장
+        addAccessTokenToHeader(user.getId(), response);
+        addRefreshTokenToCookieAndRedis(user.getId(), response);
+
+
     }
 
     private void authenticateUser(LoginRequest request) {
