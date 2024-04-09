@@ -33,7 +33,6 @@ public class SignupService {
                 .nickname(signupRequest.getNickname())
                 .role(Role.USER)
                 .signupDate(LocalDateTime.now())
-
                 .build();
 
         userRepository.save(user);

@@ -10,10 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "api/v1/auth")
+@RequestMapping(value = "/api/v1/auth")
 @RequiredArgsConstructor
 public class UserController {
-
     private final SignupService signupService;
     private final LoginService loginService;
 
@@ -22,13 +21,13 @@ public class UserController {
 //        return "테스트";
 //    }
 
-    @PostMapping("/signup")
+    @PostMapping(value = "/signup")
     public ResponseEntity<?> signup(@RequestBody SignupRequest signupRequest) {
         signupService.signup(signupRequest);
         return ResponseEntity.ok().body("회원가입이 성공적으로 완료되었습니다.");
     }
 
-    @PostMapping("/login")
+    @PostMapping(value = "/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
         loginService.login(loginRequest, response);
         return ResponseEntity.ok().body("로그인에 성공했습니다.");
