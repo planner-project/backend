@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class LoginService {
-    // 아래에 유저 repository 를 주입해주세요.
     private final AuthenticationManager authenticationManager;
     private final TokenGenerator tokenGenerator;
     private final CookieUtil cookieUtil;
@@ -25,25 +24,13 @@ public class LoginService {
     private final UserRepository userRepository;
 
     public void login(LoginRequest loginRequest, HttpServletResponse response) {
-        /*
-        1. 리퀘스트로 받은 값 중, 이메일을 이용하여 유저를 찾아주세요. 유저의 형태는 Optional 이며,
-        유저가 존재하지 않을 시 entitynotfoundexception 을 던져주세요.
-        2. 위에서 찾은 유저를 이용하여, 유저의 인덱스를 찾아주세요. 그리고 이를 사용하여 accessToken 과 refreshToken 을 만들어주세요.
-            - TokenGenerator.java 를 참고해주세요.
-        3. 아래 private 으로 작성한 메서드들을 순차적으로 불러오고, 알맞은 argument 를 넣어주세요.
-         */
-        // 1. 이메일로 유저 찾기
         User user = userRepository.findByEmail(loginRequest.email())
                 .orElseThrow(() -> new EntityNotFoundException("User not found with email: " + loginRequest.email()));
 
-        // 인증 과정
         authenticateUser(loginRequest);
 
-        // 액세스 토큰 및 리프레시 토큰 생성 및 저장
         addAccessTokenToHeader(user.getId(), response);
         addRefreshTokenToCookieAndRedis(user.getId(), response);
-
-
     }
 
     private void authenticateUser(LoginRequest request) {

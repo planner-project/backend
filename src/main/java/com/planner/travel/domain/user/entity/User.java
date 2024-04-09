@@ -1,8 +1,6 @@
 package com.planner.travel.domain.user.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
 
@@ -15,20 +13,27 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
-    // ERD cloud 를 참고하여 엔티티를 작성해주세요
     @Id
-    @GeneratedValue()
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Email
     private String email;
 
     private String password;
+
     private String nickname;
+
+    private Long userTag;
+
     private LocalDate birthday;
+
     private String phoneNumber;
-    private String role;
+
     private LocalDateTime signupDate;
 
+    @Enumerated(value = EnumType.STRING)
+    private Role role;
 
 }
 

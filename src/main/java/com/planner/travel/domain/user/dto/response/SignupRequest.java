@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SignupRequest {
-    // 회원 가입 시 받을 dto 를 작성해주세요. 검증 annotation 은 제가 추가하겠습니다!
     private String email;
     private String nickname;
     private String password;
