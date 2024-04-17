@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Getter
 @Builder
 @NoArgsConstructor
@@ -13,4 +15,6 @@ public class SignupRequest {
     private String email;
     private String nickname;
     private String password;
+    private LocalDate birthday;
+    private String phoneNumber;
 }
