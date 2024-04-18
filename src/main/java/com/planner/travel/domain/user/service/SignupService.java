@@ -1,10 +1,15 @@
 package com.planner.travel.domain.user.service;
 
+import com.planner.travel.domain.profile.entity.Profile;
+import com.planner.travel.domain.profile.repository.ProfileRepository;
 import com.planner.travel.domain.user.dto.response.SignupRequest;
 import com.planner.travel.domain.user.entity.Role;
 import com.planner.travel.domain.user.entity.User;
 import com.planner.travel.domain.user.repository.UserRepository;
 import com.planner.travel.global.util.RandomNumberUtil;
+import com.planner.travel.global.util.image.entity.Category;
+import com.planner.travel.global.util.image.entity.Image;
+import com.planner.travel.global.util.image.repository.ImageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +23,8 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class SignupService {
     private final UserRepository userRepository;
+    private final ProfileRepository profileRepository;
+    private final ImageRepository imageRepository;
     private final PasswordEncoder passwordEncoder;
     private final RandomNumberUtil randomNumberUtil;
 
@@ -27,6 +34,22 @@ public class SignupService {
                 .ifPresent(u -> {
                     throw new IllegalArgumentException();
                 });
+
+        Image image = Image.builder()
+                .category(Category.PROFILE)
+                .imageUrl("")
+                .createdAt(LocalDateTime.now())
+                .isThumb(false)
+                .isDeleted(false)
+                .build();
+
+        imageRepository.save(image);
+
+        Profile profile = Profile.builder()
+                .image(image)
+                .build();
+
+        profileRepository.save(profile);
 
         User user = User.builder()
                 .email(signupRequest.getEmail())
@@ -38,6 +61,7 @@ public class SignupService {
                 .birthday(signupRequest.getBirthday())
 //                .phoneNumber(signupRequest.getPhoneNumber())
                 .isWithdrawal(false)
+                .profile(profile)
                 .build();
 
         userRepository.save(user);
