@@ -1,5 +1,6 @@
 package com.planner.travel.domain.user.entity;
 
+import com.planner.travel.domain.profile.entity.Profile;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
@@ -29,12 +30,39 @@ public class User {
 
     private LocalDate birthday;
 
-    private String phoneNumber;
+//    private String phoneNumber;
 
     private LocalDateTime signupDate;
+
+    private boolean isWithdrawal;
+
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "profileId")
+    private Profile profile;
 
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
+
+    public void updatePassword(String password) {
+        this.password = password;
+    }
+
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void updateBirthday(LocalDate birthday) {
+        this.birthday = birthday;
+    }
+
+//    public void updatePhoneNumber(String phoneNumber) {
+//        this.phoneNumber = phoneNumber;
+//    }
+
+    public void updateWithdrawal(boolean isWithdrawal) {
+        this.isWithdrawal = isWithdrawal;
+    }
 }
 
