@@ -13,9 +13,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class SignupRequest {
     private String email;
-    private String nickname;
     private String password;
-    private LocalDate birthday; // birthday 필드 추가
-    private Long userTag; // userTag 필드를 Long 타입으로 변경
-    private String phoneNumber; // phoneNumber 필드 추가
+    private String nickname;
+    private LocalDate birthday;
+//    private String phoneNumber;
 }
