@@ -48,3 +48,13 @@ spring:
 
   secret:
     key: ${SECRET_KEY}
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+logging:
+  level:
+    root:
+      info
