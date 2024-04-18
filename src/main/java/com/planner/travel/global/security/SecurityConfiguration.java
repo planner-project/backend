@@ -31,7 +31,7 @@ public class SecurityConfiguration {
     private final TokenExtractor tokenExtractor;
     private final TokenValidator tokenValidator;
     private final TokenAuthenticator tokenAuthenticator;
-//    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -53,10 +53,10 @@ public class SecurityConfiguration {
                         sessionManagement
                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-//                .exceptionHandling((exception) ->
-//                        exception
-//                                .authenticationEntryPoint(customAuthenticationEntryPoint)
-//                )
+                .exceptionHandling((exception) ->
+                        exception
+                                .authenticationEntryPoint(customAuthenticationEntryPoint)
+                )
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(customAuthenticationFilter(), JWTAuthenticationFilter.class);
 
