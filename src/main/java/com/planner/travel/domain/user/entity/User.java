@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -24,11 +25,11 @@ public class User {
 
     private String nickname;
 
-//    private Long userTag;
+    private Long userTag;
 
-//    private LocalDate birthday;
+    private LocalDate birthday;
 
-//    private String phoneNumber;
+    private String phoneNumber;
 
     private LocalDateTime signupDate;
 
