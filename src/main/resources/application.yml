@@ -58,3 +58,11 @@ logging:
   level:
     root:
       info
+
+    org:
+      springframework:
+        security:
+          debug
+
+    web:
+      debug
