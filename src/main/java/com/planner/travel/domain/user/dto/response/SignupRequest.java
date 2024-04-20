@@ -2,6 +2,7 @@ package com.planner.travel.domain.user.dto.response;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,7 +22,8 @@ public class SignupRequest {
     // 소문자, 특수문자, 8-20 자리 비밀번호
     private String password;
 
-    @Pattern(regexp = "^[A-Za-z0-9가-힣]{2,12}$\n")
+    @Pattern(regexp = "^[a-zA-Z가-힣\\d]+$")
+    @Size(min = 2, max = 12)
     // 특수문자 포함하지 않는 2-12 자 닉네임
     private String nickname;
 
