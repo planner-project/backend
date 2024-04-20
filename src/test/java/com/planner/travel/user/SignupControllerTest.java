@@ -18,9 +18,11 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.time.LocalDate;
 
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -72,4 +74,124 @@ public class SignupControllerTest {
         verify(signupService, times(1)).signup(any(SignupRequest.class));
     }
 
+
+    @DisplayName("이메일 양식 검증")
+    @Test
+    void validateEmail() throws Exception {
+        SignupRequest request = new SignupRequest(
+                "invalid-email",
+                "123qwe!@#QWE",
+                "시니",
+                LocalDate.parse("1996-11-20")
+        );
+
+        doNothing()
+                .when(signupService)
+                .signup(any(SignupRequest.class));
+
+        mockMvc
+                .perform(post("/api/v1/auth/signup")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> assertInstanceOf(MethodArgumentNotValidException.class, result.getResolvedException()))
+                .andDo(MockMvcRestDocumentation.document("signup-invalid-email",
+                        ApiDocumentUtil.getDocumentRequest(),
+                        ApiDocumentUtil.getDocumentResponse()));
+
+        verify(signupService, never()).signup(any(SignupRequest.class));
+    }
+
+
+    @DisplayName("존재 하는 이메일 검증")
+    @Test
+    void validateExistEmail() throws Exception {
+        SignupRequest request = new SignupRequest(
+                "wldsmtldsm65@gmail.com",
+                "123qwe!@#QWE",
+                "시니",
+                LocalDate.parse("1996-11-20")
+        );
+
+        doThrow(new IllegalArgumentException())
+                .when(signupService)
+                .signup(any(SignupRequest.class));
+
+        mockMvc
+                .perform(post("/api/v1/auth/signup")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> assertInstanceOf(IllegalArgumentException.class, result.getResolvedException()))
+                .andDo(MockMvcRestDocumentation.document("signup-existent-email",
+                        ApiDocumentUtil.getDocumentRequest(),
+                        ApiDocumentUtil.getDocumentResponse()));
+
+        verify(signupService, times(1)).signup(any(SignupRequest.class));
+    }
+
+    @DisplayName("닉네임 양식 검증")
+    @Test
+    // a(길이 미달), 시니Aaaaaaaaaaaaaa(길이 초과), 시니😧(특수 문자 사용)
+    void validateNickname() throws Exception {
+        SignupRequest request = new SignupRequest(
+                "wldsmtldsm65@gmail.com",
+                "123qwe!@#QWE",
+                "[시니]", // 특수 문자 사용
+                LocalDate.parse("1996-11-20")
+        );
+
+        doNothing()
+                .when(signupService)
+                .signup(any(SignupRequest.class));
+
+        mockMvc
+                .perform(post("/api/v1/auth/signup")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> assertInstanceOf(MethodArgumentNotValidException.class, result.getResolvedException()))
+                .andDo(MockMvcRestDocumentation.document("signup-invalid-nickname",
+                        ApiDocumentUtil.getDocumentRequest(),
+                        ApiDocumentUtil.getDocumentResponse()));
+
+        verify(signupService, never()).signup(any(SignupRequest.class));
+    }
+
+    @DisplayName("비밀번호 양식 검증")
+    @Test
+        // 123456789(길이 만족, 숫자만 사용), aaaaaaaaaa(길이 만족, 소문자만 사용), aaaaaa#####(길이 만족, 소문자, 특수 문자만 사용)
+        // , aA12!@#(길이 미달), aA12!@#aaaaaaaaaaaaaaaaaa(길이 초과), aA12!@#aa아a(길이 만족, 한글 사용)
+    void validatePassword() throws Exception {
+        SignupRequest request = new SignupRequest(
+                "wldsmtldsm65@gmail.com",
+                "aA12!@#aa아a",
+                "시니",
+                LocalDate.parse("1996-11-20")
+        );
+
+        doNothing()
+                .when(signupService)
+                .signup(any(SignupRequest.class));
+
+        mockMvc
+                .perform(post("/api/v1/auth/signup")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> assertInstanceOf(MethodArgumentNotValidException.class, result.getResolvedException()))
+                .andDo(MockMvcRestDocumentation.document("signup-invalid-password",
+                        ApiDocumentUtil.getDocumentRequest(),
+                        ApiDocumentUtil.getDocumentResponse()));
+
+        verify(signupService, never()).signup(any(SignupRequest.class));
+    }
 }
