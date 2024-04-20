@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,7 +26,7 @@ public class LoginService {
 
     public void login(LoginRequest loginRequest, HttpServletResponse response) {
         User user = userRepository.findByEmail(loginRequest.email())
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new UsernameNotFoundException("AUTH_01"));
 
         if (!user.isWithdrawal()) {
             authenticateUser(loginRequest);
