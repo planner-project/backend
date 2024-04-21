@@ -1,4 +1,4 @@
-package com.planner.travel.user;
+package com.planner.travel.user.login;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.planner.travel.domain.user.controller.UserController;
@@ -20,6 +20,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
+import org.springframework.restdocs.payload.PayloadDocumentation;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -81,6 +82,10 @@ public class LoginControllerTest {
                 .andDo(MockMvcRestDocumentation.document("login",
                         ApiDocumentUtil.getDocumentRequest(),
                         ApiDocumentUtil.getDocumentResponse(),
+                        PayloadDocumentation.requestFields(
+                                PayloadDocumentation.fieldWithPath("email").description("이메일"),
+                                PayloadDocumentation.fieldWithPath("password").description("영어, 숫자, 특수 문자 포함 8 - 20 자리 비밀번호")
+                        ),
                         responseHeaders(
                                 headerWithName("Authorization").description("Access token 을 포함한 헤더 입니다."),
                                 headerWithName("Set-Cookie").description("Refresh token 을 포함한 헤더 입니다.")
