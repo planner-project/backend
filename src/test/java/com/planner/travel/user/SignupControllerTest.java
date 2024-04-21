@@ -16,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
+import org.springframework.restdocs.payload.PayloadDocumentation;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -69,7 +70,14 @@ public class SignupControllerTest {
                 .andExpect(status().isOk())
                 .andDo(MockMvcRestDocumentation.document("signup",
                         ApiDocumentUtil.getDocumentRequest(),
-                        ApiDocumentUtil.getDocumentResponse()));
+                        ApiDocumentUtil.getDocumentResponse(),
+                        PayloadDocumentation.requestFields(
+                                PayloadDocumentation.fieldWithPath("email").description("이메일"),
+                                PayloadDocumentation.fieldWithPath("password").description("영어, 숫자, 특수 문자 포함 8 - 20 자리 비밀번호"),
+                                PayloadDocumentation.fieldWithPath("nickname").description("특수 문자를 포함 하지 않는 2-12 자 닉네임"),
+                                PayloadDocumentation.fieldWithPath("birthday").description("생년월일")
+
+                        )));
 
         verify(signupService, times(1)).signup(any(SignupRequest.class));
     }
@@ -99,7 +107,14 @@ public class SignupControllerTest {
                 .andExpect(result -> assertInstanceOf(MethodArgumentNotValidException.class, result.getResolvedException()))
                 .andDo(MockMvcRestDocumentation.document("signup-invalid-email",
                         ApiDocumentUtil.getDocumentRequest(),
-                        ApiDocumentUtil.getDocumentResponse()));
+                        ApiDocumentUtil.getDocumentResponse(),
+                        PayloadDocumentation.requestFields(
+                                PayloadDocumentation.fieldWithPath("email").description("이메일"),
+                                PayloadDocumentation.fieldWithPath("password").description("영어, 숫자, 특수 문자 포함 8 - 20 자리 비밀번호"),
+                                PayloadDocumentation.fieldWithPath("nickname").description("특수 문자를 포함 하지 않는 2-12 자 닉네임"),
+                                PayloadDocumentation.fieldWithPath("birthday").description("생년월일")
+
+                        )));
 
         verify(signupService, never()).signup(any(SignupRequest.class));
     }
@@ -129,7 +144,14 @@ public class SignupControllerTest {
                 .andExpect(result -> assertInstanceOf(IllegalArgumentException.class, result.getResolvedException()))
                 .andDo(MockMvcRestDocumentation.document("signup-existent-email",
                         ApiDocumentUtil.getDocumentRequest(),
-                        ApiDocumentUtil.getDocumentResponse()));
+                        ApiDocumentUtil.getDocumentResponse(),
+                        PayloadDocumentation.requestFields(
+                                PayloadDocumentation.fieldWithPath("email").description("이메일"),
+                                PayloadDocumentation.fieldWithPath("password").description("영어, 숫자, 특수 문자 포함 8 - 20 자리 비밀번호"),
+                                PayloadDocumentation.fieldWithPath("nickname").description("특수 문자를 포함 하지 않는 2-12 자 닉네임"),
+                                PayloadDocumentation.fieldWithPath("birthday").description("생년월일")
+
+                        )));
 
         verify(signupService, times(1)).signup(any(SignupRequest.class));
     }
@@ -159,7 +181,14 @@ public class SignupControllerTest {
                 .andExpect(result -> assertInstanceOf(MethodArgumentNotValidException.class, result.getResolvedException()))
                 .andDo(MockMvcRestDocumentation.document("signup-invalid-nickname",
                         ApiDocumentUtil.getDocumentRequest(),
-                        ApiDocumentUtil.getDocumentResponse()));
+                        ApiDocumentUtil.getDocumentResponse(),
+                        PayloadDocumentation.requestFields(
+                                PayloadDocumentation.fieldWithPath("email").description("이메일"),
+                                PayloadDocumentation.fieldWithPath("password").description("영어, 숫자, 특수 문자 포함 8 - 20 자리 비밀번호"),
+                                PayloadDocumentation.fieldWithPath("nickname").description("특수 문자를 포함 하지 않는 2-12 자 닉네임"),
+                                PayloadDocumentation.fieldWithPath("birthday").description("생년월일")
+
+                        )));
 
         verify(signupService, never()).signup(any(SignupRequest.class));
     }
@@ -190,7 +219,14 @@ public class SignupControllerTest {
                 .andExpect(result -> assertInstanceOf(MethodArgumentNotValidException.class, result.getResolvedException()))
                 .andDo(MockMvcRestDocumentation.document("signup-invalid-password",
                         ApiDocumentUtil.getDocumentRequest(),
-                        ApiDocumentUtil.getDocumentResponse()));
+                        ApiDocumentUtil.getDocumentResponse(),
+                        PayloadDocumentation.requestFields(
+                                PayloadDocumentation.fieldWithPath("email").description("이메일"),
+                                PayloadDocumentation.fieldWithPath("password").description("영어, 숫자, 특수 문자 포함 8 - 20 자리 비밀번호"),
+                                PayloadDocumentation.fieldWithPath("nickname").description("특수 문자를 포함 하지 않는 2-12 자 닉네임"),
+                                PayloadDocumentation.fieldWithPath("birthday").description("생년월일")
+
+                        )));
 
         verify(signupService, never()).signup(any(SignupRequest.class));
     }
