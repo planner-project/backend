@@ -44,6 +44,7 @@ dependencies {
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.mockito:mockito-core:4.8.0'
+    testImplementation ("com.h2database:h2:1.4.200")
 
     // jwt
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
