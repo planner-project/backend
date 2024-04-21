@@ -44,7 +44,7 @@ public class SecurityConfiguration {
                                 .requestMatchers("/api/v1/auth/signup").permitAll()
                                 .requestMatchers("/api/v1/auth/login").permitAll()
                                 .requestMatchers("/api/v1/auth/token/**").permitAll()
-                                .requestMatchers("/api/v1/docs/**").permitAll()
+                                .requestMatchers("/docs/**").permitAll()
                                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                                 .anyRequest().authenticated()
                 )

@@ -28,7 +28,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         if (requestURI.equals("/api/v1/auth/signup") ||
                 requestURI.equals("/api/v1/auth/login") ||
                 requestURI.startsWith("/api/v1/auth/token") ||
-                requestURI.startsWith("/api/v1/docs")
+                requestURI.startsWith("/docs")
         ) {
             filterChain.doFilter(request, response);
             return;
