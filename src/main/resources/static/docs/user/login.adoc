@@ -1,0 +1,27 @@
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+== 로그인
+---
+=== 1. 로그인 요청/응답
+==== Request
+include::{snippets}/login/http-request.adoc[]
+include::{snippets}/login/request-fields.adoc[]
+
+==== Response
+IMPORTANT: Authorization, Set-cookie 헤더가 제대로 반환 되어야 합니다.
+include::{snippets}/login/http-response.adoc[]
+- Authorization 헤더 에는 AccessToken 이 들어있으며, 로그인 이후 요청에 항상 넣어 주어야 합니다.
+- Cookie 에는 RefreshToken 이 들어있습니다.
+
+=== 2. 존재 하지 않는 이메일로 로그인 요청
+==== Response
+include::{snippets}/login-notexistent-email/http-response.adoc[]
+
+=== 3. 로그인 시 이메일은 맞지만 비밀번호가 틀린 경우
+==== Response
+include::{snippets}/login-wrong-password/http-response.adoc[]

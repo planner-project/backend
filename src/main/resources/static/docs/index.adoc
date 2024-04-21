@@ -1,0 +1,75 @@
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+= Travel Planner API
+
+.About Docs
+- ver. 0.0.0
+- Last update 24.04.21
+
+== 공통 기능 (Common)
+=== 1. 토큰
+IMPORTANT: _토큰의 종류는 아래와 같으며, *로그인* 시 받게 됩니다. +
+로그인 이후의 모든 요청 에는 전부 Authorization 헤더가 존재 해야 하며, 안에 accessToken 이 존재 해야 합니다._
+
+==== 1.1. Token Table
+[cols=3*,options=header]
+|===
+|토큰
+|위치
+|유효 기간
+
+|access token
+|Authorization header
+|15 분
+
+|refresh token
+|Cookie
+|15 분
+
+|===
+
+==== 1.2. 토큰 재발행
+후에 작성할 예정 입니다.
+
+=== 2. 예외 코드
+NOTE: _응답시 예외에 대한 내용을 상세 하게 적어서 보낼 시, 일반 유저 들도 손쉽게 볼 수 있습니다. +
+따라서 이를 숨기기 위해 아래와 같이 테이블을 작성하였습니다. 참고 하여 예외 처리를 해주세요._
+
+[cols=4*,options=header]
+|===
+|예외 코드
+|예외 설명
+|예외 코드
+|예외 설명
+
+|AUTH_01 (404)
+|존재 하지 않는 이메일로 로그인 시도
+|AUTH_02 (400)
+|비밀번호가 불일치 한 경우 발생
+
+|AUTH_03 (401)
+|인증 과정 에서 오류가 발생한 경우 발생
+|AUTH_04 (500)
+|인증 서비스에서 내부 오류가 발생한 경우 발생
+
+|INVALID_VALUE_01 (404)
+|요청 값을 찾을 수 없는 경우 발생
+|INVALID_VALUE_02 (400)
+|알맞지 않은 값을 요청 값으로 넣은 경우 발생
+
+|INVALID_VALUE_03 (404)
+|요청 값이 validation 결과 알맞지 않은 경우 발생
+|
+|
+
+|===
+
+== 유저 기능 (User)
+=== link:user/signup.html[1. 회원 가입]
+=== link:user/login.html[2. 로그인]
+
