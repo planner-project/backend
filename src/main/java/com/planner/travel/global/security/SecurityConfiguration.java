@@ -31,7 +31,7 @@ public class SecurityConfiguration {
     private final TokenExtractor tokenExtractor;
     private final TokenValidator tokenValidator;
     private final TokenAuthenticator tokenAuthenticator;
-//    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -44,7 +44,7 @@ public class SecurityConfiguration {
                                 .requestMatchers("/api/v1/auth/signup").permitAll()
                                 .requestMatchers("/api/v1/auth/login").permitAll()
                                 .requestMatchers("/api/v1/auth/token/**").permitAll()
-                                .requestMatchers("/api/v1/docs/**").permitAll()
+                                .requestMatchers("/docs/**").permitAll()
                                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                                 .anyRequest().authenticated()
                 )
@@ -53,10 +53,10 @@ public class SecurityConfiguration {
                         sessionManagement
                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-//                .exceptionHandling((exception) ->
-//                        exception
-//                                .authenticationEntryPoint(customAuthenticationEntryPoint)
-//                )
+                .exceptionHandling((exception) ->
+                        exception
+                                .authenticationEntryPoint(customAuthenticationEntryPoint)
+                )
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(customAuthenticationFilter(), JWTAuthenticationFilter.class);
 

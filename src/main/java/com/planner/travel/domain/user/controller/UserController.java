@@ -4,7 +4,9 @@ import com.planner.travel.domain.user.dto.request.LoginRequest;
 import com.planner.travel.domain.user.dto.response.SignupRequest;
 import com.planner.travel.domain.user.service.LoginService;
 import com.planner.travel.domain.user.service.SignupService;
+import com.planner.travel.global.util.CookieUtil;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,21 +17,24 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final SignupService signupService;
     private final LoginService loginService;
+    private final CookieUtil cookieUtil;
 
-//    @GetMapping(value = "/signup")
-//    public String test() {
-//        return "테스트";
-//    }
 
     @PostMapping(value = "/signup")
-    public ResponseEntity<?> signup(@RequestBody SignupRequest signupRequest) {
+    public ResponseEntity<?> signup(@Valid @RequestBody SignupRequest signupRequest) {
         signupService.signup(signupRequest);
-        return ResponseEntity.ok().body("회원가입이 성공적으로 완료되었습니다.");
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping(value = "/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
         loginService.login(loginRequest, response);
-        return ResponseEntity.ok().body("로그인에 성공했습니다.");
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(value = "/logout")
+    public void logout(HttpServletResponse response) {
+        response.setHeader("Authorization", "");
+        cookieUtil.deleteCookie("refreshToken", response);
     }
 }

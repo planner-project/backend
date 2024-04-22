@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,12 +26,17 @@ public class LoginService {
 
     public void login(LoginRequest loginRequest, HttpServletResponse response) {
         User user = userRepository.findByEmail(loginRequest.email())
-                .orElseThrow(() -> new EntityNotFoundException("User not found with email: " + loginRequest.email()));
+                .orElseThrow(() -> new UsernameNotFoundException("AUTH_01"));
 
-        authenticateUser(loginRequest);
+        if (!user.isWithdrawal()) {
+            authenticateUser(loginRequest);
 
-        addAccessTokenToHeader(user.getId(), response);
-        addRefreshTokenToCookieAndRedis(user.getId(), response);
+            addAccessTokenToHeader(user.getId(), response);
+            addRefreshTokenToCookieAndRedis(user.getId(), response);
+
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     private void authenticateUser(LoginRequest request) {
