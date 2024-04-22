@@ -1,4 +1,4 @@
-name: [dev] Build and Push Java Application
+name: Build and Push Java Application
 
 on:
   pull_request:
