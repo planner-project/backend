@@ -1,11 +1,34 @@
 package com.planner.travel.domain.user.service;
 
 import com.planner.travel.domain.user.dto.response.UserInfoResponse;
+import com.planner.travel.domain.user.entity.User;
+import com.planner.travel.domain.user.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
+
 @Service
+@RequiredArgsConstructor
 public class UserInfoService {
-//    public UserInfoResponse get(Long userId) {
-//        // 특정 유저의 정보를 가져오고 반환하는 함수를 작성해주세요.
-//    }
+    private final UserRepository userRepository;
+
+    public UserInfoResponse get(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User does not exist"));
+
+        return new UserInfoResponse(
+                user.getId(),
+                user.getNickname(),
+                user.getUserTag(),
+                isBirthdayToday(user.getBirthday())
+        );
+    }
+
+    private boolean isBirthdayToday(LocalDate birthday) {
+        return birthday != null && birthday.getMonth() == LocalDate.now().getMonth() &&
+                birthday.getDayOfMonth() == LocalDate.now().getDayOfMonth();
+    }
 }

@@ -8,14 +8,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
 @RequiredArgsConstructor
-@Slf4j
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
     private final TokenExtractor tokenExtractor;
     private final TokenValidator tokenValidator;
@@ -30,8 +28,8 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         if (requestURI.equals("/api/v1/auth/signup") ||
                 requestURI.equals("/api/v1/auth/login") ||
                 requestURI.startsWith("/api/v1/auth/token") ||
-                requestURI.startsWith("/docs") ||
-                requestURI.startsWith("/ws")) {
+                requestURI.startsWith("/docs")
+        ) {
             filterChain.doFilter(request, response);
             return;
         }
