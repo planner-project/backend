@@ -8,12 +8,14 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
 @RequiredArgsConstructor
+@Slf4j
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
     private final TokenExtractor tokenExtractor;
     private final TokenValidator tokenValidator;
@@ -28,21 +30,18 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         if (requestURI.equals("/api/v1/auth/signup") ||
                 requestURI.equals("/api/v1/auth/login") ||
                 requestURI.startsWith("/api/v1/auth/token") ||
-                requestURI.startsWith("/docs")
-        ) {
+                requestURI.startsWith("/docs")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        String accessTokenFromHeader = tokenExtractor.getAccessTokenFromHeader(request);
-        String accessToken = null;
+        String accessToken = tokenExtractor.getAccessTokenFromHeader(request);
 
-        if (accessTokenFromHeader != null) {
-            accessToken = accessTokenFromHeader;
+        if (accessToken != null) {
+            tokenValidator.validateAccessToken(accessToken);
+            tokenAuthenticator.getAuthenticationUsingToken(accessToken);
         }
 
-        tokenValidator.validateAccessToken(accessToken);
-        tokenAuthenticator.getAuthenticationUsingToken(accessToken);
         filterChain.doFilter(request, response);
     }
 }
