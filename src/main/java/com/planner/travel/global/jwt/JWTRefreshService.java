@@ -24,7 +24,7 @@ public class JWTRefreshService {
     public void refreshAccessToken(HttpServletRequest request, HttpServletResponse response) {
         Cookie cookieFromRequest = cookieUtil.getCookie(request, "refreshToken");
         String refreshToken = cookieFromRequest.getValue();
-        String userId = subjectExtractor.getUesrIdFromToken(refreshToken).toString();
+        String userId = subjectExtractor.getUserIdFromToken(refreshToken).toString();
 
         log.info("======================================================");
         log.info("refreshToken: " + refreshToken);

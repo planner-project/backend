@@ -20,8 +20,11 @@ public class TokenAuthenticator {
     private final UserRepository userRepository;
 
     public void getAuthenticationUsingToken(String accessToken) {
-        accessToken = accessToken.substring(7);
-        Long userId = subjectExtractor.getUesrIdFromToken(accessToken);
+        if (accessToken.contains("Bearer")) {
+            accessToken = accessToken.substring(7);
+        }
+
+        Long userId = subjectExtractor.getUserIdFromToken(accessToken);
         Optional<User> user = userRepository.findById(userId);
         if (user.isEmpty()) {
             throw new EntityNotFoundException();
