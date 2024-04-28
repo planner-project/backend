@@ -47,7 +47,7 @@ public class LoginService {
 
     private void addAccessTokenToHeader(Long userId, HttpServletResponse response) {
         String accessToken = tokenGenerator.generateToken(TokenType.ACCESS, String.valueOf(userId));
-        response.setHeader("Authorization", accessToken);
+        response.setHeader("Authorization", "Bearer " + accessToken);
     }
 
     private void addRefreshTokenToCookieAndRedis(Long userId, HttpServletResponse response) {

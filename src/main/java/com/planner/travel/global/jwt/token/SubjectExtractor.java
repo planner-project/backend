@@ -30,7 +30,7 @@ public class SubjectExtractor implements InitializingBean {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public Long getUesrIdFromToken(String token) {
+    public Long getUserIdFromToken(String token) {
         if (token.contains("Bearer")) {
             token = token.substring(7);
         }
@@ -43,6 +43,7 @@ public class SubjectExtractor implements InitializingBean {
                 .getSubject();
 
         Long userId = Long.parseLong(userIdFromToken);
+
         log.info("===========================================================================");
         log.info("New refreshToken: " + token);
         log.info("===========================================================================");
