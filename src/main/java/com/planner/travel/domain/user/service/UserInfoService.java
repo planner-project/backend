@@ -17,7 +17,7 @@ public class UserInfoService {
 
     public UserInfoResponse get(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("해당 유저 없음 " + userId));
+                .orElseThrow(() -> new EntityNotFoundException("User does not exist"));
 
         return new UserInfoResponse(
                 user.getId(),
