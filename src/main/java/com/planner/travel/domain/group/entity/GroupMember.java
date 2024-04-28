@@ -1,5 +1,7 @@
-package com.planner.travel.domain.planner.entity;
+package com.planner.travel.domain.group.entity;
 
+import com.planner.travel.domain.planner.entity.PlanBox;
+import com.planner.travel.domain.planner.entity.Planner;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,23 +15,15 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Plan {
+public class GroupMember {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private boolean isPrivate;
-    private String title;
-    private LocalDateTime time;
-    private String content;
-    private String address;
-    private boolean isDeleted;
-
+    private Long userId;
+    private Long isLeaved;
 
     @ManyToOne(fetch= FetchType.LAZY)
-    @JoinColumn(name = "plannerBoxId")
-    private PlanBox planBox;
-
+    @JoinColumn(name = "plannerId")
+    private Planner plannerId;
 }
-
-
