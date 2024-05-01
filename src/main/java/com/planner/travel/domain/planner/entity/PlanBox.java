@@ -1,11 +1,12 @@
 package com.planner.travel.domain.planner.entity;
 
-import com.planner.travel.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -17,7 +18,7 @@ public class PlanBox {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
+    private LocalDate planDate;
     private boolean isDeleted;
     private boolean isPrivate;
 
