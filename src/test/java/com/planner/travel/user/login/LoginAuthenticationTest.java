@@ -34,6 +34,7 @@ public class LoginAuthenticationTest {
     @Autowired
     LoginService loginService;
 
+
     @Autowired
     private ObjectMapper objectMapper;
 
