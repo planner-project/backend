@@ -34,7 +34,21 @@ IMPORTANT: _토큰의 종류는 아래와 같으며, *로그인* 시 받게 됩�
 |===
 
 ==== 1.2. 토큰 재발행
-후에 작성할 예정 입니다.
+WARNING: _요청 시 예외가 발생 하고, 예외 코드가 `TOKEN_01` 인 경우 토큰을 재발급 받아야 합니다._ +
+_응답 으로 받은 토큰 으로 요청을 다시 보내주세요._
+
+===== Request
+```HTTP
+POST /api/v1/auth/token/refresh
+Content-Type: application/json;charset=UTF-8
+Content-Length: 71
+Host: localhost:8080
+```
+
+===== Response
+include::{snippets}/login/http-response.adoc[]
+
+
 
 === 2. 예외 코드
 NOTE: _응답시 예외에 대한 내용을 상세 하게 적어서 보낼 시, 일반 유저 들도 손쉽게 볼 수 있습니다. +
@@ -54,8 +68,8 @@ NOTE: _응답시 예외에 대한 내용을 상세 하게 적어서 보낼 시, 
 
 |AUTH_03 (401)
 |인증 과정 에서 오류가 발생한 경우 발생
-|AUTH_04 (500)
-|인증 서비스에서 내부 오류가 발생한 경우 발생
+|TOKEN_01 (401)
+|토큰이 만료된 경우 발생
 
 |INVALID_VALUE_01 (404)
 |요청 값을 찾을 수 없는 경우 발생
@@ -71,5 +85,35 @@ NOTE: _응답시 예외에 대한 내용을 상세 하게 적어서 보낼 시, 
 
 == 유저 기능 (User)
 === link:user/signup.html[1. 회원 가입]
-=== link:user/login.html[2. 로그인]
+- 회원 가입
+- 이미 존재 하는 이메일로 회원가입 요청
+- 유효하지 않은 이메일로 회원가입 요청
+- 유효하지 않은 비밀번호로 회원가입 요청
+- 유효하지 않은 닉네임으로 회원가입 요청
 
+=== link:user/login.html[2. 로그인]
+- 로그인 요청/응답
+- 존재 하지 않는 이메일로 로그인 요청
+- 로그인 시 이메일은 맞지만 비밀번호가 틀린 경우
+
+=== 3. 로그아웃
+_로그아웃 시 이전에 담겨 있던 토큰과 쿠키가 삭제 됩니다._
+```HTTP
+POST /api/v1/auth/logout
+Content-Type: application/json;charset=UTF-8
+Content-Length: 71
+Host: localhost:8080
+```
+
+=== 4. 유저 정보 반환
+==== Request
+include::{snippets}/userInfo/http-request.adoc[]
+
+==== Response
+NOTE: _유저 태그는 `시은(#1234)` 와 같이 사용해주세요._
+include::{snippets}/userInfo/response-fields.adoc[]
+include::{snippets}/userInfo/http-response.adoc[]
+
+== 유저 정보 기능 (Profile)
+=== [1. 유저 정보 수정]
+=== [2. 회원 탈퇴]
