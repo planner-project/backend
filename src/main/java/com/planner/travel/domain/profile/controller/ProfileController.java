@@ -2,9 +2,12 @@ package com.planner.travel.domain.profile.controller;
 
 import com.planner.travel.domain.profile.dto.request.UserInfoUpdateRequest;
 import com.planner.travel.domain.profile.service.UserInfoUpdateService;
+import com.planner.travel.global.jwt.token.SubjectExtractor;
+import com.planner.travel.global.jwt.token.TokenExtractor;
 import com.planner.travel.global.util.image.entity.Category;
 import com.planner.travel.global.util.image.service.ImageDeleteService;
 import com.planner.travel.global.util.image.service.ImageUpdateService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,6 +19,8 @@ public class ProfileController {
     private final UserInfoUpdateService userInfoUpdateService;
     private final ImageDeleteService imageDeleteService;
     private final ImageUpdateService imageUpdateService;
+    private final TokenExtractor tokenExtractor;
+    private final SubjectExtractor subjectExtractor;
 
     @GetMapping(value = "/{userId}")
     public void getProfile(@PathVariable("userId") Long userId) {
@@ -34,8 +39,11 @@ public class ProfileController {
         userInfoUpdateService.update(userId, request);
     }
 
-    @PatchMapping(value = "/{userId}/withdrawal")
-    public void withdrawal(@PathVariable("userId") Long userId) {
+    @PatchMapping(value = "/withdrawal")
+    public void withdrawal(HttpServletRequest request) {
+        String accessToken = tokenExtractor.getAccessTokenFromHeader(request);
+        Long userId = subjectExtractor.getUserIdFromToken(accessToken);
+
         userInfoUpdateService.withdrawal(userId);
     }
 }
