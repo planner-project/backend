@@ -3,6 +3,7 @@ package com.planner.travel.global.jwt;
 import com.planner.travel.global.jwt.token.TokenAuthenticator;
 import com.planner.travel.global.jwt.token.TokenExtractor;
 import com.planner.travel.global.jwt.token.TokenValidator;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,9 +11,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.security.SignatureException;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -38,10 +41,24 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         String accessToken = tokenExtractor.getAccessTokenFromHeader(request);
 
         if (accessToken != null) {
-            tokenValidator.validateAccessToken(accessToken);
-            tokenAuthenticator.getAuthenticationUsingToken(accessToken);
+            try {
+                tokenValidator.validateAccessToken(accessToken);
+                tokenAuthenticator.getAuthenticationUsingToken(accessToken);
+
+            } catch (ExpiredJwtException e) {
+                response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                setResponse(response, "TOKEN_01");
+
+            }
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    private void setResponse(HttpServletResponse response, String errorCode) throws IOException {
+        response.setContentType("application/json;charset=UTF-8");
+        response.getWriter().println(
+                "{\"errorCode\" : \"" + errorCode + "\"}"
+        );
     }
 }
