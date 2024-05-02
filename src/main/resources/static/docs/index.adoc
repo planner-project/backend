@@ -9,7 +9,7 @@
 
 .About Docs
 - ver. 0.0.0
-- Last update 24.04.21
+- Last update 24.05.02
 
 == 공통 기능 (Common)
 === 1. 토큰
@@ -115,5 +115,15 @@ include::{snippets}/userInfo/response-fields.adoc[]
 include::{snippets}/userInfo/http-response.adoc[]
 
 == 유저 정보 기능 (Profile)
-=== [1. 유저 정보 수정]
-=== [2. 회원 탈퇴]
+=== 1. 유저 정보 수정
+- 프로필 이미지 변경
+- 유저 닉네임 변경
+- 비밀번호 변경
+- 생일 변경
+
+=== 2. 회원 탈퇴
+NOTE: _헤더에 토큰을 넣어서 보내 주기만 하면 됩니다. 유저 검증은 백단 에서 합니다._ +
+_대신 `200` 상태 코드가 반환 되는 경우 바로 *로그아웃 -> 메인화면* 이동 으로 동작 되게 해주세요._
+
+include::{snippets}/userWithdrawal/http-request.adoc[]
+include::{snippets}/userWithdrawal/http-response.adoc[]
