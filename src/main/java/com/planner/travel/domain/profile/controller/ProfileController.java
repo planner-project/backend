@@ -18,24 +18,24 @@ public class ProfileController {
     private final ImageUpdateService imageUpdateService;
 
     @GetMapping(value = "/{userId}")
-    public void getProfile(@PathVariable Long userId) {
+    public void getProfile(@PathVariable("userId") Long userId) {
 
     }
 
     @PatchMapping(value = "/{userId}/image")
-    public void updateProfileImage(@PathVariable Long userId, MultipartFile multipartFile) throws Exception {
+    public void updateProfileImage(@PathVariable("userId") Long userId, MultipartFile multipartFile) throws Exception {
         Category category = Category.valueOf("PROFILE");
         imageDeleteService.deleteImage(userId, category);
         imageUpdateService.saveImage(userId, multipartFile, category);
     }
 
     @PatchMapping(value = "/{userId}/info")
-    public void updateUserInfo(@PathVariable Long userId, @RequestBody UserInfoUpdateRequest request) {
+    public void updateUserInfo(@PathVariable("userId") Long userId, @RequestBody UserInfoUpdateRequest request) {
         userInfoUpdateService.update(userId, request);
     }
 
     @PatchMapping(value = "/{userId}/withdrawal")
-    public void withdrawal(@PathVariable Long userId) {
+    public void withdrawal(@PathVariable("userId") Long userId) {
         userInfoUpdateService.withdrawal(userId);
     }
 }
