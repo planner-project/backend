@@ -1,6 +1,7 @@
 package com.planner.travel.domain.profile.controller;
 
 import com.planner.travel.domain.profile.dto.request.UserInfoUpdateRequest;
+import com.planner.travel.domain.profile.service.ProfileImageService;
 import com.planner.travel.domain.profile.service.UserInfoUpdateService;
 import com.planner.travel.global.jwt.token.SubjectExtractor;
 import com.planner.travel.global.jwt.token.TokenExtractor;
@@ -17,8 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class ProfileController {
     private final UserInfoUpdateService userInfoUpdateService;
-    private final ImageDeleteService imageDeleteService;
-    private final ImageUpdateService imageUpdateService;
+    private final ProfileImageService profileImageService;
     private final TokenExtractor tokenExtractor;
     private final SubjectExtractor subjectExtractor;
 
@@ -28,10 +28,15 @@ public class ProfileController {
     }
 
     @PatchMapping(value = "/{userId}/image")
-    public void updateProfileImage(@PathVariable("userId") Long userId, MultipartFile multipartFile) throws Exception {
-        Category category = Category.valueOf("PROFILE");
-        imageDeleteService.deleteImage(userId, category);
-        imageUpdateService.saveImage(userId, multipartFile, category);
+    public void updateProfileImage(
+            @PathVariable("userId") Long userId,
+            @RequestParam(value = "profileImage", required = false) MultipartFile multipartFile) throws Exception {
+        if (multipartFile != null && !multipartFile.isEmpty()) {
+            profileImageService.update(userId, multipartFile);
+
+        } else {
+            profileImageService.delete(userId);
+        }
     }
 
     @PatchMapping(value = "/{userId}/info")

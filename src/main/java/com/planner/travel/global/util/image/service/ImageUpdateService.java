@@ -16,12 +16,12 @@ import java.time.format.DateTimeFormatter;
 public class ImageUpdateService {
     private final ImageSettingService imageSettingService;
 
-    public Path saveImage(Long userId, MultipartFile multipartFile, Category category) throws Exception {
+    public Path saveImage(Long userId, MultipartFile multipartFile) throws Exception {
         if (multipartFile.isEmpty()) {
             throw new MultipartException("IMAGE_01");
         }
 
-        Path rootLocation = imageSettingService.setImagePath(category);
+        Path rootLocation = imageSettingService.setImagePath(Category.PROFILE);
 
         // 파일 이름, 확장자 추출
         String oriImageName = multipartFile.getOriginalFilename();
