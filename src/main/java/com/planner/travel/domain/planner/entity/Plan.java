@@ -1,15 +1,13 @@
 package com.planner.travel.domain.planner.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,6 +27,7 @@ public class Plan {
     @ManyToOne(fetch= FetchType.LAZY)
     @JoinColumn(name = "plannerBoxId")
     private PlanBox planBox;
+
 
 }
 

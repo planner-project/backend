@@ -2,15 +2,13 @@ package com.planner.travel.domain.planner.entity;
 
 import com.planner.travel.domain.user.entity.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,4 +30,5 @@ public class Planner {
     @ManyToOne(fetch= FetchType.LAZY)
     @JoinColumn(name = "userId")
     private User user;
+
 }
