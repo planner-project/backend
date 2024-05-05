@@ -31,4 +31,7 @@ public class Planner {
     @JoinColumn(name = "userId")
     private User user;
 
+    public void updateTitle(String title) {
+        this.title = title;
+    }
 }

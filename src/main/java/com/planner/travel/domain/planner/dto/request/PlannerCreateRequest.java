@@ -1,4 +1,6 @@
 package com.planner.travel.domain.planner.dto.request;
 
-public record PlannerCreateRequest(String title, boolean isPrivate) {
+import java.time.LocalDate;
+
+public record PlannerCreateRequest(String title, LocalDate startDate, LocalDate endDate, boolean isPrivate) {
 }
