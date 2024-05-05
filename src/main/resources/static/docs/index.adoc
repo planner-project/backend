@@ -115,7 +115,7 @@ include::{snippets}/userInfo/response-fields.adoc[]
 include::{snippets}/userInfo/http-response.adoc[]
 
 == 유저 정보 기능 (Profile)
-=== 1. 유저 정보 수정
+=== link:profile/updateInfo.html[1. 유저 정보 수정]
 - 프로필 이미지 변경
 - 유저 닉네임 변경
 - 비밀번호 변경
