@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping(value = "/api/v1/users/")
+@RequestMapping(value = "/api/v1/users")
 @RequiredArgsConstructor
 public class ProfileController {
     private final UserInfoUpdateService userInfoUpdateService;
@@ -44,7 +44,7 @@ public class ProfileController {
         userInfoUpdateService.update(userId, request);
     }
 
-    @PatchMapping(value = "/withdrawal")
+    @DeleteMapping(value = "")
     public void withdrawal(HttpServletRequest request) {
         String accessToken = tokenExtractor.getAccessTokenFromHeader(request);
         Long userId = subjectExtractor.getUserIdFromToken(accessToken);
