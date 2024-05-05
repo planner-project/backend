@@ -122,7 +122,7 @@ public class ProfileControllerTest {
     @DisplayName("유저 회원 탈퇴")
     public void userWithdrawalTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .patch("/api/v1/users/withdrawal")
+                        .delete("/api/v1/users")
                         .header("Authorization", validAccessToken))
                 .andExpect(status().isOk())
                 .andDo(MockMvcRestDocumentation.document("userWithdrawal",
