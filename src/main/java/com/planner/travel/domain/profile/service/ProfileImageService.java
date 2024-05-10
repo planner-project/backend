@@ -14,16 +14,27 @@ import java.nio.file.Path;
 @Service
 @RequiredArgsConstructor
 public class ProfileImageService {
-    private UserRepository userRepository;
-    private ImageUpdateService updateService;
-    private UserFinder userFinder;
+    private final UserRepository userRepository;
+    private final ImageUpdateService updateService;
+    private final UserFinder userFinder;
 
-    private void update(Long userId, MultipartFile multipartFile, Category category) throws Exception {
-        Path path = updateService.saveImage(userId, multipartFile, category);
+    public void update(Long userId, MultipartFile multipartFile) throws Exception {
+        Path path = updateService.saveImage(userId, multipartFile);
         User user = userFinder.find(userId);
+
         user.getProfile()
                 .getImage()
                 .updateImageUrl(path.toString());
+
+        userRepository.save(user);
+    }
+
+    public void delete(Long userId) {
+        User user = userFinder.find(userId);
+
+        user.getProfile()
+                .getImage()
+                .updateImageUrl("");
 
         userRepository.save(user);
     }
