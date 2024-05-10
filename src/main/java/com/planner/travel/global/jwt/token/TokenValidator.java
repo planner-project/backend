@@ -14,8 +14,6 @@ import java.security.Key;
 @RequiredArgsConstructor
 @Slf4j
 public class TokenValidator {
-    private final UserRepository userRepository;
-
     @Autowired
     private Key key;
 

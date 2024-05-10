@@ -29,16 +29,17 @@ import java.time.LocalDateTime;
 @AutoConfigureRestDocs
 public class LoginAuthenticationTest {
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @Autowired
-    LoginService loginService;
+    private LoginService loginService;
+
 
     @Autowired
     private ObjectMapper objectMapper;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @BeforeEach
     void setUp() {

@@ -2,5 +2,6 @@ package com.planner.travel.domain.profile.dto.request;
 
 import java.time.LocalDate;
 
-public record UserInfoUpdateRequest(String password, String nickname, LocalDate birthday, String phoneNumber) {
+// phone number 은 제외 상태
+public record UserInfoUpdateRequest(String password, String nickname, LocalDate birthday) {
 }

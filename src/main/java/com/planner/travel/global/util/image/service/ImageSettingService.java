@@ -12,7 +12,7 @@ import java.nio.file.Paths;
 public class ImageSettingService {
     public Path setImagePath(Category category) throws IOException {
         // 디렉토리 경로 설정
-        Path rootLocation = Paths.get("/app/images/" + category.toString().toLowerCase());
+        Path rootLocation = Paths.get(System.getProperty("user.home") + "/images/" + category.toString().toLowerCase());
         // 해당 경로의 디렉토리가 없다면 생성
         Files.createDirectories(rootLocation);
 
