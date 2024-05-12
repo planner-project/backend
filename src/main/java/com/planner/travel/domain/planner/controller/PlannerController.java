@@ -18,13 +18,13 @@ public class PlannerController {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping(value = "/{userId}/planners")
-    public ResponseEntity<?> updatePlanner(@PathVariable Long userId) {
+    @PatchMapping(value = "/{userId}/planners/{plannerId}")
+    public ResponseEntity<?> updatePlanner(@PathVariable Long userId, @PathVariable Long plannerId) {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping(value = "/{userId}/planners/deactivate")
-    public ResponseEntity<?> deletePlanner(@PathVariable Long userId) {
+    @DeleteMapping(value = "/{userId}/planners/{plannerId}")
+    public ResponseEntity<?> deletePlanner(@PathVariable Long userId, @PathVariable Long plannerId) {
         return ResponseEntity.ok().build();
     }
 }
