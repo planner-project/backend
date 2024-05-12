@@ -1,5 +1,6 @@
 package com.planner.travel.global.webSocket;
 
+import com.planner.travel.global.jwt.token.TokenAuthenticator;
 import com.planner.travel.global.jwt.token.TokenValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Component;
 public class WebSocketInterceptor implements ChannelInterceptor {
 
     private final TokenValidator tokenValidator;
+    private final TokenAuthenticator tokenAuthenticator;
 
     // websocket 을 통해 들어온 요청이 처리 되기 전 실행됨
     @Override
@@ -42,7 +44,10 @@ public class WebSocketInterceptor implements ChannelInterceptor {
             log.info("accessor: " + accessor.getMessageType());
             log.info("===========================================================================");
 
-            tokenValidator.validateAccessToken(accessToken);
+            if (accessToken != null) {
+                tokenValidator.validateAccessToken(accessToken);
+                tokenAuthenticator.getAuthenticationUsingToken(accessToken);
+            }
         }
 
         return message;

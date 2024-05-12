@@ -3,5 +3,7 @@ package com.planner.travel.domain.planner.repository;
 import com.planner.travel.domain.planner.entity.PlanBox;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface PlanBoxRepository extends JpaRepository<PlanBox, Long> {
 }
