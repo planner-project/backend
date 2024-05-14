@@ -15,25 +15,18 @@ import java.util.stream.Collectors;
 @Service
 public class PlanBoxQueryService {
     private final JPAQueryFactory queryFactory;
+    private final PlanQueryService planQueryService;
 
     @Autowired
     public PlanBoxQueryService(EntityManager entityManager) {
         this.queryFactory = new JPAQueryFactory(entityManager);
+        this.planQueryService = new PlanQueryService(entityManager);
     }
 
     public List<PlanBoxResponse> findPlanBoxesByPlannerId(Long plannerId) {
         QPlanner qPlanner = QPlanner.planner;
         QPlanBox qPlanBox = QPlanBox.planBox;
 
-        /*
-        SELECT *
-        FROM plan_box
-        JOIN planner
-        ON planner.id = plan_box.planner_id
-        WHERE planner.id = ? <- 찾고자 하는 planBox 가 있는 Planner 의 index
-            AND plan_box.isDeleted = 1
-        ORDER BY plan_box.planDate
-         */
         List<PlanBox> planBoxes = queryFactory
                 .selectFrom(qPlanBox)
                 .join(qPlanBox.planner, qPlanner)
@@ -46,7 +39,8 @@ public class PlanBoxQueryService {
         List<PlanBoxResponse> planBoxResponses = planBoxes.stream()
                 .map(planBox -> new PlanBoxResponse(
                         planBox.getPlanDate(),
-                        planBox.isPrivate()
+                        planBox.isPrivate(),
+                        planQueryService.findPlanByPlanBoxId(planBox.getId())
                 ))
                 .collect(Collectors.toList());
 
