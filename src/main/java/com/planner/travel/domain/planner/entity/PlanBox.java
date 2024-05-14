@@ -17,7 +17,9 @@ public class PlanBox {
     private Long id;
 
     private LocalDate planDate;
+
     private boolean isDeleted;
+
     private boolean isPrivate;
 
     @ManyToOne(fetch= FetchType.LAZY)

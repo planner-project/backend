@@ -27,9 +27,11 @@ public class Planner {
 
     private boolean isPrivate;
 
+
     @ManyToOne(fetch= FetchType.LAZY)
     @JoinColumn(name = "userId")
     private User user;
+
 
     public void updateTitle(String title) {
         this.title = title;

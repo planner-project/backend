@@ -17,10 +17,15 @@ public class Plan {
     private Long id;
 
     private boolean isPrivate;
+
     private String title;
+
     private LocalDateTime time;
+
     private String content;
+
     private String address;
+
     private boolean isDeleted;
 
 
