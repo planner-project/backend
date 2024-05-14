@@ -19,8 +19,10 @@ public class PlanBoxController {
     private final PlanBoxService planBoxService;
     private final SimpMessagingTemplate simpMessagingTemplate;
 
-    // 웹소캣 주소 명세는 노션을 참고해주세요.
+    // 웹소켓 주소 명세는 노션을 참고해주세요.
     // 플랜박스 코드 다 작성하면 웹소켓 테스트 하는 법 알려드리겠습니다!
+    // 플랜박스를 CUD 할 때는 전체 planBox 리스트를 다시 보내주세요. 관련 서비스는 PlanBoxQueryService 에 있습니다.
+
     @MessageMapping(value = "/planner/{plannerId}/create") // <- 프론트가 보내는 주소 입니다.
     public void createDate(@DestinationVariable Long plannerId, @Header("Authorization") String accessToken, PlanBoxCreateRequest request) {
         simpMessagingTemplate.convertAndSend("/sub/planner/" + plannerId,
