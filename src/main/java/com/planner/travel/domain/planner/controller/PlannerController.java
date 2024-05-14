@@ -13,6 +13,12 @@ public class PlannerController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping(value = "/{userId}/planners/{plannerId}")
+    public ResponseEntity<?> getSpecificPlanner(@PathVariable String plannerId) {
+        // 특정 플래너를 들어갈 때의 컨트롤러 입니다.
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping(value = "/{userId}/planners")
     public ResponseEntity<?> createPlanner(@PathVariable Long userId) {
         return ResponseEntity.ok().build();

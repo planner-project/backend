@@ -2,6 +2,7 @@ package com.planner.travel.domain.planner.service;
 
 import com.planner.travel.domain.planner.dto.request.PlannerCreateRequest;
 import com.planner.travel.domain.planner.dto.request.PlannerUpdateRequest;
+import com.planner.travel.domain.planner.dto.response.PlannerResponse;
 import com.planner.travel.domain.planner.entity.Planner;
 import com.planner.travel.domain.planner.repository.PlannerRepository;
 import com.planner.travel.domain.user.entity.User;
@@ -16,6 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class PlannerService {
     private final UserRepository userRepository;
     private final PlannerRepository plannerRepository;
+
+    public void get(PlannerResponse response, Long plannerId) {
+        // 특정 플래너를 들어올 때의 서비스 입니다. PlannerQueryService 를 사용하여 플래너에 대한 내용을 반환해 주세요.
+    }
 
     @Transactional
     public void create(PlannerCreateRequest request, Long userId) {
