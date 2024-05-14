@@ -73,24 +73,6 @@ tasks.withType(Test) {
     enabled = false
 }
 
-def querydslDir = "/build/generated-sources/java"
-
-querydsl {
-    jpa = true
-    querydslSourcesDir = querydslDir
-}
-
-sourceSets {
-    main.java.srcDir querydslDir
-}
-
-compileQuerydsl {
-    options.annotationProcessorPath = configurations.querydsl
-}
-
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
-    querydsl.extendsFrom compileClasspath
+clean {
+    delete file('src/main/generated')
 }
