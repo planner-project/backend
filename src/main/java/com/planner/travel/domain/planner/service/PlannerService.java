@@ -4,6 +4,7 @@ import com.planner.travel.domain.planner.dto.request.PlannerCreateRequest;
 import com.planner.travel.domain.planner.dto.request.PlannerUpdateRequest;
 import com.planner.travel.domain.planner.dto.response.PlannerResponse;
 import com.planner.travel.domain.planner.entity.Planner;
+import com.planner.travel.domain.planner.query.PlannerQueryService;
 import com.planner.travel.domain.planner.repository.PlannerRepository;
 import com.planner.travel.domain.user.entity.User;
 import com.planner.travel.domain.user.repository.UserRepository;
@@ -17,9 +18,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class PlannerService {
     private final UserRepository userRepository;
     private final PlannerRepository plannerRepository;
+    private final PlannerQueryService plannerQueryService;
 
-    public void get(PlannerResponse response, Long plannerId) {
+
+    public PlannerResponse get(PlannerResponse response, Long plannerId) {
         // 특정 플래너를 들어올 때의 서비스 입니다. PlannerQueryService 를 사용하여 플래너에 대한 내용을 반환해 주세요.
+        return plannerQueryService.findPlannerById(plannerId);
     }
 
     @Transactional
@@ -45,11 +49,10 @@ public class PlannerService {
 
         if (isValid(request.title())) {
             planner.updateTitle(request.title());
+            planner.updateStartDate(request.startDate());
+            planner.updateEndDate(request.endDate());
+            planner.updatePrivate(request.isPrivate());
         }
-
-        planner.setStartDate(request.startDate());
-        planner.setEndDate(request.endDate());
-        planner.setPrivate(request.isPrivate());
 
         // 플래너 엔티티 저장
         plannerRepository.save(planner);
