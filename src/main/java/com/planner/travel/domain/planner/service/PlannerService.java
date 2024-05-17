@@ -13,6 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class PlannerService {
@@ -21,13 +24,19 @@ public class PlannerService {
     private final PlannerQueryService plannerQueryService;
 
 
-    public PlannerResponse get(PlannerResponse response, Long plannerId) {
-        // 특정 플래너를 들어올 때의 서비스 입니다. PlannerQueryService 를 사용하여 플래너에 대한 내용을 반환해 주세요.
-        return plannerQueryService.findPlannerById(plannerId);
+    // 사용자가 소유한 모든 플래너를 반환하는 메소드 추가
+    public List<PlannerResponse> getAllPlanners(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        return plannerRepository.findByUserIdAndIsDeletedFalse(user.getId())
+                .stream()
+                .map(planner -> plannerQueryService.findPlannerById(planner.getId()))
+                .collect(Collectors.toList());
     }
 
     @Transactional
-    public void create(PlannerCreateRequest request, Long userId) {
+    public PlannerResponse create(PlannerCreateRequest request, Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
@@ -40,10 +49,12 @@ public class PlannerService {
                 .build();
 
         plannerRepository.save(planner);
+
+        return plannerQueryService.findPlannerById(planner.getId());
     }
 
     @Transactional
-    public void update(PlannerUpdateRequest request, Long plannerId) {
+    public PlannerResponse update(PlannerUpdateRequest request, Long plannerId) {
         Planner planner = plannerRepository.findById(plannerId)
                 .orElseThrow(() -> new EntityNotFoundException("Planner not found for id: " + plannerId));
 
@@ -55,11 +66,11 @@ public class PlannerService {
         }
 
         // 플래너 엔티티 저장
-        plannerRepository.save(planner);
+        return plannerQueryService.findPlannerById(plannerId);
     }
 
     @Transactional
-    public void delete(Long plannerId) {
+    public PlannerResponse delete(Long plannerId) {
         // 요청된 플래너 ID를 사용하여 플래너 엔티티 조회
         Planner planner = plannerRepository.findById(plannerId)
                 .orElseThrow(() -> new EntityNotFoundException("Planner not found for id: " + plannerId));
@@ -69,6 +80,12 @@ public class PlannerService {
 
         // 플래너 엔티티 저장
         plannerRepository.save(planner);
+
+        return plannerQueryService.findPlannerById(plannerId);
+    }
+
+    public PlannerResponse getPlannerById(Long plannerId) {
+        return plannerQueryService.findPlannerById(plannerId);
     }
 
     private boolean isValid(String value) {
