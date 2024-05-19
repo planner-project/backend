@@ -1,5 +1,6 @@
 package com.planner.travel.global.jwt.token;
 
+import com.planner.travel.global.util.RedisUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -15,6 +16,7 @@ import java.util.Date;
 @RequiredArgsConstructor
 @Slf4j
 public class TokenGenerator {
+    private final RedisUtil redisUtil;
     static final long ACCESS_TOKEN_VALID_TIME = 15 * 60 * 1000L; // 15 분간 유효.
     static final long REFRESH_TOKEN_VALID_TIME = 30 * 60 * 1000L; // 30 분간 유효.
 
@@ -39,6 +41,7 @@ public class TokenGenerator {
                 .setExpiration(new Date(now.getTime() + extraTime))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
+
         return token;
     }
 }
