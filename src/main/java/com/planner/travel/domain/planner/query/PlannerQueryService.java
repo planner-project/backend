@@ -1,12 +1,17 @@
 package com.planner.travel.domain.planner.query;
 
+import com.planner.travel.domain.planner.dto.response.PlannerListResponse;
 import com.planner.travel.domain.planner.dto.response.PlannerResponse;
 import com.planner.travel.domain.planner.entity.Planner;
 import com.planner.travel.domain.planner.entity.QPlanner;
+import com.planner.travel.domain.user.entity.QUser;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PlannerQueryService {
@@ -17,6 +22,33 @@ public class PlannerQueryService {
     public PlannerQueryService(EntityManager entityManager) {
         this.queryFactory = new JPAQueryFactory(entityManager);
         this.planBoxQueryService = new PlanBoxQueryService(entityManager);
+    }
+
+    public List<PlannerListResponse> findPlannersByUserId(Long userId) {
+        QUser qUser = QUser.user;
+        QPlanner qPlanner = QPlanner.planner;
+
+        List<Planner> planners = queryFactory
+                .selectFrom(qPlanner)
+                .join(qPlanner.user, qUser)
+                .where(qPlanner.user.id.eq(userId)
+                        .and(qPlanner.isDeleted.isFalse()
+                        )
+                )
+                .orderBy(qPlanner.id.desc())
+                .fetch();
+
+        List<PlannerListResponse> plannerListResponses = planners.stream()
+                .map(planner -> new PlannerListResponse(
+                        planner.getId(),
+                        planner.getTitle(),
+                        planner.getStartDate(),
+                        planner.getEndDate(),
+                        planner.isPrivate()
+                ))
+                .collect(Collectors.toList());
+
+        return plannerListResponses;
     }
 
     public PlannerResponse findPlannerById(Long plannerId) {
