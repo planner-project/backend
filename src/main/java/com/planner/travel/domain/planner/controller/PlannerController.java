@@ -2,6 +2,7 @@ package com.planner.travel.domain.planner.controller;
 
 import com.planner.travel.domain.planner.dto.request.PlannerCreateRequest;
 import com.planner.travel.domain.planner.dto.request.PlannerUpdateRequest;
+import com.planner.travel.domain.planner.dto.response.PlannerListResponse;
 import com.planner.travel.domain.planner.dto.response.PlannerResponse;
 import com.planner.travel.domain.planner.service.PlannerService;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +19,8 @@ public class PlannerController {
     private final PlannerService plannerService;
 
     @GetMapping(value = "/{userId}/planners")
-    public ResponseEntity<List<PlannerResponse>> getPlanners(@PathVariable Long userId) {
-        List<PlannerResponse> planners = plannerService.getAllPlanners(userId);
+    public ResponseEntity<List<PlannerListResponse>> getPlanners(@PathVariable Long userId) {
+        List<PlannerListResponse> planners = plannerService.getAllPlanners(userId);
         return ResponseEntity.ok(planners);
     }
 

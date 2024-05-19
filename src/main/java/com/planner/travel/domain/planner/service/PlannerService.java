@@ -2,6 +2,7 @@ package com.planner.travel.domain.planner.service;
 
 import com.planner.travel.domain.planner.dto.request.PlannerCreateRequest;
 import com.planner.travel.domain.planner.dto.request.PlannerUpdateRequest;
+import com.planner.travel.domain.planner.dto.response.PlannerListResponse;
 import com.planner.travel.domain.planner.dto.response.PlannerResponse;
 import com.planner.travel.domain.planner.entity.Planner;
 import com.planner.travel.domain.planner.query.PlannerQueryService;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,16 +23,9 @@ public class PlannerService {
     private final PlannerRepository plannerRepository;
     private final PlannerQueryService plannerQueryService;
 
-
-    // 사용자가 소유한 모든 플래너를 반환하는 메소드 추가
-    public List<PlannerResponse> getAllPlanners(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
-
-        return plannerRepository.findByUserIdAndIsDeletedFalse(user.getId())
-                .stream()
-                .map(planner -> plannerQueryService.findPlannerById(planner.getId()))
-                .collect(Collectors.toList());
+    public List<PlannerListResponse> getAllPlanners(Long userId) {
+        List<PlannerListResponse> plannerListResponses = plannerQueryService.findPlannersByUserId(userId);
+        return plannerListResponses;
     }
 
     @Transactional
@@ -50,7 +43,9 @@ public class PlannerService {
 
         plannerRepository.save(planner);
 
-        return plannerQueryService.findPlannerById(planner.getId());
+        PlannerResponse plannerResponse = plannerQueryService.findPlannerById(planner.getId());
+
+        return plannerResponse;
     }
 
     @Transactional
@@ -65,23 +60,22 @@ public class PlannerService {
             planner.updatePrivate(request.isPrivate());
         }
 
-        // 플래너 엔티티 저장
-        return plannerQueryService.findPlannerById(plannerId);
+        PlannerResponse plannerResponse = plannerQueryService.findPlannerById(plannerId);
+
+        return plannerResponse;
     }
 
     @Transactional
     public PlannerResponse delete(Long plannerId) {
-        // 요청된 플래너 ID를 사용하여 플래너 엔티티 조회
         Planner planner = plannerRepository.findById(plannerId)
                 .orElseThrow(() -> new EntityNotFoundException("Planner not found for id: " + plannerId));
 
-        // 플래너 삭제 (isDeleted를 true로 설정)
-        planner.setDeleted(true);
-
-        // 플래너 엔티티 저장
+        planner.updatePrivate(true);
         plannerRepository.save(planner);
 
-        return plannerQueryService.findPlannerById(plannerId);
+        PlannerResponse plannerResponse = plannerQueryService.findPlannerById(plannerId);
+
+        return plannerResponse;
     }
 
     public PlannerResponse getPlannerById(Long plannerId) {
