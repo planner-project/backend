@@ -26,6 +26,32 @@ public class PlannerQueryService {
         this.planBoxQueryService = new PlanBoxQueryService(entityManager);
     }
 
+    public List<PlannerListResponse> findMyPlannersByUserId(Long userId) {
+        QUser qUser = QUser.user;
+        QPlanner qPlanner = QPlanner.planner;
+
+        List<Planner> planners = queryFactory
+                .selectFrom(qPlanner)
+                .join(qPlanner.user, qUser)
+                .where(qPlanner.user.id.eq(userId)
+                        .and(qPlanner.isDeleted.isFalse())
+                )
+                .orderBy(qPlanner.id.desc())
+                .fetch();
+
+        List<PlannerListResponse> plannerListResponses = planners.stream()
+                .map(planner -> new PlannerListResponse(
+                        planner.getId(),
+                        planner.getTitle(),
+                        planner.getStartDate(),
+                        planner.getEndDate(),
+                        planner.isPrivate()
+                ))
+                .collect(Collectors.toList());
+
+        return plannerListResponses;
+    }
+
     public List<PlannerListResponse> findPlannersByUserId(Long userId) {
         QUser qUser = QUser.user;
         QPlanner qPlanner = QPlanner.planner;
@@ -34,8 +60,8 @@ public class PlannerQueryService {
                 .selectFrom(qPlanner)
                 .join(qPlanner.user, qUser)
                 .where(qPlanner.user.id.eq(userId)
-                        .and(qPlanner.isDeleted.isFalse()
-                        )
+                        .and(qPlanner.isDeleted.isFalse())
+                        .and(qPlanner.isPrivate.isFalse())
                 )
                 .orderBy(qPlanner.id.desc())
                 .fetch();

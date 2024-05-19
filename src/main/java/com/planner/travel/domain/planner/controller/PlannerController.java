@@ -6,6 +6,7 @@ import com.planner.travel.domain.planner.dto.response.PlannerListResponse;
 import com.planner.travel.domain.planner.dto.response.PlannerResponse;
 import com.planner.travel.domain.planner.service.PlannerListService;
 import com.planner.travel.domain.planner.service.PlannerService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,9 +20,10 @@ public class PlannerController {
     private final PlannerListService plannerListService;
     private final PlannerService plannerService;
 
+
     @GetMapping(value = "/{userId}/planners")
-    public ResponseEntity<List<PlannerListResponse>> getPlanners(@PathVariable("userId") Long userId) {
-        List<PlannerListResponse> planners = plannerListService.getAllPlanners(userId);
+    public ResponseEntity<List<PlannerListResponse>> getPlanners(@PathVariable("userId") Long userId, HttpServletRequest request) {
+        List<PlannerListResponse> planners = plannerListService.getAllPlanners(userId, request);
         return ResponseEntity.ok(planners);
     }
 
