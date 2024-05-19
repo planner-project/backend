@@ -8,13 +8,18 @@ import com.planner.travel.domain.planner.query.PlannerQueryService;
 import com.planner.travel.domain.planner.repository.PlannerRepository;
 import com.planner.travel.domain.user.entity.User;
 import com.planner.travel.domain.user.repository.UserRepository;
+import com.planner.travel.global.jwt.token.SubjectExtractor;
+import com.planner.travel.global.jwt.token.TokenExtractor;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -22,10 +27,23 @@ public class PlannerListService {
     private final UserRepository userRepository;
     private final PlannerRepository plannerRepository;
     private final PlannerQueryService plannerQueryService;
+    private final TokenExtractor tokenExtractor;
+    private final SubjectExtractor subjectExtractor;
+
 
     @Transactional(readOnly = true)
-    public List<PlannerListResponse> getAllPlanners(Long userId) {
-        List<PlannerListResponse> plannerListResponses = plannerQueryService.findPlannersByUserId(userId);
+    public List<PlannerListResponse> getAllPlanners(Long userId, HttpServletRequest request) {
+        String accessToken = tokenExtractor.getAccessTokenFromHeader(request);
+        Long subject = subjectExtractor.getUserIdFromToken(accessToken);
+        List<PlannerListResponse> plannerListResponses = new ArrayList<>();
+
+        if (subject.equals(userId)) {
+            plannerListResponses = plannerQueryService.findMyPlannersByUserId(userId);
+
+        } else {
+            plannerListResponses = plannerQueryService.findPlannersByUserId(userId);
+        }
+
         return plannerListResponses;
     }
 
