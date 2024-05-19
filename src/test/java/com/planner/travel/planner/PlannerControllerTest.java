@@ -16,6 +16,7 @@ import com.planner.travel.global.jwt.token.TokenType;
 import com.planner.travel.global.util.image.entity.Category;
 import com.planner.travel.global.util.image.entity.Image;
 import com.planner.travel.global.util.image.repository.ImageRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,6 +25,7 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.restdocs.payload.PayloadDocumentation;
 import org.springframework.test.web.servlet.MockMvc;
@@ -59,9 +61,13 @@ public class PlannerControllerTest {
     @Autowired
     private TokenGenerator tokenGenerator;
 
-    private Long userId;
+    private Long userId1;
 
-    private String validAccessToken;
+    private Long userId2;
+
+    private String validAccessToken1;
+
+    private String validAccessToken2;
 
     private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
@@ -73,7 +79,8 @@ public class PlannerControllerTest {
         profileRepository.deleteAll();
         imageRepository.deleteAll();
 
-        Image image = Image.builder()
+
+        Image image1 = Image.builder()
                 .imageUrl("")
                 .isDeleted(false)
                 .isThumb(false)
@@ -81,15 +88,15 @@ public class PlannerControllerTest {
                 .createdAt(LocalDateTime.now())
                 .build();
 
-        imageRepository.save(image);
+        imageRepository.save(image1);
 
-        Profile profile = Profile.builder()
-                .image(image)
+        Profile profile1 = Profile.builder()
+                .image(image1)
                 .build();
 
-        profileRepository.save(profile);
+        profileRepository.save(profile1);
 
-        User user = User.builder()
+        User user1 = User.builder()
                 .email("wldsmtldsm65@gmail.com")
                 .password("123qwe!#QWE")
                 .nickname("시은")
@@ -97,13 +104,47 @@ public class PlannerControllerTest {
                 .birthday(LocalDate.parse("1996-11-20"))
                 .signupDate(LocalDateTime.now())
                 .userTag(1234L)
-                .profile(profile)
+                .profile(profile1)
                 .build();
 
-        userRepository.save(user);
-        userId = user.getId();
+        Image image2 = Image.builder()
+                .imageUrl("")
+                .isDeleted(false)
+                .isThumb(false)
+                .category(Category.PROFILE)
+                .createdAt(LocalDateTime.now())
+                .build();
 
-        validAccessToken = "Bearer " + tokenGenerator.generateToken(TokenType.ACCESS, String.valueOf(userId));
+        imageRepository.save(image2);
+
+        Profile profile2 = Profile.builder()
+                .image(image2)
+                .build();
+
+        profileRepository.save(profile2);
+
+        User user2 = User.builder()
+                .email("jieunnnn@gmail.com")
+                .password("123qwe!#QWE")
+                .nickname("지은")
+                .isWithdrawal(false)
+                .birthday(LocalDate.parse("1998-04-06"))
+                .signupDate(LocalDateTime.now())
+                .userTag(1234L)
+                .profile(profile2)
+                .build();
+
+
+        userRepository.save(user1);
+        userRepository.save(user2);
+
+
+        userId1 = user1.getId();
+        userId2 = user2.getId();
+
+        validAccessToken1 = "Bearer " + tokenGenerator.generateToken(TokenType.ACCESS, String.valueOf(userId1));
+        validAccessToken2 = "Bearer " + tokenGenerator.generateToken(TokenType.ACCESS, String.valueOf(userId2));
+
     }
 
     private void createTestPlanners() {
@@ -114,7 +155,7 @@ public class PlannerControllerTest {
 
         PlannerCreateRequest request2 = new PlannerCreateRequest(
                 "테스트 플래너2",
-                false
+                true
         );
 
         PlannerCreateRequest request3 = new PlannerCreateRequest(
@@ -122,9 +163,9 @@ public class PlannerControllerTest {
                 false
         );
 
-        plannerListService.create(request1, userId);
-        plannerListService.create(request2, userId);
-        plannerListService.create(request3, userId);
+        plannerListService.create(request1, userId1);
+        plannerListService.create(request2, userId1);
+        plannerListService.create(request3, userId1);
     }
 
     @Test
@@ -133,8 +174,8 @@ public class PlannerControllerTest {
         createTestPlanners();
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/v1/user/{userId}/planners", userId)
-                        .header("Authorization", validAccessToken)
+                        .get("/api/v1/user/{userId}/planners", userId1)
+                        .header("Authorization", validAccessToken1)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(MockMvcRestDocumentation.document("getAllPlanners",
@@ -151,6 +192,36 @@ public class PlannerControllerTest {
     }
 
     @Test
+    @DisplayName("플래너 리스트 반환 - 다른 유저")
+    public void getAllPlannersOfOtherUser() throws Exception {
+        createTestPlanners();
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/api/v1/user/{userId}/planners", userId1)
+                        .header("Authorization", validAccessToken2)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(MockMvcRestDocumentation.document("getAllPlannersOfOtherUser",
+                        ApiDocumentUtil.getDocumentRequest(),
+                        ApiDocumentUtil.getDocumentResponse(),
+                        PayloadDocumentation.responseFields(
+                                PayloadDocumentation.fieldWithPath("[].plannerId").description("플래너 인덱스"),
+                                PayloadDocumentation.fieldWithPath("[].title").description("플래너 제목"),
+                                PayloadDocumentation.fieldWithPath("[].startDate").description("여행 시작 날짜"),
+                                PayloadDocumentation.fieldWithPath("[].endDate").description("여행 끝 날짜"),
+                                PayloadDocumentation.fieldWithPath("[].isPrivate").description("플래너 공개 여부")
+                        )
+                ));
+
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+        mockRequest.addHeader("Authorization", validAccessToken2);
+
+        System.out.println("============================================================================");
+        System.out.println("Planner size must be 2: " + plannerListService.getAllPlanners(userId1, mockRequest).size());
+        System.out.println("============================================================================");
+    }
+
+    @Test
     @DisplayName("플래너 생성")
     public void createPlanner() throws Exception {
         PlannerCreateRequest request = new PlannerCreateRequest(
@@ -159,8 +230,8 @@ public class PlannerControllerTest {
         );
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/v1/user/{userId}/planners", userId)
-                        .header("Authorization", validAccessToken)
+                        .post("/api/v1/user/{userId}/planners", userId1)
+                        .header("Authorization", validAccessToken1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
@@ -184,13 +255,16 @@ public class PlannerControllerTest {
                 false
         );
 
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+        mockRequest.addHeader("Authorization", validAccessToken1);
+
         System.out.println("============================================================================");
-        System.out.println("before update: " + plannerListService.getAllPlanners(userId).get(2));
+        System.out.println("before update: " + plannerListService.getAllPlanners(userId1, mockRequest).get(2));
         System.out.println("============================================================================");
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .patch("/api/v1/user/{userId}/planners/{plannerId}", userId, 1L)
-                        .header("Authorization", validAccessToken)
+                        .patch("/api/v1/user/{userId}/planners/{plannerId}", userId1, 1L)
+                        .header("Authorization", validAccessToken1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
@@ -200,7 +274,7 @@ public class PlannerControllerTest {
                 ));
 
         System.out.println("============================================================================");
-        System.out.println("After update: " + plannerListService.getAllPlanners(userId).get(2));
+        System.out.println("After update: " + plannerListService.getAllPlanners(userId1, mockRequest).get(2));
         System.out.println("============================================================================");
     }
 
@@ -209,13 +283,16 @@ public class PlannerControllerTest {
     public void deletePlanner() throws Exception {
         createTestPlanners();
 
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+        mockRequest.addHeader("Authorization", validAccessToken1);
+
         System.out.println("============================================================================");
-        System.out.println("Planner size before update: " + plannerListService.getAllPlanners(userId).size());
+        System.out.println("Planner size before update: " + plannerListService.getAllPlanners(userId1, mockRequest).size());
         System.out.println("============================================================================");
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/api/v1/user/{userId}/planners/{plannerId}", userId, 6L)
-                        .header("Authorization", validAccessToken)
+                        .delete("/api/v1/user/{userId}/planners/{plannerId}", userId1, 9L)
+                        .header("Authorization", validAccessToken1)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(MockMvcRestDocumentation.document("deletePlanner",
@@ -224,7 +301,7 @@ public class PlannerControllerTest {
                 ));
 
         System.out.println("============================================================================");
-        System.out.println("Planner size after update: " + plannerListService.getAllPlanners(userId).size());
+        System.out.println("Planner size after update: " + plannerListService.getAllPlanners(userId1, mockRequest).size());
         System.out.println("============================================================================");
     }
 }
