@@ -3,6 +3,7 @@ package com.planner.travel.domain.planner.query;
 import com.planner.travel.domain.planner.dto.response.PlannerListResponse;
 import com.planner.travel.domain.planner.dto.response.PlannerResponse;
 import com.planner.travel.domain.planner.entity.Planner;
+import com.planner.travel.domain.planner.entity.QPlanBox;
 import com.planner.travel.domain.planner.entity.QPlanner;
 import com.planner.travel.domain.user.entity.QUser;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -10,6 +11,7 @@ import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,6 +53,7 @@ public class PlannerQueryService {
         return plannerListResponses;
     }
 
+
     public PlannerResponse findPlannerById(Long plannerId) {
         QPlanner qPlanner = QPlanner.planner;
 
@@ -71,5 +74,27 @@ public class PlannerQueryService {
         );
 
         return plannerResponse;
+    }
+
+
+    public List<LocalDate> updateStartDateAndEndDate(Long plannerId) {
+        QPlanner qPlanner = QPlanner.planner;
+        QPlanBox qPlanBox = QPlanBox.planBox;
+
+        LocalDate minDate = queryFactory
+                .select(qPlanBox.planDate.min())
+                .from(qPlanBox)
+                .join(qPlanBox.planner, qPlanner)
+                .where(qPlanBox.planner.id.eq(plannerId))
+                .fetchOne();
+
+        LocalDate maxDate = queryFactory
+                .select(qPlanBox.planDate.max())
+                .from(qPlanBox)
+                .join(qPlanBox.planner, qPlanner)
+                .where(qPlanBox.planner.id.eq(plannerId))
+                .fetchOne();
+
+        return List.of(minDate, maxDate);
     }
 }

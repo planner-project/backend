@@ -25,8 +25,12 @@ public class PlanBoxController {
 
     @MessageMapping(value = "/planner/{plannerId}/create") // <- 프론트가 보내는 주소 입니다.
     public void createDate(@DestinationVariable Long plannerId, @Header("Authorization") String accessToken, PlanBoxCreateRequest request) {
+        // 서비스를 작성해주세요
+        planBoxService.create(request, plannerId);
+
+        // 결과값은 항상 같습니다.
         simpMessagingTemplate.convertAndSend("/sub/planner/" + plannerId,
-                Map.of("type", "create-planBox", "message", planBoxService.create(request, plannerId)) // <- 해당 주소를 구독하는 모든 사람이 CUD 과정을 볼 수 있습니다.
+                Map.of("type", "planBox", "message", planBoxService.getAllPlanBox(plannerId)) // <- 해당 주소를 구독하는 모든 사람이 CUD 과정을 볼 수 있습니다.
         );
     }
 }

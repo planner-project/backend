@@ -36,13 +36,20 @@ public class Planner {
     public void updateTitle(String title) {
         this.title = title;
     }
+
     public void updateStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
+
     public void updateEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
-    public void updatePrivate(boolean isPrivate) {
+
+    public void updateIsPrivate(boolean isPrivate) {
         this.isPrivate = isPrivate;
+    }
+
+    public void updateIsDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 }
