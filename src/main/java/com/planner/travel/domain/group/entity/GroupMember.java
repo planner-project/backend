@@ -1,14 +1,13 @@
 package com.planner.travel.domain.group.entity;
 
-import com.planner.travel.domain.planner.entity.PlanBox;
 import com.planner.travel.domain.planner.entity.Planner;
+import com.planner.travel.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -20,10 +19,21 @@ public class GroupMember {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId;
-    private Long isLeaved;
+    private boolean isHost;
+
+    private boolean isLeaved;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId")
+    private User user;
 
     @ManyToOne(fetch= FetchType.LAZY)
     @JoinColumn(name = "plannerId")
-    private Planner plannerId;
+    private Planner planner;
+
+
+    public void deleteGroupMember(boolean isLeaved) {
+        this.isLeaved = isLeaved;
+    }
 }
