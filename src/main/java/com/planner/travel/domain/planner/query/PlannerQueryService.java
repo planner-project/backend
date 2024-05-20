@@ -1,5 +1,6 @@
 package com.planner.travel.domain.planner.query;
 
+import com.planner.travel.domain.group.entity.QGroupMember;
 import com.planner.travel.domain.planner.dto.response.PlannerListResponse;
 import com.planner.travel.domain.planner.dto.response.PlannerResponse;
 import com.planner.travel.domain.planner.entity.Planner;
@@ -27,14 +28,16 @@ public class PlannerQueryService {
     }
 
     public List<PlannerListResponse> findMyPlannersByUserId(Long userId) {
-        QUser qUser = QUser.user;
+        QGroupMember qGroupMember = QGroupMember.groupMember;
         QPlanner qPlanner = QPlanner.planner;
 
         List<Planner> planners = queryFactory
-                .selectFrom(qPlanner)
-                .join(qPlanner.user, qUser)
-                .where(qPlanner.user.id.eq(userId)
+                .select(qPlanner)
+                .from(qGroupMember)
+                .join(qGroupMember.planner, qPlanner)
+                .where(qGroupMember.user.id.eq(userId)
                         .and(qPlanner.isDeleted.isFalse())
+                        .and(qGroupMember.isLeaved.isFalse())
                 )
                 .orderBy(qPlanner.id.desc())
                 .fetch();
