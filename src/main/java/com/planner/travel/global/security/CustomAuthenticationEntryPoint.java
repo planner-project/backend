@@ -1,7 +1,5 @@
 package com.planner.travel.global.security;
 
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -32,14 +30,6 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         } else if (authException instanceof InsufficientAuthenticationException) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             setResponse(response, "AUTH_03");
-
-        } else if (authException.getCause() instanceof ExpiredJwtException) {
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            setResponse(response, "TOKEN_02");
-
-        } else if (authException.getCause() instanceof MalformedJwtException) {
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            setResponse(response, "TOKEN_03");
         }
     }
 
