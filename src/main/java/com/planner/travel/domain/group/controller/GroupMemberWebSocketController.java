@@ -29,7 +29,7 @@ public class GroupMemberWebSocketController {
         groupMemberService.addGroupMembers(plannerId, request);
 
         simpMessagingTemplate.convertAndSend("/sub/planner/" + plannerId,
-                Map.of("type", "groupMember", "message", groupMemberService.getAllGroupMembers(plannerId))
+                Map.of("type", "add-group-member", "message", groupMemberService.getAllGroupMembers(plannerId))
         );
     }
 
@@ -39,7 +39,7 @@ public class GroupMemberWebSocketController {
         groupMemberService.deleteGroupMembers(plannerId, request);
 
         simpMessagingTemplate.convertAndSend("/sub/planner/" + plannerId,
-                Map.of("type", "groupMember", "message", groupMemberService.getAllGroupMembers(plannerId))
+                Map.of("type", "delete-group-member", "message", groupMemberService.getAllGroupMembers(plannerId))
         );
     }
 }

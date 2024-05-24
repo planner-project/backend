@@ -556,8 +556,19 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel1">
 <li><a href="#_공통_기능_common">공통 기능 (Common)</a>
 <ul class="sectlevel2">
-<li><a href="#_1_토큰">1. 토큰</a></li>
+<li><a href="#_1_토큰">1. 토큰</a>
+<ul class="sectlevel3">
+<li><a href="#_1_1_token_table">1.1. Token Table</a></li>
+<li><a href="#_1_2_토큰_재발행">1.2. 토큰 재발행</a></li>
+</ul>
+</li>
 <li><a href="#_2_예외_코드">2. 예외 코드</a></li>
+<li><a href="#_3_웹소켓">3. 웹소켓</a></li>
+</ul>
+</li>
+<li><a href="#_검색_기능_search">검색 기능 (Search)</a>
+<ul class="sectlevel2">
+<li><a href="#_1_유저_검색">1. 유저 검색</a></li>
 </ul>
 </li>
 <li><a href="#_유저_기능_user">유저 기능 (User)</a>
@@ -603,6 +614,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect1">
 <h2 id="_공통_기능_common"><a class="link" href="#_공통_기능_common">공통 기능 (Common)</a></h2>
 <div class="sectionbody">
+<hr>
 <div class="sect2">
 <h3 id="_1_토큰"><a class="link" href="#_1_토큰">1. 토큰</a></h3>
 <div class="admonitionblock important">
@@ -662,8 +674,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </tr>
 </table>
 </div>
-<div class="sect4">
-<h5 id="_request"><a class="link" href="#_request">Request</a></h5>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Request</dt>
+</dl>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-HTTP hljs" data-lang="HTTP">POST /api/v1/auth/token/refresh
@@ -672,9 +687,11 @@ Content-Length: 71
 Host: localhost:8080</code></pre>
 </div>
 </div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Response</dt>
+</dl>
 </div>
-<div class="sect4">
-<h5 id="_response"><a class="link" href="#_response">Response</a></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
@@ -689,7 +706,6 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY</code></pre>
-</div>
 </div>
 </div>
 </div>
@@ -744,19 +760,125 @@ X-Frame-Options: DENY</code></pre>
 <td class="tableblock halign-left valign-top"><p class="tableblock">알맞지 않은 값을 요청 값으로 넣은 경우 발생</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">INVALID_VALUE_03 (404)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">INVALID_VALUE_03 (400)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">요청 값이 validation 결과 알맞지 않은 경우 발생</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">INVALID_VALUE_04 (400)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">요청 값이 이미 존재 하는 경우 발생</p></td>
 </tr>
 </tbody>
 </table>
+</div>
+<div class="sect2">
+<h3 id="_3_웹소켓"><a class="link" href="#_3_웹소켓">3. 웹소켓</a></h3>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">HandShake</dt>
+<dd>
+<p>이 단계에서는 아무것도 하지 않아도 됩니다.</p>
+</dd>
+<dt class="hdlist1">CONNECT</dt>
+<dd>
+<p><code>Authorization</code> 헤더에 accessToken 을 넣어주어야 합니다.</p>
+</dd>
+<dt class="hdlist1">SUBSCRIBE</dt>
+<dd>
+<p>구독 주소를 명확 하게 작성 해야 합니다. 자세한건 각각의 명세에서 확인해주세요.</p>
+</dd>
+<dt class="hdlist1">MESSAGE</dt>
+<dd>
+<div class="ulist">
+<ul>
+<li>
+<p>발행 주소를 명확 하게 작성 해야 합니다. 자세한건 각각의 명세에서 확인해주세요.</p>
+</li>
+<li>
+<p><code>Authorization</code> 헤더에 accessToken 을 넣어주어야 합니다.</p>
+</li>
+</ul>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_검색_기능_search"><a class="link" href="#_검색_기능_search">검색 기능 (Search)</a></h2>
+<div class="sectionbody">
+<hr>
+<div class="sect2">
+<h3 id="_1_유저_검색"><a class="link" href="#_1_유저_검색">1. 유저 검색</a></h3>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Parameters</dt>
+</dl>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Request parameter</th>
+<th class="tableblock halign-left valign-top">설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">email</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이메일</p></td>
+</tr>
+</tbody>
+</table>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Request</dt>
+</dl>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-http hljs" data-lang="http">GET /api/v1/users?email=wldsmtldsm65@gmail.com HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzE2MjExNzE3LCJleHAiOjE3MTYyMTI2MTd9.WW7oSRd1h1s-qPSnOiUdlMGc6C2hrDGBANaEEOBrZBM
+Host: localhost:8080</code></pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Response</dt>
+</dl>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Length: 87
+
+{
+"userId" : 1,
+"nickname" : "시은",
+"userTag" : 1234,
+"profileImageUrl" : ""
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_유저_기능_user"><a class="link" href="#_유저_기능_user">유저 기능 (User)</a></h2>
 <div class="sectionbody">
+<hr>
 <div class="sect2">
 <h3 id="_1_회원_가입"><a class="link" href="#_1_회원_가입"><a href="user/signup.html">1. 회원 가입</a></a></h3>
 <div class="ulist">
@@ -797,8 +919,13 @@ X-Frame-Options: DENY</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_3_로그아웃"><a class="link" href="#_3_로그아웃">3. 로그아웃</a></h3>
-<div class="paragraph">
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Request</dt>
+<dd>
 <p><em>로그아웃 시 이전에 담겨 있던 토큰과 쿠키가 삭제 됩니다.</em></p>
+</dd>
+</dl>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -811,8 +938,11 @@ Host: localhost:8080</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_4_유저_정보_반환"><a class="link" href="#_4_유저_정보_반환">4. 유저 정보 반환</a></h3>
-<div class="sect3">
-<h4 id="_request_2"><a class="link" href="#_request_2">Request</a></h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Request</dt>
+</dl>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/v1/auth/user HTTP/1.1
@@ -820,20 +950,13 @@ Authorization: Bearer generated.access.token
 Host: localhost:8080</code></pre>
 </div>
 </div>
-</div>
-<div class="sect3">
-<h4 id="_response_2"><a class="link" href="#_response_2">Response</a></h4>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<em>유저 태그는 <code>시은(#1234)</code> 와 같이 사용해주세요.</em>
-</td>
-</tr>
-</table>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Response</dt>
+<dd>
+<p><em>유저 태그는 <code>시은(#1234)</code> 와 같이 사용해주세요.</em></p>
+</dd>
+</dl>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -897,10 +1020,10 @@ Content-Length: 87
 </div>
 </div>
 </div>
-</div>
 <div class="sect1">
 <h2 id="_유저_정보_기능_profile"><a class="link" href="#_유저_정보_기능_profile">유저 정보 기능 (Profile)</a></h2>
 <div class="sectionbody">
+<hr>
 <div class="sect2">
 <h3 id="_1_유저_정보_수정"><a class="link" href="#_1_유저_정보_수정"><a href="profile/updateInfo.html">1. 유저 정보 수정</a></a></h3>
 <div class="ulist">
@@ -938,7 +1061,7 @@ Content-Length: 87
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /api/v1/users HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzE0OTIxOTg5LCJleHAiOjE3MTQ5MjI4ODl9.ZA3I5ZFrH5Pg8Yuy9Ehm2bRJZlCGmUgCBDxuKDS5n3w
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzE2Mzc4NTY0LCJleHAiOjE3MTYzNzk0NjR9.hFWFE9YjSJFS34ViQJ3ynQJFctTs2oqzcR0H3cOzbts
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -962,6 +1085,7 @@ X-Frame-Options: DENY</code></pre>
 <div class="sect1">
 <h2 id="_플래너_기능_planner"><a class="link" href="#_플래너_기능_planner">플래너 기능 (Planner)</a></h2>
 <div class="sectionbody">
+<hr>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -991,7 +1115,7 @@ X-Frame-Options: DENY</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_2_그룹_멤버_기능"><a class="link" href="#_2_그룹_멤버_기능">2. 그룹 멤버 기능</a></h3>
+<h3 id="_2_그룹_멤버_기능"><a class="link" href="#_2_그룹_멤버_기능"><a href="planner/groupMember.html">2. 그룹 멤버 기능</a></a></h3>
 <div class="ulist">
 <ul>
 <li>
@@ -1015,7 +1139,7 @@ X-Frame-Options: DENY</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-19 21:23:23 +0900
+Last updated 2024-05-24 18:54:31 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

@@ -40,7 +40,7 @@ public class GroupMemberService {
         Planner planner = plannerRepository.findById(plannerId)
                 .orElseThrow(() -> new EntityNotFoundException("Planner not found"));
 
-        if (groupMemberQueryService.validateGroupMember(user.getId(), planner.getId())) {
+        if (!groupMemberQueryService.validateGroupMember(user.getId(), planner.getId())) {
             GroupMember groupMember = GroupMember.builder()
                     .isHost(false)
                     .isLeaved(false)
