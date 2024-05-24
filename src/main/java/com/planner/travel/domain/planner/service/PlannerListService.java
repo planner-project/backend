@@ -1,5 +1,7 @@
 package com.planner.travel.domain.planner.service;
 
+import com.planner.travel.domain.group.entity.GroupMember;
+import com.planner.travel.domain.group.repository.GroupMemberRepository;
 import com.planner.travel.domain.planner.dto.request.PlannerCreateRequest;
 import com.planner.travel.domain.planner.dto.request.PlannerUpdateRequest;
 import com.planner.travel.domain.planner.dto.response.PlannerListResponse;
@@ -26,6 +28,7 @@ import java.util.Objects;
 public class PlannerListService {
     private final UserRepository userRepository;
     private final PlannerRepository plannerRepository;
+    private final GroupMemberRepository groupMemberRepository;
     private final PlannerQueryService plannerQueryService;
     private final TokenExtractor tokenExtractor;
     private final SubjectExtractor subjectExtractor;
@@ -60,7 +63,15 @@ public class PlannerListService {
                 .user(user)
                 .build();
 
+        GroupMember groupMember = GroupMember.builder()
+                .user(user)
+                .planner(planner)
+                .isHost(true)
+                .isLeaved(false)
+                .build();
+
         plannerRepository.save(planner);
+        groupMemberRepository.save(groupMember);
     }
 
     @Transactional

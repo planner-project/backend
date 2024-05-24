@@ -18,14 +18,10 @@ import org.springframework.stereotype.Component;
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE + 99)
 public class WebSocketInterceptor implements ChannelInterceptor {
-
-    private final TokenValidator tokenValidator;
     private final TokenAuthenticator tokenAuthenticator;
 
-    // websocket 을 통해 들어온 요청이 처리 되기 전 실행됨
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
-
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
         String accessToken = accessor.getFirstNativeHeader("Authorization");
 
@@ -36,7 +32,6 @@ public class WebSocketInterceptor implements ChannelInterceptor {
         log.info("Incoming message type: " + accessor.getMessageType());
         log.info("===========================================================================");
 
-        // websocket 연결 시 헤더의 JWT 토큰 유효성 검증
         if (SimpMessageType.CONNECT.equals(accessor.getMessageType())
                 || SimpMessageType.MESSAGE.equals(accessor.getMessageType())) {
 
@@ -44,9 +39,13 @@ public class WebSocketInterceptor implements ChannelInterceptor {
             log.info("accessor: " + accessor.getMessageType());
             log.info("===========================================================================");
 
-            if (accessToken != null) {
-                tokenValidator.validateAccessToken(accessToken);
-                tokenAuthenticator.getAuthenticationUsingToken(accessToken);
+            if (accessToken != null && accessToken.startsWith("Bearer ")) {
+//                tokenAuthenticator.getAuthenticationUsingToken(accessToken);
+                accessor.getSessionAttributes().put("Authorization", accessToken);
+
+            } else {
+                log.error("Invalid or missing Authorization header");
+                throw new IllegalArgumentException("Invalid or missing Authorization header");
             }
         }
 

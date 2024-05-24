@@ -69,5 +69,15 @@ logging:
           core:
             debug
 
+        messaging:
+          simp:
+            debug
+    com:
+      planner:
+        travel:
+          global:
+            webSocket:
+              debug
+
     web:
       debug
