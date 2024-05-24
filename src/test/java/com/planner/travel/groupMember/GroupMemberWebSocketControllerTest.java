@@ -231,7 +231,7 @@ public class GroupMemberWebSocketControllerTest {
 
         Map<String, Object> response = blockingQueue.poll(5, TimeUnit.SECONDS);
         assertNotNull(response);
-        assertEquals("groupMember", response.get("type"));
+        assertEquals("add-group-member", response.get("type"));
     }
 
     @Test
@@ -256,6 +256,6 @@ public class GroupMemberWebSocketControllerTest {
 
         Map<String, Object> response = blockingQueue.poll(5, TimeUnit.SECONDS);
         assertNotNull(response);
-        assertEquals("groupMember", response.get("type"));
+        assertEquals("delete-group-member", response.get("type"));
     }
 }
