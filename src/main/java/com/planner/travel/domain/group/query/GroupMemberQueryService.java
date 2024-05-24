@@ -46,4 +46,21 @@ public class GroupMemberQueryService {
                         .and(qGroupMember.isLeaved.eq(false)))
                 .fetch();
     }
+
+    public boolean validateGroupMember(Long userId, Long plannerId) {
+        QGroupMember qGroupMember = QGroupMember.groupMember;
+
+        Long count = queryFactory
+                .select(qGroupMember.count())
+                .from(qGroupMember)
+                .where(qGroupMember.user.id.eq(userId)
+                        .and(qGroupMember.planner.id.eq(plannerId)))
+                .fetchOne();
+
+        if (count != null && count > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

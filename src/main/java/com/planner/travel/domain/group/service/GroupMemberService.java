@@ -10,6 +10,7 @@ import com.planner.travel.domain.planner.entity.Planner;
 import com.planner.travel.domain.planner.repository.PlannerRepository;
 import com.planner.travel.domain.user.entity.User;
 import com.planner.travel.domain.user.repository.UserRepository;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,14 +40,19 @@ public class GroupMemberService {
         Planner planner = plannerRepository.findById(plannerId)
                 .orElseThrow(() -> new EntityNotFoundException("Planner not found"));
 
-        GroupMember groupMember = GroupMember.builder()
-                .isHost(false)
-                .isLeaved(false)
-                .user(user)
-                .planner(planner)
-                .build();
+        if (groupMemberQueryService.validateGroupMember(user.getId(), planner.getId())) {
+            GroupMember groupMember = GroupMember.builder()
+                    .isHost(false)
+                    .isLeaved(false)
+                    .user(user)
+                    .planner(planner)
+                    .build();
 
-        groupMemberRepository.save(groupMember);
+            groupMemberRepository.save(groupMember);
+
+        } else {
+            throw new EntityExistsException("이미 존재하는 유저 입니다.");
+        }
     }
 
     @Transactional

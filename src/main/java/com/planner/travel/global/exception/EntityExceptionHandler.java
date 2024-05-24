@@ -1,5 +1,6 @@
 package com.planner.travel.global.exception;
 
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,12 @@ public class EntityExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleMethodArgumentNotValidException() {
         ErrorResponse errorResponse = new ErrorResponse("INVALID_VALUE_03");
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(EntityExistsException.class)
+    public ResponseEntity<?> handleEntityExistsException() {
+        ErrorResponse errorResponse = new ErrorResponse("INVALID_VALUE_04");
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 }
