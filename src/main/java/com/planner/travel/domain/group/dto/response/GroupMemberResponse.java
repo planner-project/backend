@@ -4,7 +4,7 @@ public record GroupMemberResponse(
         Long groupMemberId,
         Long userId,
         String nickname,
-        String userTag,
+        Long userTag,
         String profileImageUrl,
         boolean isHost
 ) { }

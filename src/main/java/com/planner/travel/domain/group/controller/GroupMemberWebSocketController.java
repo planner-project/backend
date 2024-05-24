@@ -23,7 +23,7 @@ public class GroupMemberWebSocketController {
     private final SimpMessagingTemplate simpMessagingTemplate;
     private final TokenAuthenticator tokenAuthenticator;
 
-    @MessageMapping(value = "/planner/{plannerId}/members/{memberId}/create")
+    @MessageMapping(value = "/planner/{plannerId}/members/create")
     public void addGroupMember(@DestinationVariable Long plannerId, @Header("Authorization") String accessToken, @RequestBody GroupMemberAddRequest request) {
         tokenAuthenticator.getAuthenticationUsingToken(accessToken);
         groupMemberService.addGroupMembers(plannerId, request);

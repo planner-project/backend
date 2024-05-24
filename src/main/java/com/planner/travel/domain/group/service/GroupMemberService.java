@@ -45,6 +45,8 @@ public class GroupMemberService {
                 .user(user)
                 .planner(planner)
                 .build();
+
+        groupMemberRepository.save(groupMember);
     }
 
     @Transactional
