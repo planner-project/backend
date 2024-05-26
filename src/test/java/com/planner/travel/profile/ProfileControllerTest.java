@@ -15,8 +15,6 @@ import com.planner.travel.global.jwt.token.TokenType;
 import com.planner.travel.global.util.image.entity.Category;
 import com.planner.travel.global.util.image.entity.Image;
 import com.planner.travel.global.util.image.repository.ImageRepository;
-import com.planner.travel.global.util.image.service.ImageDeleteService;
-import com.planner.travel.global.util.image.service.ImageUpdateService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -40,7 +38,6 @@ import java.time.LocalDateTime;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

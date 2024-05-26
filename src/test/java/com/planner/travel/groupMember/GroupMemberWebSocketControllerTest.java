@@ -3,10 +3,12 @@ package com.planner.travel.groupMember;
 import com.planner.travel.domain.group.dto.request.GroupMemberAddRequest;
 import com.planner.travel.domain.group.dto.request.GroupMemberDeleteRequest;
 import com.planner.travel.domain.group.entity.GroupMember;
-import com.planner.travel.domain.group.query.GroupMemberQueryService;
 import com.planner.travel.domain.group.repository.GroupMemberRepository;
+import com.planner.travel.domain.group.service.GroupMemberService;
+import com.planner.travel.domain.planner.dto.request.PlannerCreateRequest;
 import com.planner.travel.domain.planner.entity.Planner;
 import com.planner.travel.domain.planner.repository.PlannerRepository;
+import com.planner.travel.domain.planner.service.PlannerListService;
 import com.planner.travel.domain.profile.entity.Profile;
 import com.planner.travel.domain.profile.repository.ProfileRepository;
 import com.planner.travel.domain.user.entity.User;
@@ -28,6 +30,7 @@ import org.springframework.messaging.simp.stomp.StompFrameHandler;
 import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.socket.WebSocketHttpHeaders;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 
@@ -56,9 +59,6 @@ public class GroupMemberWebSocketControllerTest {
     private BlockingQueue<Map<String, Object>> blockingQueue;
 
     @Autowired
-    private GroupMemberQueryService groupMemberQueryService;
-
-    @Autowired
     private GroupMemberRepository groupMemberRepository;
 
     @Autowired
@@ -78,6 +78,12 @@ public class GroupMemberWebSocketControllerTest {
 
     @Autowired
     private TokenAuthenticator tokenAuthenticator;
+
+    @Autowired
+    private GroupMemberService groupMemberService;
+
+    @Autowired
+    private PlannerListService plannerListService;
 
     private Long userId1;
 
@@ -151,23 +157,23 @@ public class GroupMemberWebSocketControllerTest {
                 .build();
 
         Planner planner = Planner.builder()
-                .user(user1)
                 .title("테스트 플래너1")
                 .isPrivate(false)
                 .isDeleted(false)
                 .build();
 
-        GroupMember groupMember = GroupMember.builder()
+        GroupMember groupMember1 = GroupMember.builder()
                 .user(user1)
                 .planner(planner)
                 .isLeaved(false)
                 .isHost(true)
                 .build();
 
+
         userRepository.save(user1);
         userRepository.save(user2);
         plannerRepository.save(planner);
-        groupMemberRepository.save(groupMember);
+        groupMemberRepository.save(groupMember1);
 
         userId1 = user1.getId();
         userId2 = user2.getId();
@@ -239,7 +245,6 @@ public class GroupMemberWebSocketControllerTest {
     public void testDeleteGroupMember() throws Exception {
         GroupMember groupMember = GroupMember.builder()
                 .isHost(false)
-                .user(userRepository.findById(userId2).get())
                 .isLeaved(false)
                 .planner(plannerRepository.findById(plannerId).get())
                 .build();

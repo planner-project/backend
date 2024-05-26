@@ -2,8 +2,13 @@ package com.planner.travel.planner;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.planner.travel.domain.group.dto.request.GroupMemberAddRequest;
+import com.planner.travel.domain.group.repository.GroupMemberRepository;
+import com.planner.travel.domain.group.service.GroupMemberService;
 import com.planner.travel.domain.planner.dto.request.PlannerCreateRequest;
+import com.planner.travel.domain.planner.dto.request.PlannerDeleteRequest;
 import com.planner.travel.domain.planner.dto.request.PlannerUpdateRequest;
+import com.planner.travel.domain.planner.dto.response.PlannerListResponse;
 import com.planner.travel.domain.planner.repository.PlannerRepository;
 import com.planner.travel.domain.planner.service.PlannerListService;
 import com.planner.travel.domain.profile.entity.Profile;
@@ -16,7 +21,6 @@ import com.planner.travel.global.jwt.token.TokenType;
 import com.planner.travel.global.util.image.entity.Category;
 import com.planner.travel.global.util.image.entity.Image;
 import com.planner.travel.global.util.image.repository.ImageRepository;
-import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,6 +37,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -61,6 +66,12 @@ public class PlannerControllerTest {
     @Autowired
     private TokenGenerator tokenGenerator;
 
+    @Autowired
+    private GroupMemberRepository groupMemberRepository;
+
+    @Autowired
+    private GroupMemberService groupMemberService;
+
     private Long userId1;
 
     private Long userId2;
@@ -71,14 +82,13 @@ public class PlannerControllerTest {
 
     private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
-
     @BeforeEach
     void setUp() {
+        groupMemberRepository.deleteAll();
         plannerRepository.deleteAll();
         userRepository.deleteAll();
         profileRepository.deleteAll();
         imageRepository.deleteAll();
-
 
         Image image1 = Image.builder()
                 .imageUrl("")
@@ -134,17 +144,14 @@ public class PlannerControllerTest {
                 .profile(profile2)
                 .build();
 
-
         userRepository.save(user1);
         userRepository.save(user2);
-
 
         userId1 = user1.getId();
         userId2 = user2.getId();
 
         validAccessToken1 = "Bearer " + tokenGenerator.generateToken(TokenType.ACCESS, String.valueOf(userId1));
         validAccessToken2 = "Bearer " + tokenGenerator.generateToken(TokenType.ACCESS, String.valueOf(userId2));
-
     }
 
     private void createTestPlanners() {
@@ -217,7 +224,7 @@ public class PlannerControllerTest {
         mockRequest.addHeader("Authorization", validAccessToken2);
 
         System.out.println("============================================================================");
-        System.out.println("Planner size must be 2: " + plannerListService.getAllPlanners(userId1, mockRequest).size());
+        System.out.println("Planner size must be 2: " + plannerListService.getAllPlanners(userId1, true).size());
         System.out.println("============================================================================");
     }
 
@@ -259,11 +266,11 @@ public class PlannerControllerTest {
         mockRequest.addHeader("Authorization", validAccessToken1);
 
         System.out.println("============================================================================");
-        System.out.println("before update: " + plannerListService.getAllPlanners(userId1, mockRequest).get(2));
+        System.out.println("before update: " + plannerListService.getAllPlanners(userId1, true).get(2));
         System.out.println("============================================================================");
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .patch("/api/v1/user/{userId}/planners/{plannerId}", userId1, 1L)
+                        .patch("/api/v1/user/{userId}/planners/{plannerId}", userId1, 4L)
                         .header("Authorization", validAccessToken1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -274,7 +281,7 @@ public class PlannerControllerTest {
                 ));
 
         System.out.println("============================================================================");
-        System.out.println("After update: " + plannerListService.getAllPlanners(userId1, mockRequest).get(2));
+        System.out.println("After update: " + plannerListService.getAllPlanners(userId1, true).get(2));
         System.out.println("============================================================================");
     }
 
@@ -283,25 +290,46 @@ public class PlannerControllerTest {
     public void deletePlanner() throws Exception {
         createTestPlanners();
 
+        PlannerDeleteRequest request = new PlannerDeleteRequest(userId1);
+
         MockHttpServletRequest mockRequest = new MockHttpServletRequest();
         mockRequest.addHeader("Authorization", validAccessToken1);
 
+        List<PlannerListResponse> user1Planners = plannerListService.getAllPlanners(userId1, true);
+        GroupMemberAddRequest groupMemberAddRequest = new GroupMemberAddRequest(userId2);
+
+        for(PlannerListResponse planner : user1Planners) {
+//            System.out.println("============================================================================");
+//            System.out.println("Planner id: " + planner.plannerId());
+//            System.out.println("============================================================================");
+
+            groupMemberService.addGroupMembers(planner.plannerId(), groupMemberAddRequest);
+        }
+
         System.out.println("============================================================================");
-        System.out.println("Planner size before update: " + plannerListService.getAllPlanners(userId1, mockRequest).size());
+        System.out.println("UserId1 planner size before update: " + plannerListService.getAllPlanners(userId1, true).size());
+        System.out.println("UserId2 planner size before update(login): " + plannerListService.getAllPlanners(userId2, true).size());
+        System.out.println("UserId2 planner size before update(notLogin): " + plannerListService.getAllPlanners(userId2, false).size());
         System.out.println("============================================================================");
 
         mockMvc.perform(MockMvcRequestBuilders
                         .delete("/api/v1/user/{userId}/planners/{plannerId}", userId1, 9L)
                         .header("Authorization", validAccessToken1)
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andDo(MockMvcRestDocumentation.document("deletePlanner",
                         ApiDocumentUtil.getDocumentRequest(),
-                        ApiDocumentUtil.getDocumentResponse()
+                        ApiDocumentUtil.getDocumentResponse(),
+                        PayloadDocumentation.requestFields(
+                                PayloadDocumentation.fieldWithPath("userId").description("유저 인덱스")
+                        )
                 ));
 
         System.out.println("============================================================================");
-        System.out.println("Planner size after update: " + plannerListService.getAllPlanners(userId1, mockRequest).size());
+        System.out.println("UserId1 planner size after update: " + plannerListService.getAllPlanners(userId1, true).size());
+        System.out.println("UserId2 planner size before update(login): " + plannerListService.getAllPlanners(userId2, true).size());
+        System.out.println("UserId2 planner size before update(notLogin): " + plannerListService.getAllPlanners(userId2, false).size());
         System.out.println("============================================================================");
     }
 }
