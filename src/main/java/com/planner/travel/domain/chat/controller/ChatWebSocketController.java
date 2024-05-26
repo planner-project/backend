@@ -20,7 +20,7 @@ public class ChatWebSocketController {
     private final SimpMessagingTemplate simpMessagingTemplate;
     private final TokenAuthenticator tokenAuthenticator;
 
-    @MessageMapping(value = "/planner/{plannerId}/members/send")
+    @MessageMapping(value = "/planner/{plannerId}/chat/send")
     public void sendMessage(@DestinationVariable Long plannerId, @Header("Authorization") String accessToken, @RequestBody ChatDto chatDto) {
         tokenAuthenticator.getAuthenticationUsingToken(accessToken);
 

@@ -1,10 +1,13 @@
 package com.planner.travel.domain.planner.entity;
 
+import com.planner.travel.domain.group.entity.GroupMember;
 import com.planner.travel.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -26,11 +29,6 @@ public class Planner {
     private boolean isDeleted;
 
     private boolean isPrivate;
-
-
-    @ManyToOne(fetch= FetchType.LAZY)
-    @JoinColumn(name = "userId")
-    private User user;
 
 
     public void updateTitle(String title) {

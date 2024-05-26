@@ -36,13 +36,13 @@ public class User {
 
     private boolean isWithdrawal;
 
+    @Enumerated(value = EnumType.STRING)
+    private Role role;
+
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profileId")
     private Profile profile;
-
-    @Enumerated(value = EnumType.STRING)
-    private Role role;
 
 
     public void updatePassword(String password) {

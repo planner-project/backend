@@ -555,7 +555,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel1">
 <li><a href="#_그룹_멤버">그룹 멤버</a>
 <ul class="sectlevel2">
-<li><a href="#_1_그룹_멤버_리스트_반환">1. 그룹 멤버 리스트 반환</a></li>
+<li><a href="#_1_그룹_멤버에_속하는지_여부_반환">1. 그룹 멤버에 속하는지 여부 반환</a></li>
+<li><a href="#_2_그룹_멤버_리스트_반환">2. 그룹 멤버 리스트 반환</a></li>
 <li><a href="#_3_그룹_멤버_추가">3. <em>그룹 멤버 추가</em></a></li>
 <li><a href="#_4_그룹_멤버_삭제">4. <em>그룹 멤버 삭제</em></a></li>
 </ul>
@@ -569,7 +570,77 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sectionbody">
 <hr>
 <div class="sect2">
-<h3 id="_1_그룹_멤버_리스트_반환"><a class="link" href="#_1_그룹_멤버_리스트_반환">1. 그룹 멤버 리스트 반환</a></h3>
+<h3 id="_1_그룹_멤버에_속하는지_여부_반환"><a class="link" href="#_1_그룹_멤버에_속하는지_여부_반환">1. 그룹 멤버에 속하는지 여부 반환</a></h3>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Parameters</dt>
+</dl>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">path variable</th>
+<th class="tableblock halign-left valign-top">설명</th>
+<th class="tableblock halign-left valign-top">path variable</th>
+<th class="tableblock halign-left valign-top">설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">userId</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유저 인덱스</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">plannerId</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">플래너 인덱스</p></td>
+</tr>
+</tbody>
+</table>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Request</dt>
+</dl>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-http hljs" data-lang="http">GET /api/v1/users/1/planners/1/group HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzE2MjExNzE3LCJleHAiOjE3MTYyMTI2MTd9.WW7oSRd1h1s-qPSnOiUdlMGc6C2hrDGBANaEEOBrZBM
+Host: localhost:8080</code></pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Response</dt>
+<dd>
+<p>결과 값이 <code>false</code> 인 경우 그룹 멤버와 관련된 메뉴를 숨겨야 합니다.</p>
+</dd>
+</dl>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+
+false</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2_그룹_멤버_리스트_반환"><a class="link" href="#_2_그룹_멤버_리스트_반환">2. 그룹 멤버 리스트 반환</a></h3>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Parameters</dt>
@@ -619,7 +690,19 @@ Host: localhost:8080</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">[
+<pre class="highlightjs highlight"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+
+[
   {
     "groupMemberId": 3,
     "userId": 3,
@@ -826,7 +909,7 @@ Host: localhost:8080</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-24 18:52:24 +0900
+Last updated 2024-05-26 16:15:24 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

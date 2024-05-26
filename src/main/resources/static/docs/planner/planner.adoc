@@ -99,6 +99,10 @@ Response::
 include::{snippets}/updatePlanner/http-response.adoc[]
 
 === 4. 플래너 삭제
+NOTE: _그룹 멤버에 속해있는 유저 중 아무나 플래너를 삭제해도 다른 유저의 플래너 리스트에는 영향을 주지 않습니다._ +
+_만약 1 번과 2 번이 그룹인데, 1 번 유저가 플래너를 삭제했다고 하더라도 유저 2 번의 플래너 리스트에는 플래너가 남아 있습니다._
+
+
 Parameters::
 
 [cols=4*,options=header]
@@ -115,6 +119,8 @@ Parameters::
 |===
 
 Request::
+include::{snippets}/deletePlanner/request-fields.adoc[]
+
 include::{snippets}/deletePlanner/http-request.adoc[]
 
 Response::

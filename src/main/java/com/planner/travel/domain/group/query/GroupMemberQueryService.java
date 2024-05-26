@@ -1,6 +1,7 @@
 package com.planner.travel.domain.group.query;
 
 import com.planner.travel.domain.group.dto.response.GroupMemberResponse;
+import com.planner.travel.domain.group.entity.GroupMember;
 import com.planner.travel.domain.group.entity.QGroupMember;
 import com.planner.travel.domain.profile.entity.QProfile;
 import com.planner.travel.domain.user.entity.QUser;
@@ -48,19 +49,31 @@ public class GroupMemberQueryService {
     }
 
     public boolean validateGroupMember(Long userId, Long plannerId) {
+        QUser qUser = QUser.user;
         QGroupMember qGroupMember = QGroupMember.groupMember;
 
         Long count = queryFactory
                 .select(qGroupMember.count())
                 .from(qGroupMember)
-                .where(qGroupMember.user.id.eq(userId)
+                .join(qGroupMember.user, qUser)
+                .where(qUser.id.eq(userId)
                         .and(qGroupMember.planner.id.eq(plannerId)))
                 .fetchOne();
 
-        if (count != null && count > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return count != null && count > 0;
+    }
+
+    public GroupMember findGroupMemberId(Long userId, Long plannerId) {
+        QGroupMember qGroupMember = QGroupMember.groupMember;
+
+        GroupMember groupMember = queryFactory
+                .select(qGroupMember)
+                .from(qGroupMember)
+                .where(qGroupMember.user.id.eq(userId)
+                        .and(qGroupMember.planner.id.eq(plannerId))
+                        .and(qGroupMember.isLeaved.isFalse()))
+                .fetchOne();
+
+        return groupMember;
     }
 }
