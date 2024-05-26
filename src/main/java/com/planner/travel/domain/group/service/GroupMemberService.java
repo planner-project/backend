@@ -32,6 +32,12 @@ public class GroupMemberService {
         return groupMemberResponses;
     }
 
+    @Transactional(readOnly = true)
+    public boolean isGroupMember(Long userId, Long plannerId) {
+        boolean isGroupMember = groupMemberRepository.findByUserIdAndPlannerId(userId, plannerId);
+        return isGroupMember;
+    }
+
     @Transactional
     public void addGroupMembers(Long plannerId, GroupMemberAddRequest request) {
         User user = userRepository.findById(request.userId())
