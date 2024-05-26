@@ -30,9 +30,7 @@ public class PlanBox {
     public void updatePlanDate(LocalDate planDate) {
         this.planDate = planDate;
     }
-    public void updatePrivate(boolean isPrivate) {
-        this.isPrivate = isPrivate;
-    }
+
     public void Deleted(boolean isDeleted) {this.isDeleted = isDeleted;}
 
 }

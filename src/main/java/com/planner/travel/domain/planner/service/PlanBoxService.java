@@ -12,11 +12,13 @@ import com.planner.travel.domain.planner.repository.PlannerRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -27,10 +29,9 @@ public class PlanBoxService {
     // update 의 경우 userInfoUpdateService 와 유저 엔티티를 참고 하여 작성 해 주세요.
     private final PlannerRepository plannerRepository;
     private final PlanBoxRepository planBoxRepository;
-
     private final PlannerQueryService plannerQueryService;
     private final PlanBoxQueryService planBoxQueryService;
-    private final PlannerListService plannerListService;
+    private final SimpMessagingTemplate simpMessagingTemplate;
 
     @Transactional(readOnly = true)
     public List<PlanBoxResponse> getAllPlanBox(Long plannerId) {
@@ -47,6 +48,7 @@ public class PlanBoxService {
         PlanBox planBox = PlanBox.builder()
                 .planDate(request.planDate())
                 .isPrivate(request.isPrivate())
+                .isDeleted(false)
                 .build();
 
         planBoxRepository.save(planBox);
@@ -54,6 +56,9 @@ public class PlanBoxService {
         List<LocalDate> localDates = plannerQueryService.updateStartDateAndEndDate(plannerId);
         planner.updateStartDate(localDates.get(0));
         planner.updateStartDate(localDates.get(1));
+
+        // 플랜박스 생성 후 전체 플랜박스 리스트를 다시 보냄
+        sendPlanBoxesToClient(plannerId);
     }
 
     @Transactional
@@ -68,7 +73,6 @@ public class PlanBoxService {
 
         if (request.planDate() != null) {
             planBox.updatePlanDate(request.planDate());
-            planBox.updatePrivate(request.isPrivate());
         }
 
         planBoxRepository.save(planBox);
@@ -93,5 +97,12 @@ public class PlanBoxService {
         planBoxRepository.save(planBox);
 
         return planBoxQueryService.findPlanBoxesByPlannerId(planBoxId);
+    }
+
+    private void sendPlanBoxesToClient(Long plannerId) {
+        List<PlanBoxResponse> planBoxResponses = planBoxQueryService.findPlanBoxesByPlannerId(plannerId);
+        simpMessagingTemplate.convertAndSend("/sub/planner/" + plannerId,
+                Map.of("type", "planBox", "message", planBoxResponses)
+        );
     }
 }
