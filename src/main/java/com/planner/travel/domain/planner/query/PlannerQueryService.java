@@ -28,21 +28,22 @@ public class PlannerQueryService {
     }
 
     public List<PlannerListResponse> findMyPlannersByUserId(Long userId) {
+        QUser qUser = QUser.user;
         QGroupMember qGroupMember = QGroupMember.groupMember;
         QPlanner qPlanner = QPlanner.planner;
 
         List<Planner> planners = queryFactory
                 .select(qPlanner)
                 .from(qGroupMember)
+                .join(qGroupMember.user, qUser)
                 .join(qGroupMember.planner, qPlanner)
                 .where(qGroupMember.user.id.eq(userId)
-                        .and(qPlanner.isDeleted.isFalse())
                         .and(qGroupMember.isLeaved.isFalse())
                 )
                 .orderBy(qPlanner.id.desc())
                 .fetch();
 
-        List<PlannerListResponse> plannerListResponses = planners.stream()
+        return planners.stream()
                 .map(planner -> new PlannerListResponse(
                         planner.getId(),
                         planner.getTitle(),
@@ -51,25 +52,26 @@ public class PlannerQueryService {
                         planner.isPrivate()
                 ))
                 .collect(Collectors.toList());
-
-        return plannerListResponses;
     }
 
     public List<PlannerListResponse> findPlannersByUserId(Long userId) {
         QUser qUser = QUser.user;
+        QGroupMember qGroupMember = QGroupMember.groupMember;
         QPlanner qPlanner = QPlanner.planner;
 
         List<Planner> planners = queryFactory
-                .selectFrom(qPlanner)
-                .join(qPlanner.user, qUser)
-                .where(qPlanner.user.id.eq(userId)
-                        .and(qPlanner.isDeleted.isFalse())
+                .select(qPlanner)
+                .from(qGroupMember)
+                .join(qGroupMember.user, qUser)
+                .join(qGroupMember.planner, qPlanner)
+                .where(qGroupMember.user.id.eq(userId)
                         .and(qPlanner.isPrivate.isFalse())
+                        .and(qGroupMember.isLeaved.isFalse())
                 )
                 .orderBy(qPlanner.id.desc())
                 .fetch();
 
-        List<PlannerListResponse> plannerListResponses = planners.stream()
+        return planners.stream()
                 .map(planner -> new PlannerListResponse(
                         planner.getId(),
                         planner.getTitle(),
@@ -78,10 +80,7 @@ public class PlannerQueryService {
                         planner.isPrivate()
                 ))
                 .collect(Collectors.toList());
-
-        return plannerListResponses;
     }
-
 
     public PlannerResponse findPlannerById(Long plannerId) {
         QPlanner qPlanner = QPlanner.planner;
@@ -93,7 +92,7 @@ public class PlannerQueryService {
                 )
                 .fetchOne();
 
-        PlannerResponse plannerResponse = new PlannerResponse(
+        return new PlannerResponse(
                 planner.getId(),
                 planner.getTitle(),
                 planner.getStartDate(),
@@ -101,10 +100,7 @@ public class PlannerQueryService {
                 planner.isPrivate(),
                 planBoxQueryService.findPlanBoxesByPlannerId(planner.getId())
         );
-
-        return plannerResponse;
     }
-
 
     public List<LocalDate> updateStartDateAndEndDate(Long plannerId) {
         QPlanner qPlanner = QPlanner.planner;
@@ -113,14 +109,12 @@ public class PlannerQueryService {
         LocalDate minDate = queryFactory
                 .select(qPlanBox.planDate.min())
                 .from(qPlanBox)
-                .join(qPlanBox.planner, qPlanner)
                 .where(qPlanBox.planner.id.eq(plannerId))
                 .fetchOne();
 
         LocalDate maxDate = queryFactory
                 .select(qPlanBox.planDate.max())
                 .from(qPlanBox)
-                .join(qPlanBox.planner, qPlanner)
                 .where(qPlanBox.planner.id.eq(plannerId))
                 .fetchOne();
 

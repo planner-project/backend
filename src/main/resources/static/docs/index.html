@@ -1061,7 +1061,7 @@ Content-Length: 87
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /api/v1/users HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzE2Mzc4NTY0LCJleHAiOjE3MTYzNzk0NjR9.hFWFE9YjSJFS34ViQJ3ynQJFctTs2oqzcR0H3cOzbts
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzE2NzI2ODc1LCJleHAiOjE3MTY3Mjc3NzV9.2ybGdVlE4fZEILZ8pdYtKSpBIE97tvOuzV99bbOqvEo
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1132,14 +1132,104 @@ X-Frame-Options: DENY</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_3_실시간_채팅"><a class="link" href="#_3_실시간_채팅">3. <em>실시간 채팅</em></a></h3>
-
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<em>실시간 채팅의 경우 계획을 짤 때 가볍게 사용하는 기능입니다.</em><br>
+<em>때문에 이전 대화 기록을 불러오기를 위한 대화 저장 기능이 없습니다.</em><br>
+<em>보안 이슈 또한 고려해서 내린 결정입니다. 참고해주세요!</em>
+</td>
+</tr>
+</table>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Request</dt>
+<dt class="hdlist1">Parameters</dt>
+</dl>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">path variable</th>
+<th class="tableblock halign-left valign-top">설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">plannerId</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">플래너 인덱스</p></td>
+</tr>
+</tbody>
+</table>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">PUBLISH</dt>
+</dl>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">/pub/planner/{plannerId}/chat/send</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Request Body 에 아래와 같이 넣어줍니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+  "userId": 4,
+  "nickname": "시은",
+  "profileImgUrl": "",
+  "message": "안녀엉"
+}</code></pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">SUBSCRIBE</dt>
+</dl>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">/sub/planner/{plannerId}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>발행 주소에 제대로 값을 보내면 구독 주소에서 보낸 내용을 그대로 반환합니다.<br>
+실시간으로 많은 데이터가 섞여 들어오니, <code>type</code> 을 기준으로 분류해주세요.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">[
+  {
+    "type": "chat",
+    "message":
+      {
+        "userId": 4,
+        "nickname": "시은",
+        "profileImgUrl": "",
+        "message": "안녀엉"
+      }
+  }
+]</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-24 18:54:31 +0900
+Last updated 2024-05-26 21:41:12 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

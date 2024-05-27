@@ -209,3 +209,55 @@ NOTE: _기울인 글꼴로 작성된 기능은 **웹소켓** 을 사용하는 �
 - _그룹 멤버 삭제_
 
 === 3. _실시간 채팅_
+NOTE: _실시간 채팅의 경우 계획을 짤 때 가볍게 사용하는 기능입니다._ +
+_때문에 이전 대화 기록을 불러오기를 위한 대화 저장 기능이 없습니다._ +
+_보안 이슈 또한 고려해서 내린 결정입니다. 참고해주세요!_
+
+Request::
+Parameters::
+
+[cols=2*,options=header]
+|===
+|path variable
+|설명
+
+|plannerId
+|플래너 인덱스
+|===
+
+PUBLISH::
+```
+/pub/planner/{plannerId}/chat/send
+```
+Request Body 에 아래와 같이 넣어줍니다.
+```json
+{
+  "userId": 4,
+  "nickname": "시은",
+  "profileImgUrl": "",
+  "message": "안녀엉"
+}
+```
+
+SUBSCRIBE::
+```
+/sub/planner/{plannerId}
+```
+발행 주소에 제대로 값을 보내면 구독 주소에서 보낸 내용을 그대로 반환합니다. +
+실시간으로 많은 데이터가 섞여 들어오니, `type` 을 기준으로 분류해주세요.
+```json
+[
+  {
+    "type": "chat",
+    "message":
+      {
+        "userId": 4,
+        "nickname": "시은",
+        "profileImgUrl": "",
+        "message": "안녀엉"
+      }
+  }
+]
+
+```
+

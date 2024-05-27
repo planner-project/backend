@@ -1,14 +1,11 @@
-package com.planner.travel.groupMember;
+package com.planner.travel.chat;
 
-import com.planner.travel.domain.group.dto.request.GroupMemberAddRequest;
-import com.planner.travel.domain.group.dto.request.GroupMemberDeleteRequest;
+import com.planner.travel.domain.chat.dto.ChatDto;
 import com.planner.travel.domain.group.entity.GroupMember;
 import com.planner.travel.domain.group.repository.GroupMemberRepository;
 import com.planner.travel.domain.group.service.GroupMemberService;
-import com.planner.travel.domain.planner.dto.request.PlannerCreateRequest;
 import com.planner.travel.domain.planner.entity.Planner;
 import com.planner.travel.domain.planner.repository.PlannerRepository;
-import com.planner.travel.domain.planner.service.PlannerListService;
 import com.planner.travel.domain.profile.entity.Profile;
 import com.planner.travel.domain.profile.repository.ProfileRepository;
 import com.planner.travel.domain.user.entity.User;
@@ -30,7 +27,6 @@ import org.springframework.messaging.simp.stomp.StompFrameHandler;
 import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.socket.WebSocketHttpHeaders;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 
@@ -46,7 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class GroupMemberWebSocketControllerTest {
+public class ChatWebSocketControllerTest {
 
     @LocalServerPort
     private int port;
@@ -54,7 +50,8 @@ public class GroupMemberWebSocketControllerTest {
     @Autowired
     private WebSocketStompClient webSocketStompClient;
 
-    private StompSession stompSession;
+    private StompSession stompSession1;
+    private StompSession stompSession2;
 
     private BlockingQueue<Map<String, Object>> blockingQueue;
 
@@ -81,9 +78,6 @@ public class GroupMemberWebSocketControllerTest {
 
     @Autowired
     private GroupMemberService groupMemberService;
-
-    @Autowired
-    private PlannerListService plannerListService;
 
     private Long userId1;
 
@@ -169,11 +163,18 @@ public class GroupMemberWebSocketControllerTest {
                 .isHost(true)
                 .build();
 
+        GroupMember groupMember2 = GroupMember.builder()
+                .user(user2)
+                .planner(planner)
+                .isLeaved(false)
+                .isHost(true)
+                .build();
 
         userRepository.save(user1);
         userRepository.save(user2);
         plannerRepository.save(planner);
         groupMemberRepository.save(groupMember1);
+        groupMemberRepository.save(groupMember2);
 
         userId1 = user1.getId();
         userId2 = user2.getId();
@@ -192,23 +193,52 @@ public class GroupMemberWebSocketControllerTest {
 
         String url = "ws://localhost:" + port + "/ws";
 
-        WebSocketHttpHeaders handshakeHeaders = new WebSocketHttpHeaders();
-        handshakeHeaders.add("Authorization", validAccessToken1);
+        WebSocketHttpHeaders handshakeHeaders1 = new WebSocketHttpHeaders();
+        handshakeHeaders1.add("Authorization", validAccessToken1);
 
-        StompHeaders connectHeaders = new StompHeaders();
-        connectHeaders.add("Authorization", validAccessToken1);
+        StompHeaders connectHeaders1 = new StompHeaders();
+        connectHeaders1.add("Authorization", validAccessToken1);
+
+        WebSocketHttpHeaders handshakeHeaders2 = new WebSocketHttpHeaders();
+        handshakeHeaders2.add("Authorization", validAccessToken2);
+
+        StompHeaders connectHeaders2 = new StompHeaders();
+        connectHeaders2.add("Authorization", validAccessToken2);
 
         System.out.println("============================================================================");
         System.out.println("userId: " + userId1);
         System.out.println("validAccessToken1: " + validAccessToken1);
-        System.out.println("Connecting to WebSocket with headers: " + connectHeaders);
+        System.out.println("Connecting to WebSocket with headers: " + connectHeaders1);
+        System.out.println("============================================================================");
+        System.out.println("userId: " + userId2);
+        System.out.println("validAccessToken1: " + validAccessToken2);
+        System.out.println("Connecting to WebSocket with headers: " + connectHeaders2);
         System.out.println("============================================================================");
 
-        stompSession = webSocketStompClient
-                .connect(url, handshakeHeaders, connectHeaders, new StompSessionHandlerAdapter() {})
+        stompSession1 = webSocketStompClient
+                .connect(url, handshakeHeaders1, connectHeaders1, new StompSessionHandlerAdapter() {})
                 .get(1, TimeUnit.SECONDS);
 
-        stompSession.subscribe("/sub/planner/" + plannerId, new StompFrameHandler() {
+        stompSession2 = webSocketStompClient
+                .connect(url, handshakeHeaders2, connectHeaders2, new StompSessionHandlerAdapter() {})
+                .get(1, TimeUnit.SECONDS);
+
+        stompSession1.subscribe("/sub/planner/" + plannerId, new StompFrameHandler() {
+            @Override
+            public Type getPayloadType(StompHeaders headers) {
+                return Map.class;
+            }
+
+            @Override
+            public void handleFrame(StompHeaders headers, Object payload) {
+                System.out.println("============================================================================");
+                blockingQueue.add((Map<String, Object>) payload);
+                System.out.println(blockingQueue.toString());
+                System.out.println("============================================================================");
+            }
+        });
+
+        stompSession2.subscribe("/sub/planner/" + plannerId, new StompFrameHandler() {
             @Override
             public Type getPayloadType(StompHeaders headers) {
                 return Map.class;
@@ -225,42 +255,36 @@ public class GroupMemberWebSocketControllerTest {
     }
 
     @Test
-    @DisplayName("그룹 멤버 추가")
-    public void testAddGroupMember() throws Exception {
-        GroupMemberAddRequest addRequest = new GroupMemberAddRequest(userId2);
+    @DisplayName("실시간 채팅")
+    public void testChatting() throws Exception {
+        User user1 = userRepository.findById(userId1).get();
+        User user2 = userRepository.findById(userId2).get();
 
-        StompHeaders headers = new StompHeaders();
-        headers.setDestination("/pub/planner/" + plannerId + "/members/create");
-        headers.add("Authorization", validAccessToken1);
+        // 유저 1 이 보냄
+        ChatDto chatDto1 = new ChatDto(user1.getId(), user1.getNickname(), "", "안녕 난 유저 1 이야.");
 
-        stompSession.send(headers, addRequest);
+        StompHeaders headers1 = new StompHeaders();
+        headers1.setDestination("/pub/planner/" + plannerId + "/chat/send");
+        headers1.add("Authorization", validAccessToken1);
 
-        Map<String, Object> response = blockingQueue.poll(5, TimeUnit.SECONDS);
-        assertNotNull(response);
-        assertEquals("add-group-member", response.get("type"));
-    }
+        stompSession1.send(headers1, chatDto1);
 
-    @Test
-    @DisplayName("그룹 멤버 삭제")
-    public void testDeleteGroupMember() throws Exception {
-        GroupMember groupMember = GroupMember.builder()
-                .isHost(false)
-                .isLeaved(false)
-                .planner(plannerRepository.findById(plannerId).get())
-                .build();
+        Map<String, Object> response1 = blockingQueue.poll(5, TimeUnit.SECONDS);
+        assertNotNull(response1);
+        assertEquals("chat", response1.get("type"));
 
-        groupMemberRepository.save(groupMember);
+        // 유저 2 가 보냄
+        ChatDto chatDto2 = new ChatDto(user2.getId(), user2.getNickname(), "", "반가웡! 난 유저 2 야.");
 
-        GroupMemberDeleteRequest deleteRequest = new GroupMemberDeleteRequest(groupMember.getId());
+        StompHeaders headers2 = new StompHeaders();
+        headers2.setDestination("/pub/planner/" + plannerId + "/chat/send");
+        headers2.add("Authorization", validAccessToken2);
 
-        StompHeaders headers = new StompHeaders();
-        headers.setDestination("/pub/planner/" + plannerId + "/members/" + groupMember.getId() + "/delete");
-        headers.add("Authorization", validAccessToken1);
+        stompSession2.send(headers2, chatDto2);
 
-        stompSession.send(headers, deleteRequest);
+        Map<String, Object> response2 = blockingQueue.poll(5, TimeUnit.SECONDS);
+        assertNotNull(response2);
+        assertEquals("chat", response2.get("type"));
 
-        Map<String, Object> response = blockingQueue.poll(5, TimeUnit.SECONDS);
-        assertNotNull(response);
-        assertEquals("delete-group-member", response.get("type"));
     }
 }

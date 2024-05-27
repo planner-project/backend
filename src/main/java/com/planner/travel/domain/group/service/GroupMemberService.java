@@ -29,7 +29,15 @@ public class GroupMemberService {
     @Transactional(readOnly = true)
     public List<GroupMemberResponse> getAllGroupMembers(Long plannerId) {
         List<GroupMemberResponse> groupMemberResponses = groupMemberQueryService.findGroupMembersByPlannerId(plannerId);
+
         return groupMemberResponses;
+    }
+
+    @Transactional(readOnly = true)
+    public boolean isGroupMember(Long userId, Long plannerId) {
+        boolean isGroupMember = groupMemberQueryService.validateGroupMember(userId, plannerId);
+
+        return isGroupMember;
     }
 
     @Transactional
@@ -58,7 +66,7 @@ public class GroupMemberService {
     @Transactional
     public void deleteGroupMembers(Long plannerId, GroupMemberDeleteRequest request) {
         GroupMember groupMember = groupMemberRepository.findById(request.groupMemberId())
-                .orElseThrow(() -> new EntityNotFoundException("User Not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Group member not found"));
 
         groupMember.deleteGroupMember(true);
     }

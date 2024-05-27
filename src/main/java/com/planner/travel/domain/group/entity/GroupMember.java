@@ -24,16 +24,20 @@ public class GroupMember {
     private boolean isLeaved;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId")
-    private User user;
-
     @ManyToOne(fetch= FetchType.LAZY)
     @JoinColumn(name = "plannerId")
     private Planner planner;
 
+    @ManyToOne(fetch= FetchType.LAZY)
+    @JoinColumn(name = "userId")
+    private User user;
+
 
     public void deleteGroupMember(boolean isLeaved) {
         this.isLeaved = isLeaved;
+    }
+
+    public void updatePlanner(Planner planner) {
+        this.planner = planner;
     }
 }
