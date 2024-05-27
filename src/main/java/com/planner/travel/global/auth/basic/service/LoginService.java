@@ -1,13 +1,12 @@
-package com.planner.travel.domain.user.service;
+package com.planner.travel.global.auth.basic.service;
 
-import com.planner.travel.domain.user.dto.request.LoginRequest;
+import com.planner.travel.global.auth.basic.dto.request.LoginRequest;
 import com.planner.travel.domain.user.entity.User;
 import com.planner.travel.domain.user.repository.UserRepository;
 import com.planner.travel.global.jwt.token.TokenGenerator;
 import com.planner.travel.global.jwt.token.TokenType;
 import com.planner.travel.global.util.CookieUtil;
 import com.planner.travel.global.util.RedisUtil;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,7 +24,7 @@ public class LoginService {
     private final UserRepository userRepository;
 
     public void login(LoginRequest loginRequest, HttpServletResponse response) {
-        User user = userRepository.findByEmail(loginRequest.email())
+        User user = userRepository.findByEmailAndProvider(loginRequest.email(), "basic")
                 .orElseThrow(() -> new UsernameNotFoundException("AUTH_01"));
 
         if (!user.isWithdrawal()) {

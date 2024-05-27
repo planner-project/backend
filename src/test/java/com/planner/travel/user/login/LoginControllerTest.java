@@ -1,10 +1,10 @@
 package com.planner.travel.user.login;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.planner.travel.domain.user.controller.UserController;
-import com.planner.travel.domain.user.dto.request.LoginRequest;
-import com.planner.travel.domain.user.service.LoginService;
-import com.planner.travel.domain.user.service.SignupService;
+import com.planner.travel.global.auth.basic.controller.BasicAuthController;
+import com.planner.travel.global.auth.basic.dto.request.LoginRequest;
+import com.planner.travel.global.auth.basic.service.LoginService;
+import com.planner.travel.global.auth.basic.service.SignupService;
 import com.planner.travel.global.ApiDocumentUtil;
 import com.planner.travel.global.jwt.token.TokenGenerator;
 import com.planner.travel.global.jwt.token.TokenType;
@@ -34,7 +34,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(UserController.class)
+@WebMvcTest(BasicAuthController.class)
 @AutoConfigureRestDocs
 @WithMockUser(username="wldsmtldsm65@gmail.com", roles={"USER"})
 public class LoginControllerTest {
