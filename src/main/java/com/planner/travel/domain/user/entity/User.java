@@ -39,6 +39,8 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
+    private String provider;
+
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profileId")
