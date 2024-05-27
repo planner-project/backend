@@ -1,5 +1,7 @@
 package com.planner.travel.global.security;
 
+import com.planner.travel.global.auth.oauth.handler.OAuth2AuthenticationSuccessHandler;
+import com.planner.travel.global.auth.oauth.service.CustomOAuth2UserService;
 import com.planner.travel.global.jwt.JWTAuthenticationFilter;
 import com.planner.travel.global.jwt.token.TokenAuthenticator;
 import com.planner.travel.global.jwt.token.TokenExtractor;
@@ -32,6 +34,8 @@ public class SecurityConfiguration {
     private final TokenValidator tokenValidator;
     private final TokenAuthenticator tokenAuthenticator;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -43,8 +47,11 @@ public class SecurityConfiguration {
                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                 .requestMatchers("/api/v1/auth/signup").permitAll()
                                 .requestMatchers("/api/v1/auth/login").permitAll()
+                                .requestMatchers("/oauth/**").permitAll()
                                 .requestMatchers("/api/v1/auth/token/**").permitAll()
                                 .requestMatchers("/docs/**").permitAll()
+                                .requestMatchers("/favicon.ico").permitAll()
+                                .requestMatchers("/error").permitAll()
                                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                                 .anyRequest().authenticated()
                 )
@@ -60,9 +67,22 @@ public class SecurityConfiguration {
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(customAuthenticationFilter(), JWTAuthenticationFilter.class);
 
+        httpSecurity
+                .oauth2Login(oauth2 -> oauth2
+                        .authorizationEndpoint(authorization -> authorization
+                                .baseUri("/oauth/authorize")
+                        )
+                        .redirectionEndpoint(redirection -> redirection
+                                .baseUri("/oauth/callback")
+                        )
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOAuth2UserService)
+                        )
+                        .successHandler(oAuth2AuthenticationSuccessHandler)
+                );
+
         return httpSecurity.build();
     }
-
 
     // CORS 설정
     @Bean
