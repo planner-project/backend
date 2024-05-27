@@ -14,17 +14,17 @@ spring:
 #          starttls:
 #            enable: true
 
-#  security:
-#    oauth2:
-#      client:
-#        registration:
-#          google:
-#            redirect-uri: {localhost ??}
-#            client-id: {client-id}
-#            client-secret: {client-secret}
-#            scope:
-#              - email
-#              - profile
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            redirect-uri: ${GOOGLE_REDIRECT_URL}
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope:
+              - email
+              - profile
 
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
