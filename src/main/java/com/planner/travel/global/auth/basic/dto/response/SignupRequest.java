@@ -1,4 +1,4 @@
-package com.planner.travel.domain.user.dto.response;
+package com.planner.travel.global.auth.basic.dto.response;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;

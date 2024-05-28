@@ -1,10 +1,10 @@
 package com.planner.travel.user.login;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.planner.travel.domain.user.dto.request.LoginRequest;
+import com.planner.travel.global.auth.basic.dto.request.LoginRequest;
 import com.planner.travel.domain.user.entity.User;
 import com.planner.travel.domain.user.repository.UserRepository;
-import com.planner.travel.domain.user.service.LoginService;
+import com.planner.travel.global.auth.basic.service.LoginService;
 import com.planner.travel.global.ApiDocumentUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -52,6 +52,7 @@ public class LoginAuthenticationTest {
                 .isWithdrawal(false)
                 .birthday(LocalDate.parse("1996-11-20"))
                 .signupDate(LocalDateTime.now())
+                .provider("basic")
                 .userTag(1234L)
                 .build();
 

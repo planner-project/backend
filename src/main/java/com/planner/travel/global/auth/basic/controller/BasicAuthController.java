@@ -1,9 +1,9 @@
-package com.planner.travel.domain.user.controller;
+package com.planner.travel.global.auth.basic.controller;
 
-import com.planner.travel.domain.user.dto.request.LoginRequest;
-import com.planner.travel.domain.user.dto.response.SignupRequest;
-import com.planner.travel.domain.user.service.LoginService;
-import com.planner.travel.domain.user.service.SignupService;
+import com.planner.travel.global.auth.basic.dto.request.LoginRequest;
+import com.planner.travel.global.auth.basic.dto.response.SignupRequest;
+import com.planner.travel.global.auth.basic.service.LoginService;
+import com.planner.travel.global.auth.basic.service.SignupService;
 import com.planner.travel.global.util.CookieUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/api/v1/auth")
 @RequiredArgsConstructor
-public class UserController {
+public class BasicAuthController {
     private final SignupService signupService;
     private final LoginService loginService;
     private final CookieUtil cookieUtil;

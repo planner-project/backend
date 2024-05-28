@@ -588,7 +588,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_플래너_기능_planner">플래너 기능 (Planner)</a>
 <ul class="sectlevel2">
 <li><a href="#_1_플래너_기능">1. 플래너 기능</a></li>
-<li><a href="#_2_그룹_멤버_기능">2. 그룹 멤버 기능</a></li>
+<li><a href="#_2_그룹_기능">2. 그룹 기능</a></li>
 <li><a href="#_3_실시간_채팅">3. <em>실시간 채팅</em></a></li>
 </ul>
 </li>
@@ -605,7 +605,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>ver. 0.0.0</p>
 </li>
 <li>
-<p>Last update 24.05.02</p>
+<p>Last update 24.05.28</p>
 </li>
 </ul>
 </div>
@@ -881,38 +881,17 @@ Content-Length: 87
 <hr>
 <div class="sect2">
 <h3 id="_1_회원_가입"><a class="link" href="#_1_회원_가입"><a href="user/signup.html">1. 회원 가입</a></a></h3>
-<div class="ulist">
-<ul>
-<li>
-<p>회원 가입</p>
-</li>
-<li>
-<p>이미 존재 하는 이메일로 회원가입 요청</p>
-</li>
-<li>
-<p>유효하지 않은 이메일로 회원가입 요청</p>
-</li>
-<li>
-<p>유효하지 않은 비밀번호로 회원가입 요청</p>
-</li>
-<li>
-<p>유효하지 않은 닉네임으로 회원가입 요청</p>
-</li>
-</ul>
-</div>
+
 </div>
 <div class="sect2">
 <h3 id="_2_로그인"><a class="link" href="#_2_로그인"><a href="user/login.html">2. 로그인</a></a></h3>
 <div class="ulist">
 <ul>
 <li>
-<p>로그인 요청/응답</p>
+<p>일반 로그인</p>
 </li>
 <li>
-<p>존재 하지 않는 이메일로 로그인 요청</p>
-</li>
-<li>
-<p>로그인 시 이메일은 맞지만 비밀번호가 틀린 경우</p>
+<p>소셜 로그인</p>
 </li>
 </ul>
 </div>
@@ -988,6 +967,16 @@ Host: localhost:8080</code></pre>
 <td class="tableblock halign-left valign-top"><p class="tableblock">유저 태그</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>birthday</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유저 생년월일</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>profileImgUrl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">프로필 이미지 url</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>isBirthday</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">유저 생일 여부</p></td>
@@ -1007,12 +996,14 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 87
+Content-Length: 140
 
 {
   "userId" : 1,
   "nickname" : "시은",
   "userTag" : 1234,
+  "birthday" : "1996-11-20",
+  "profileImgUrl" : "",
   "isBirthday" : false
 }</code></pre>
 </div>
@@ -1061,7 +1052,7 @@ Content-Length: 87
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /api/v1/users HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzE2NzI2ODc1LCJleHAiOjE3MTY3Mjc3NzV9.2ybGdVlE4fZEILZ8pdYtKSpBIE97tvOuzV99bbOqvEo
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzE2ODc0NTE5LCJleHAiOjE3MTY4NzU0MTl9.QG3hdseOb_thZqy5Oe2quuiA5O1ReFa6NDi4s53tuyQ
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1115,7 +1106,7 @@ X-Frame-Options: DENY</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_2_그룹_멤버_기능"><a class="link" href="#_2_그룹_멤버_기능"><a href="planner/groupMember.html">2. 그룹 멤버 기능</a></a></h3>
+<h3 id="_2_그룹_기능"><a class="link" href="#_2_그룹_기능"><a href="planner/groupMember.html">2. 그룹 기능</a></a></h3>
 <div class="ulist">
 <ul>
 <li>
@@ -1229,7 +1220,7 @@ X-Frame-Options: DENY</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-26 21:41:12 +0900
+Last updated 2024-05-28 15:24:35 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

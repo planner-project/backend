@@ -1,8 +1,8 @@
-package com.planner.travel.domain.user.service;
+package com.planner.travel.global.auth.basic.service;
 
 import com.planner.travel.domain.profile.entity.Profile;
 import com.planner.travel.domain.profile.repository.ProfileRepository;
-import com.planner.travel.domain.user.dto.response.SignupRequest;
+import com.planner.travel.global.auth.basic.dto.response.SignupRequest;
 import com.planner.travel.domain.user.entity.Role;
 import com.planner.travel.domain.user.entity.User;
 import com.planner.travel.domain.user.repository.UserRepository;
@@ -30,7 +30,7 @@ public class SignupService {
 
     @Transactional
     public void signup(SignupRequest signupRequest) {
-        userRepository.findByEmail(signupRequest.getEmail())
+        userRepository.findByEmailAndProvider(signupRequest.getEmail(), "basic")
                 .ifPresent(u -> {
                     throw new IllegalArgumentException();
                 });
@@ -62,6 +62,7 @@ public class SignupService {
 //                .phoneNumber(signupRequest.getPhoneNumber())
                 .isWithdrawal(false)
                 .profile(profile)
+                .provider("basic")
                 .build();
 
         userRepository.save(user);

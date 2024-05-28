@@ -36,7 +36,7 @@ public class GroupMemberQueryService {
                         qUser.id,
                         qUser.nickname,
                         qUser.userTag,
-                        qImage.imageUrl,
+                        qImage.imageUrl.coalesce("").as("imageUrl"),
                         qGroupMember.isHost
                 ))
                 .from(qGroupMember)
