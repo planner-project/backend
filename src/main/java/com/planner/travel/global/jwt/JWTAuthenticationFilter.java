@@ -29,6 +29,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                 requestURI.equals("/api/v1/auth/login") ||
                 requestURI.equals("/api/v1/auth/logout") ||
                 requestURI.startsWith("/api/v1/auth/token") ||
+                requestURI.startsWith("/ws") ||
                 requestURI.startsWith("/docs") ||
                 requestURI.startsWith("/oauth") ||
                 requestURI.startsWith("/api/v1/oauth")

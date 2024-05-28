@@ -32,15 +32,16 @@ public class WebSocketInterceptor implements ChannelInterceptor {
         log.info("Incoming message type: " + accessor.getMessageType());
         log.info("===========================================================================");
 
-        if (SimpMessageType.CONNECT.equals(accessor.getMessageType())
-                || SimpMessageType.MESSAGE.equals(accessor.getMessageType())) {
+        if (SimpMessageType.CONNECT.equals(accessor.getMessageType()) ||
+                SimpMessageType.MESSAGE.equals(accessor.getMessageType()) ||
+                SimpMessageType.SUBSCRIBE.equals(accessor.getMessageType())) {
 
             log.info("===========================================================================");
             log.info("accessor: " + accessor.getMessageType());
             log.info("===========================================================================");
 
             if (accessToken != null && accessToken.startsWith("Bearer ")) {
-//                tokenAuthenticator.getAuthenticationUsingToken(accessToken);
+                tokenAuthenticator.getAuthenticationUsingToken(accessToken);
                 accessor.getSessionAttributes().put("Authorization", accessToken);
 
             } else {
