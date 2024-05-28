@@ -54,20 +54,20 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         cookieUtil.setCookie("refreshToken", refreshToken, response);
         redisUtil.setData(String.valueOf(customOAuth2User.getUser().getId()), refreshToken);
 
-        String frontendRedirectUrl = setRedirectUrl(customOAuth2User, accessToken);
+        String frontendRedirectUrl = setRedirectUrl(customOAuth2User);
 
         response.sendRedirect(frontendRedirectUrl);
     }
 
-    private String setRedirectUrl (CustomOAuth2User customOAuth2User, String accessToken) {
+    private String setRedirectUrl (CustomOAuth2User customOAuth2User) {
         String encodedUserId = URLEncoder.encode(String.valueOf(customOAuth2User.getUser().getId()), StandardCharsets.UTF_8);
         String encodedNickname = URLEncoder.encode(String.valueOf(customOAuth2User.getUser().getNickname()), StandardCharsets.UTF_8);
         String encodedUserTag = URLEncoder.encode(String.valueOf(customOAuth2User.getUser().getUserTag()), StandardCharsets.UTF_8);
-        String encodedIsBirthday = URLEncoder.encode(String.valueOf(false), StandardCharsets.UTF_8);
+        String encodedProfileImgUrl = URLEncoder.encode(String.valueOf(customOAuth2User.getUser().getProfile().getImage().getImageUrl()), StandardCharsets.UTF_8);
 
         String frontendRedirectUrl = String.format(
-                "%s/oauth/callback?accessToken=%s&userId=%s&nickname=%s&userTag=%s&isBirthday=%s",
-                PRE_FRONT_REDIRECT_URL,accessToken,encodedUserId,encodedNickname,encodedUserTag,encodedIsBirthday
+                "%s/oauth/callback?&userId=%s&nickname=%s&userTag=%s&profileImgUrl=%s",
+                PRE_FRONT_REDIRECT_URL,encodedUserId,encodedNickname,encodedUserTag, encodedProfileImgUrl
         );
 
         return frontendRedirectUrl;
