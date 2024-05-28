@@ -1,16 +1,12 @@
 package com.planner.travel.global.auth.oauth.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.planner.travel.domain.user.dto.response.UserInfoResponse;
-import com.planner.travel.domain.user.entity.User;
 import com.planner.travel.domain.user.repository.UserRepository;
 import com.planner.travel.global.auth.oauth.entity.CustomOAuth2User;
-import com.planner.travel.global.auth.oauth.entity.GoogleUserInfo;
 import com.planner.travel.global.jwt.token.TokenGenerator;
 import com.planner.travel.global.jwt.token.TokenType;
 import com.planner.travel.global.util.CookieUtil;
 import com.planner.travel.global.util.RedisUtil;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,7 +19,6 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
 
 @Slf4j
 @Component
