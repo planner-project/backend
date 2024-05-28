@@ -52,6 +52,7 @@ public class LoginAuthenticationTest {
                 .isWithdrawal(false)
                 .birthday(LocalDate.parse("1996-11-20"))
                 .signupDate(LocalDateTime.now())
+                .provider("basic")
                 .userTag(1234L)
                 .build();
 

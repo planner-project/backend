@@ -17,6 +17,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.time.LocalDate;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -42,7 +44,12 @@ public class UserInfoControllerTest {
     public void testGetUserInfo() throws Exception {
         String fakeToken = "Bearer generated.access.token";
         Long expectedUserId = 1L;
-        UserInfoResponse expectedUserInfo = new UserInfoResponse(1L, "시은", 1234L, false);
+        UserInfoResponse expectedUserInfo = new UserInfoResponse(1L,
+                "시은",
+                1234L,
+                LocalDate.parse("1996-11-20"),
+                "",
+                false);
 
         when(tokenExtractor.getAccessTokenFromHeader(any(HttpServletRequest.class))).thenReturn(fakeToken);
         when(subjectExtractor.getUserIdFromToken(fakeToken)).thenReturn(expectedUserId);
@@ -62,6 +69,8 @@ public class UserInfoControllerTest {
                                 PayloadDocumentation.fieldWithPath("userId").description("유저 인덱스"),
                                 PayloadDocumentation.fieldWithPath("nickname").description("유저 닉네임"),
                                 PayloadDocumentation.fieldWithPath("userTag").description("유저 태그"),
+                                PayloadDocumentation.fieldWithPath("birthday").description("유저 생년월일"),
+                                PayloadDocumentation.fieldWithPath("profileImgUrl").description("프로필 이미지 url"),
                                 PayloadDocumentation.fieldWithPath("isBirthday").description("유저 생일 여부")
                         )
                 ));

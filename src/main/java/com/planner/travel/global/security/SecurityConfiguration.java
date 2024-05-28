@@ -47,6 +47,7 @@ public class SecurityConfiguration {
                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                 .requestMatchers("/api/v1/auth/signup").permitAll()
                                 .requestMatchers("/api/v1/auth/login").permitAll()
+                                .requestMatchers("/api/v1/oauth/authorize").permitAll()
                                 .requestMatchers("/oauth/**").permitAll()
                                 .requestMatchers("/api/v1/auth/token/**").permitAll()
                                 .requestMatchers("/docs/**").permitAll()
@@ -70,7 +71,7 @@ public class SecurityConfiguration {
         httpSecurity
                 .oauth2Login(oauth2 -> oauth2
                         .authorizationEndpoint(authorization -> authorization
-                                .baseUri("/oauth/authorize")
+                                .baseUri("api/v1/oauth/authorize")
                         )
                         .redirectionEndpoint(redirection -> redirection
                                 .baseUri("/oauth/callback")

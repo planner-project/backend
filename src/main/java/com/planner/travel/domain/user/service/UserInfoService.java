@@ -23,6 +23,8 @@ public class UserInfoService {
                 user.getId(),
                 user.getNickname(),
                 user.getUserTag(),
+                user.getBirthday(),
+                user.getProfile().getImage().getImageUrl(),
                 isBirthdayToday(user.getBirthday())
         );
     }

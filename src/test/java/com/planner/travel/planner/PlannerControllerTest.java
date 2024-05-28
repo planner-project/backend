@@ -114,6 +114,7 @@ public class PlannerControllerTest {
                 .birthday(LocalDate.parse("1996-11-20"))
                 .signupDate(LocalDateTime.now())
                 .userTag(1234L)
+                .provider("basic")
                 .profile(profile1)
                 .build();
 
@@ -141,6 +142,7 @@ public class PlannerControllerTest {
                 .birthday(LocalDate.parse("1998-04-06"))
                 .signupDate(LocalDateTime.now())
                 .userTag(1234L)
+                .provider("basic")
                 .profile(profile2)
                 .build();
 
@@ -181,7 +183,7 @@ public class PlannerControllerTest {
         createTestPlanners();
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/v1/user/{userId}/planners", userId1)
+                        .get("/api/v1/users/{userId}/planners", userId1)
                         .header("Authorization", validAccessToken1)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -204,7 +206,7 @@ public class PlannerControllerTest {
         createTestPlanners();
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/v1/user/{userId}/planners", userId1)
+                        .get("/api/v1/users/{userId}/planners", userId1)
                         .header("Authorization", validAccessToken2)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -237,7 +239,7 @@ public class PlannerControllerTest {
         );
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/v1/user/{userId}/planners", userId1)
+                        .post("/api/v1/users/{userId}/planners", userId1)
                         .header("Authorization", validAccessToken1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -270,7 +272,7 @@ public class PlannerControllerTest {
         System.out.println("============================================================================");
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .patch("/api/v1/user/{userId}/planners/{plannerId}", userId1, 4L)
+                        .patch("/api/v1/users/{userId}/planners/{plannerId}", userId1, 4L)
                         .header("Authorization", validAccessToken1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -313,7 +315,7 @@ public class PlannerControllerTest {
         System.out.println("============================================================================");
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/api/v1/user/{userId}/planners/{plannerId}", userId1, 9L)
+                        .delete("/api/v1/users/{userId}/planners/{plannerId}", userId1, 9L)
                         .header("Authorization", validAccessToken1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
