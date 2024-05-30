@@ -21,8 +21,9 @@ public class ChatWebSocketController {
     private final TokenAuthenticator tokenAuthenticator;
 
     @MessageMapping(value = "/planner/{plannerId}/chat/send")
-    public void sendMessage(@DestinationVariable Long plannerId, @Header("Authorization") String accessToken, @RequestBody ChatDto chatDto) {
-        tokenAuthenticator.getAuthenticationUsingToken(accessToken);
+    public void sendMessage(
+            @DestinationVariable Long plannerId,
+            @RequestBody ChatDto chatDto) {
 
         simpMessagingTemplate.convertAndSend("/sub/planner/" + plannerId,
                 Map.of("type", "chat", "message", chatDto)

@@ -16,8 +16,9 @@ public class MessageSecurityConfiguration {
     AuthorizationManager<Message<?>> authorizationManager(MessageMatcherDelegatingAuthorizationManager.Builder messages) {
         messages
                 .nullDestMatcher().permitAll()
-                .simpDestMatchers("/pub/**").permitAll()
-                .simpSubscribeDestMatchers("/sub/**").permitAll()
+                .simpTypeMatchers(SimpMessageType.CONNECT).permitAll()
+                .simpTypeMatchers(SimpMessageType.SUBSCRIBE).permitAll()
+                .simpTypeMatchers(SimpMessageType.MESSAGE).permitAll()
                 .anyMessage().denyAll();
 
         return messages.build();

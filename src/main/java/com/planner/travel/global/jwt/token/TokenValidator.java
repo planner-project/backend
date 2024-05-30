@@ -19,14 +19,19 @@ public class TokenValidator {
     @Autowired
     private Key key;
 
-    public void validateAccessToken(String token) throws ExpiredJwtException {
-        if (token != null && token.startsWith("Bearer ")) {
-            token = token.substring(7);
-        }
+    public void validateAccessToken(String token) {
+        try {
+            if (token != null && token.startsWith("Bearer ")) {
+                token = token.substring(7);
+            }
 
-        Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token);
+            Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token);
+
+        } catch (ExpiredJwtException e) {
+            throw e;
+        }
     }
 }
