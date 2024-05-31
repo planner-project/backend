@@ -54,16 +54,16 @@ public class PlanService {
         Plan plan = planRepository.findById(planId)
                 .orElseThrow(() -> new EntityNotFoundException("Plan not found for id: " + planId));
 
-        // Plan 정보 업데이트
-        if (request.isPrivate() != plan.isPrivate()) {
-            plan.updateIsPrivate(request.isPrivate());
-        }]
-        if ()
-        plan.setPrivate(request.isPrivate()); // update~
-        plan.setTitle(request.title());
-        plan.setTime(request.time());
-        plan.setContent(request.content());
-        plan.setAddress(request.address());
+//        // Plan 정보 업데이트
+//        if (request.isPrivate() != plan.isPrivate()) {
+//            plan.updateIsPrivate(request.isPrivate());
+//        }]
+//        if ()
+//        plan.setPrivate(request.isPrivate()); // update~
+//        plan.setTitle(request.title());
+//        plan.setTime(request.time());
+//        plan.setContent(request.content());
+//        plan.setAddress(request.address());
 
         // Plan 엔티티 저장
         planRepository.save(plan);
@@ -74,7 +74,7 @@ public class PlanService {
         Plan plan = planRepository.findById(planId)
                 .orElseThrow(() -> new EntityNotFoundException("Plan not found for id: " + planId));
 
-        plan.setDeleted(true);
+//        plan.setDeleted(true);
 
         // Plan 엔티티 저장
         planRepository.save(plan);

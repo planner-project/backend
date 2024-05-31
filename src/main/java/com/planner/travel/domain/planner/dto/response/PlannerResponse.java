@@ -7,8 +7,8 @@ import java.util.List;
 public record PlannerResponse (
         Long plannerId,
         String title,
-        LocalDate startDate,
-        LocalDate endDate,
+        String startDate,
+        String endDate,
         boolean isPrivate,
 
         List<PlanBoxResponse> planBoxResponses

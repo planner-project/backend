@@ -51,7 +51,7 @@ public class PlanBoxService {
 
         planBoxRepository.save(planBox);
 
-        List<LocalDate> localDates = plannerQueryService.updateStartDateAndEndDate(plannerId);
+        List<String> localDates = plannerQueryService.updateStartDateAndEndDate(plannerId);
         planner.updateStartDate(localDates.get(0));
         planner.updateStartDate(localDates.get(1));
     }
