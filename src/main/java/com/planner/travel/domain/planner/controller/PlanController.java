@@ -11,6 +11,7 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Map;
 @Controller
@@ -21,7 +22,7 @@ public class PlanController {
     private final SimpMessagingTemplate simpMessagingTemplate;
 
     @MessageMapping(value = "/planner/{plannerId}/planBox/{planBoxId}/create") // <- 프론트가 보내는 주소 입니다.
-    public void createDate(@DestinationVariable Long planBoxId, @DestinationVariable Long plannerId, @Header("Authorization") String accessToken, PlanCreateRequest request) {
+    public void createDate(@DestinationVariable Long planBoxId, @DestinationVariable Long plannerId, @RequestBody PlanCreateRequest request) {
         // 서비스를 작성해주세요
         planService.create(request,planBoxId, plannerId);
 
@@ -32,7 +33,7 @@ public class PlanController {
     }
 
     @MessageMapping(value = "/planner/{plannerId}/planBox/{planBoxId}/update") // <- 프론트가 보내는 주소 입니다.
-    public void updateDate( @DestinationVariable Long plannerId, @Header("Authorization") String accessToken, PlanUpdateRequest request) {
+    public void updateDate( @DestinationVariable Long plannerId,  @RequestBody PlanUpdateRequest request) {
         // 서비스를 작성해주세요
         planService.update(request,  plannerId);
 
@@ -43,7 +44,7 @@ public class PlanController {
     }
 
     @MessageMapping(value = "/planner/{plannerId}/planBox/{planBoxId}/delete") // <- 프론트가 보내는 주소 입니다.
-    public void createDate( @DestinationVariable Long plannerId, @Header("Authorization") String accessToken) {
+    public void createDate( @DestinationVariable Long plannerId) {
         // 서비스를 작성해주세요
         planService.delete(plannerId);
 

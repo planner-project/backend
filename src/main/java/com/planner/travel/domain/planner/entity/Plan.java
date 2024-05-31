@@ -3,6 +3,7 @@ package com.planner.travel.domain.planner.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -31,6 +32,15 @@ public class Plan {
     @ManyToOne(fetch= FetchType.LAZY)
     @JoinColumn(name = "plannerBoxId")
     private PlanBox planBox;
+
+    public void updateIsPrivate(boolean isPrivate) {
+        this.isPrivate = isPrivate;
+    }
+    public void updateTitle(String title) {this.title = title;}
+    public void updateTime(LocalDateTime time) {this.time = time;}
+    public void updateContent(String content) {this.content = content;}
+    public void updateAddress(String address) {this.address = address;}
+    public void deleted(boolean isDeleted) {this.isDeleted = isDeleted;}
 
 
 }

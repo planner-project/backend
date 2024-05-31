@@ -58,11 +58,7 @@ public class PlanBoxService {
 
     @Transactional
     public List<PlanBoxResponse> update(PlanBoxUpdateRequest request, Long planBoxId) {
-        /*
-        리퀘스트로 받은 값을 사용하여 플랜박스를 만들어주세요.
-        PlanBoxQueryService 를 사용하여 반환값을 void -> List 형식으로 바꿔주세요.
-        이때 이전처럼 set 을 사용하지 말고 변경해주세요.
-         */
+
         PlanBox planBox = planBoxRepository.findById(planBoxId)
                 .orElseThrow(() -> new EntityNotFoundException("PlanBox not found for id: " + planBoxId));
 
@@ -79,12 +75,7 @@ public class PlanBoxService {
 
     @Transactional
     public List<PlanBoxResponse> delete(Long planBoxId) {
-        /*
-        리퀘스트로 받은 값을 사용하여 플랜박스를 만들어주세요.
-        PlanBoxQueryService 를 사용하여 반환값을 void -> List 형식으로 바꿔주세요.
-        이때 이전처럼 isDeleted 를 True 로 변경해주세요.
-        이때 이전처럼 set 을 사용하지 말고 변경해주세요.
-         */
+
         PlanBox planBox = planBoxRepository.findById(planBoxId)
                 .orElseThrow(() -> new EntityNotFoundException("PlanBox not found for id: " + planBoxId));
 
