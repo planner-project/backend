@@ -4,20 +4,21 @@ import com.planner.travel.domain.user.dto.response.UserInfoResponse;
 import com.planner.travel.domain.user.entity.User;
 import com.planner.travel.domain.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
-
 @Service
-@RequiredArgsConstructor
 public class UserInfoService {
     private final UserRepository userRepository;
 
+    public UserInfoService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     public UserInfoResponse get(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User does not exist"));
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
 
         return new UserInfoResponse(
                 user.getId(),

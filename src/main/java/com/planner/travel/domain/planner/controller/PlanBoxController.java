@@ -1,6 +1,7 @@
 package com.planner.travel.domain.planner.controller;
 
 import com.planner.travel.domain.planner.dto.request.PlanBoxCreateRequest;
+import com.planner.travel.domain.planner.dto.request.PlanBoxUpdateRequest;
 import com.planner.travel.domain.planner.service.PlanBoxService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,7 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.util.Map;
 
@@ -30,7 +32,28 @@ public class PlanBoxController {
 
         // 결과값은 항상 같습니다.
         simpMessagingTemplate.convertAndSend("/sub/planner/" + plannerId,
-                Map.of("type", "planBox", "message", planBoxService.getAllPlanBox(plannerId)) // <- 해당 주소를 구독하는 모든 사람이 CUD 과정을 볼 수 있습니다.
+                Map.of("type", "ceate-planBox", "message", planBoxService.getAllPlanBox(plannerId)) // <- 해당 주소를 구독하는 모든 사람이 CUD 과정을 볼 수 있습니다.
         );
     }
+
+    @MessageMapping(value = "/planner/{plannerId}/update")
+    public void updateDate(@DestinationVariable Long plannerId, @Header("Authorization") String accessToken, PlanBoxUpdateRequest request) {
+        planBoxService.update(request, plannerId);
+
+        simpMessagingTemplate.convertAndSend("/sub/planner/" + plannerId,
+                Map.of("type", "update-planBox", "message", planBoxService.getAllPlanBox(plannerId))
+        );
+    }
+    @MessageMapping(value = "/planner/{plannerId}/delete")
+    public void deleteDate(@DestinationVariable Long plannerId, @Header("Authorization") String accessToken) {
+
+        planBoxService.delete(plannerId);
+
+
+        simpMessagingTemplate.convertAndSend("/sub/planner/" + plannerId,
+                Map.of("type", "delete-planBox", "message", planBoxService.getAllPlanBox(plannerId)) // <- 해당 주소를 구독하는 모든 사람이 CUD 과정을 볼 수 있습니다.
+        );
+    }
+
+
 }
