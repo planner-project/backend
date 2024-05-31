@@ -774,11 +774,11 @@ X-Frame-Options: DENY</code></pre>
 <dl>
 <dt class="hdlist1">HandShake</dt>
 <dd>
-<p>이 단계에서는 아무것도 하지 않아도 됩니다.</p>
+<p><code>Authorization</code> 헤더에 accessToken 을 넣어주어야 합니다.</p>
 </dd>
 <dt class="hdlist1">CONNECT</dt>
 <dd>
-<p><code>Authorization</code> 헤더에 accessToken 을 넣어주어야 합니다.</p>
+<p>이 단계 에서는 아무 것도 하지 않아도 됩니다.</p>
 </dd>
 <dt class="hdlist1">SUBSCRIBE</dt>
 <dd>
@@ -1052,7 +1052,7 @@ Content-Length: 140
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /api/v1/users HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzE2ODc0NTE5LCJleHAiOjE3MTY4NzU0MTl9.QG3hdseOb_thZqy5Oe2quuiA5O1ReFa6NDi4s53tuyQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzE3MTY3NzkzLCJleHAiOjE3MTcxNjg2OTN9.pb_8JBThOhLMo0r-CttbYsthxdiRnW9tjdSkNAiuIoE
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1177,10 +1177,8 @@ X-Frame-Options: DENY</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
-  "userId": 4,
-  "nickname": "시은",
-  "profileImgUrl": "",
-  "message": "안녀엉"
+  "planDate": "1996-11-20",
+  "isPrivate": false
 }</code></pre>
 </div>
 </div>
@@ -1220,7 +1218,7 @@ X-Frame-Options: DENY</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-28 15:24:35 +0900
+Last updated 2024-06-01 00:52:46 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

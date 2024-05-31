@@ -38,13 +38,15 @@ public class PlanQueryService {
                 .selectFrom(qPlan)
                 .join(qPlan.planBox, qPlanBox)
                 .where(qPlanBox.id.eq(planBoxId)
-                        .and(qPlanBox.isDeleted.isFalse())
+                        .and(qPlanBox.isDeleted.isFalse()
+                        .and(qPlan.isDeleted.isFalse()))
                 )
                 .orderBy(qPlan.time.asc())
                 .fetch();
 
         List<PlanResponse> planResponses = plans.stream()
                 .map(plan -> new PlanResponse(
+                        plan.getId(),
                         plan.isPrivate(),
                         plan.getTitle(),
                         plan.getTime(),

@@ -86,10 +86,10 @@ NOTE: _응답시 예외에 대한 내용을 상세 하게 적어서 보낼 시, 
 
 === 3. 웹소켓
 HandShake::
-이 단계에서는 아무것도 하지 않아도 됩니다.
+`Authorization` 헤더에 accessToken 을 넣어주어야 합니다.
 
 CONNECT::
-`Authorization` 헤더에 accessToken 을 넣어주어야 합니다.
+이 단계 에서는 아무 것도 하지 않아도 됩니다.
 
 SUBSCRIBE::
 구독 주소를 명확 하게 작성 해야 합니다. 자세한건 각각의 명세에서 확인해주세요.
@@ -226,10 +226,8 @@ PUBLISH::
 Request Body 에 아래와 같이 넣어줍니다.
 ```json
 {
-  "userId": 4,
-  "nickname": "시은",
-  "profileImgUrl": "",
-  "message": "안녀엉"
+  "planDate": "1996-11-20",
+  "isPrivate": false
 }
 ```
 
@@ -237,8 +235,10 @@ SUBSCRIBE::
 ```
 /sub/planner/{plannerId}
 ```
+
 발행 주소에 제대로 값을 보내면 구독 주소에서 보낸 내용을 그대로 반환합니다. +
 실시간으로 많은 데이터가 섞여 들어오니, `type` 을 기준으로 분류해주세요.
+
 ```json
 [
   {

@@ -566,6 +566,20 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_4_플래너_삭제">4. 플래너 삭제</a></li>
 </ul>
 </li>
+<li><a href="#_플랜_박스">플랜 박스</a>
+<ul class="sectlevel2">
+<li><a href="#_1_플랜_박스_생성">1. 플랜 박스 생성</a></li>
+<li><a href="#_2_플랜_박스_수정">2. 플랜 박스 수정</a></li>
+<li><a href="#_3_플랜_박스_삭제">3. 플랜 박스 삭제</a></li>
+</ul>
+</li>
+<li><a href="#_플랜">플랜</a>
+<ul class="sectlevel2">
+<li><a href="#_1_플랜_생성">1. 플랜 생성</a></li>
+<li><a href="#_2_플랜_수정">2. 플랜 수정</a></li>
+<li><a href="#_3_플랜_삭제">3. 플랜 삭제</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -622,7 +636,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/v1/users/7/planners HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzE2ODc1NzAzLCJleHAiOjE3MTY4NzY2MDN9.nKYZEfW3_wCE6nhIM4qDZRqcTnfgta9mTobgzLIwqMQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzE3MTY3MjgwLCJleHAiOjE3MTcxNjgxODB9.tMLIfexUfJa3e7JfojLxGuYmkQ067sxmdkJRW-o0cCc
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -752,7 +766,7 @@ Content-Length: 376
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/v1/users/3/planners HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0IiwiaWF0IjoxNzE2ODc1NzAzLCJleHAiOjE3MTY4NzY2MDN9.1asRi8Rl8JrCT8Z_IeWsvAGSrU3spxJTsYlZl57NbPw
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0IiwiaWF0IjoxNzE3MTY3MjgwLCJleHAiOjE3MTcxNjgxODB9.3asIXQCXbQZ0J0Ko-CZy4Yh4CYeGvaK8oymFMW0fs4M
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -912,7 +926,7 @@ Content-Length: 250
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/v1/users/9/planners HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5IiwiaWF0IjoxNzE2ODc1NzAzLCJleHAiOjE3MTY4NzY2MDN9.VPHpReyaEq9Z9u4qPzgOU1IKlzDYqjDBT42Q0yBPy44
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5IiwiaWF0IjoxNzE3MTY3MjgwLCJleHAiOjE3MTcxNjgxODB9.vzNxfTXOge433jn2JJCtCeGIn3j4oSJ67RE3WKGH6fU
 Content-Length: 61
 Host: localhost:8080
 
@@ -1023,7 +1037,7 @@ X-Frame-Options: DENY</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /api/v1/users/1/planners/4 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzE2ODc1NzAyLCJleHAiOjE3MTY4NzY2MDJ9.sxV9TXsq7DDPNYpqH2l3pynhgsVfIgxReUbyQYN3kbs
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzE3MTY3Mjc5LCJleHAiOjE3MTcxNjgxNzl9.EQb1JbjUe8jXbpamnIj9yXi8fPM_qPSKeBE-uFO4JCE
 Content-Length: 62
 Host: localhost:8080
 
@@ -1127,7 +1141,7 @@ X-Frame-Options: DENY</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /api/v1/users/5/planners/9 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiaWF0IjoxNzE2ODc1NzAzLCJleHAiOjE3MTY4NzY2MDN9.K4pW0q14IQDhowehsnF8QY6qjNnMxbrm1NDBMCuJtHc
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiaWF0IjoxNzE3MTY3MjgwLCJleHAiOjE3MTcxNjgxODB9.PG7mSqhR6jeoHmeHvBdAXISJDhA_zapKk7PyqP9PoaA
 Content-Length: 18
 Host: localhost:8080
 
@@ -1158,10 +1172,520 @@ X-Frame-Options: DENY</code></pre>
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_플랜_박스"><a class="link" href="#_플랜_박스">플랜 박스</a></h2>
+<div class="sectionbody">
+<hr>
+<div class="sect2">
+<h3 id="_1_플랜_박스_생성"><a class="link" href="#_1_플랜_박스_생성">1. 플랜 박스 생성</a></h3>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Request</dt>
+<dt class="hdlist1">Parameters</dt>
+</dl>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">path variable</th>
+<th class="tableblock halign-left valign-top">설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">plannerId</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">플래너 인덱스</p></td>
+</tr>
+</tbody>
+</table>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">PUBLISH</dt>
+</dl>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">/pub/planner/{plannerId}/create</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Request Body 에 아래와 같이 넣어줍니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+  "planDate": "1996-11-20",
+  "isPrivate": false
+}</code></pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">SUBSCRIBE</dt>
+</dl>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">/sub/planner/{plannerId}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>발행 주소에 제대로 값을 보내면 구독 주소에서 보낸 내용을 그대로 반환합니다.<br>
+실시간으로 많은 데이터가 섞여 들어오니, <code>type</code> 을 기준으로 분류해주세요.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">[
+  {
+    "type": "create-planBox",
+    "message":
+      {
+        "planBoxId": 1,
+        "planDate": "2024-03-08",
+        "isPrivate": false,
+        "planResponses": []
+      }
+  }
+]</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2_플랜_박스_수정"><a class="link" href="#_2_플랜_박스_수정">2. 플랜 박스 수정</a></h3>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Request</dt>
+<dt class="hdlist1">Parameters</dt>
+</dl>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">path variable</th>
+<th class="tableblock halign-left valign-top">설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">plannerId</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">플래너 인덱스</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">planBoxId</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">플랜박스 인덱스</p></td>
+</tr>
+</tbody>
+</table>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">PUBLISH</dt>
+</dl>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">/pub/planner/{plannerId}/update/{planBoxId}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Request Body 에 아래와 같이 넣어줍니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+  "planDate": "1996-11-20",
+  "isPrivate": true
+}</code></pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">SUBSCRIBE</dt>
+</dl>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">/sub/planner/{plannerId}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>발행 주소에 제대로 값을 보내면 구독 주소에서 보낸 내용을 그대로 반환합니다.<br>
+실시간으로 많은 데이터가 섞여 들어오니, <code>type</code> 을 기준으로 분류해주세요.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">[
+  {
+    "type": "update-planBox",
+    "message":
+      [
+        {
+          "planBoxId": 1,
+          "planDate": "2024-03-08",
+          "isPrivate": true,
+          "planResponses": [
+            {
+              "planId": 1,
+              "isPrivate": false,
+              "title": "plan 제목",
+              "time":  "10:20",
+              "content": "plan 내용",
+              "address": "plan 주소"
+            }
+          ]
+        }
+      ]
+  }
+]</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_3_플랜_박스_삭제"><a class="link" href="#_3_플랜_박스_삭제">3. 플랜 박스 삭제</a></h3>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Request</dt>
+<dt class="hdlist1">Parameters</dt>
+</dl>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">path variable</th>
+<th class="tableblock halign-left valign-top">설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">plannerId</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">플래너 인덱스</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">planBoxId</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">플랜박스 인덱스</p></td>
+</tr>
+</tbody>
+</table>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">PUBLISH</dt>
+</dl>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">/pub/planner/{plannerId}/delete/{planBoxId}</code></pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">SUBSCRIBE</dt>
+</dl>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">/sub/planner/{plannerId}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>발행 주소에 제대로 값을 보내면 구독 주소에서 보낸 내용을 그대로 반환합니다.<br>
+실시간으로 많은 데이터가 섞여 들어오니, <code>type</code> 을 기준으로 분류해주세요.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">[
+  {
+    "type": "delete-planBox",
+    "message": []
+  }
+]</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_플랜"><a class="link" href="#_플랜">플랜</a></h2>
+<div class="sectionbody">
+<hr>
+<div class="sect2">
+<h3 id="_1_플랜_생성"><a class="link" href="#_1_플랜_생성">1. 플랜 생성</a></h3>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Request</dt>
+<dt class="hdlist1">Parameters</dt>
+</dl>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">path variable</th>
+<th class="tableblock halign-left valign-top">설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">plannerId</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">플래너 인덱스</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">planBoxId</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">플랜박스 인덱스</p></td>
+</tr>
+</tbody>
+</table>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">PUBLISH</dt>
+</dl>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">/pub/planner/{plannerId}/planBox/{planBoxId}/create</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Request Body 에 아래와 같이 넣어줍니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+    "isPrivate": false,
+    "title": "plan 제목",
+    "time": "10:20",
+    "content": "plan 내용",
+    "address": "plan 주소"
+}</code></pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">SUBSCRIBE</dt>
+</dl>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">/sub/planner/{plannerId}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>발행 주소에 제대로 값을 보내면 구독 주소에서 보낸 내용을 그대로 반환합니다.<br>
+실시간으로 많은 데이터가 섞여 들어오니, <code>type</code> 을 기준으로 분류해주세요.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">[
+  {
+    "type": "create-plan",
+    "message":
+      [
+          {
+            {
+              "planId": 1,
+              "isPrivate": false,
+              "title": "plan 제목",
+              "time": "10:20",
+              "content": "plan 내용",
+              "address": "plan 주소"
+            }
+          }
+      ]
+  }
+]</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2_플랜_수정"><a class="link" href="#_2_플랜_수정">2. 플랜 수정</a></h3>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Request</dt>
+<dt class="hdlist1">Parameters</dt>
+</dl>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">path variable</th>
+<th class="tableblock halign-left valign-top">설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">plannerId</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">플래너 인덱스</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">planBoxId</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">플랜박스 인덱스</p></td>
+</tr>
+</tbody>
+</table>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">PUBLISH</dt>
+</dl>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">/pub/planner/{plannerId}/planBox/{planBoxId}/update/{planId}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Request Body 에 아래와 같이 넣어줍니다.<br></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>이때 바꾸고 싶은 값만 넣어 줍니다.</p>
+</li>
+<li>
+<p>boolean 의 경우 값을 변경 하지 않아도 원래의 값을 넣어 주세요.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+    "planId": 1,
+    "isPrivate": false,
+    "title": null,
+    "time": "12:20",
+    "content": null,
+    "address": null
+}</code></pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">SUBSCRIBE</dt>
+</dl>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">/sub/planner/{plannerId}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>발행 주소에 제대로 값을 보내면 구독 주소에서 보낸 내용을 그대로 반환합니다.<br>
+실시간으로 많은 데이터가 섞여 들어오니, <code>type</code> 을 기준으로 분류해주세요.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">[
+  {
+    "type": "update-plan",
+    "message":
+      [
+          {
+            {
+              "planId": 1,
+              "isPrivate": false,
+              "title": "plan 제목",
+              "time": "12:20",
+              "content": "plan 내용",
+              "address": "plan 주소"
+            }
+          }
+      ]
+  }
+]</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_3_플랜_삭제"><a class="link" href="#_3_플랜_삭제">3. 플랜 삭제</a></h3>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Request</dt>
+<dt class="hdlist1">Parameters</dt>
+</dl>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">path variable</th>
+<th class="tableblock halign-left valign-top">설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">plannerId</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">플래너 인덱스</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">planBoxId</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">플랜박스 인덱스</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">planId</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">플랜 인덱스</p></td>
+</tr>
+</tbody>
+</table>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">PUBLISH</dt>
+</dl>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">/pub/planner/{plannerId}/planBox/{planBoxId}/delete/{planId}</code></pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">SUBSCRIBE</dt>
+</dl>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">/sub/planner/{plannerId}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>발행 주소에 제대로 값을 보내면 구독 주소에서 보낸 내용을 그대로 반환합니다.<br>
+실시간으로 많은 데이터가 섞여 들어오니, <code>type</code> 을 기준으로 분류해주세요.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">[
+  {
+    "type": "delete-plan",
+    "message": []
+  }
+]</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-27 17:12:01 +0900
+Last updated 2024-06-01 01:30:16 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

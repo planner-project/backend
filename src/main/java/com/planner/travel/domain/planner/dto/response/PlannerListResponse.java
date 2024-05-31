@@ -7,8 +7,8 @@ import java.time.LocalDate;
 public record PlannerListResponse(
         Long plannerId,
         String title,
-        LocalDate startDate,
-        LocalDate endDate,
+        String startDate,
+        String endDate,
         boolean isPrivate
 ) {
 }
