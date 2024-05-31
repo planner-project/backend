@@ -47,6 +47,7 @@ public class PlanBoxService {
         PlanBox planBox = PlanBox.builder()
                 .planDate(request.planDate())
                 .isPrivate(request.isPrivate())
+                .planner(planner)
                 .build();
 
         planBoxRepository.save(planBox);
