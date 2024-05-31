@@ -58,8 +58,7 @@ public class PlanBoxService {
     }
 
     @Transactional
-    public List<PlanBoxResponse> update(PlanBoxUpdateRequest request, Long planBoxId) {
-
+    public List<PlanBoxResponse> update(PlanBoxUpdateRequest request,Long planBoxId) {
         PlanBox planBox = planBoxRepository.findById(planBoxId)
                 .orElseThrow(() -> new EntityNotFoundException("PlanBox not found for id: " + planBoxId));
 

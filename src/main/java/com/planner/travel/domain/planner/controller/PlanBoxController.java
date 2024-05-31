@@ -37,9 +37,9 @@ public class PlanBoxController {
         );
     }
 
-    @MessageMapping(value = "/planner/{plannerId}/update")
-    public void updateDate(@DestinationVariable Long plannerId, @RequestBody PlanBoxUpdateRequest request) {
-        planBoxService.update(request, plannerId);
+    @MessageMapping(value = "/planner/{plannerId}/update/{planBoxId}")
+    public void updateDate(@DestinationVariable("plannerId") Long plannerId, @DestinationVariable("planBoxId") Long planBoxId, @RequestBody PlanBoxUpdateRequest request) {
+        planBoxService.update(request, planBoxId);
 
         simpMessagingTemplate.convertAndSend("/sub/planner/" + plannerId,
                 Map.of("type", "update-planBox", "message", planBoxService.getAllPlanBox(plannerId))

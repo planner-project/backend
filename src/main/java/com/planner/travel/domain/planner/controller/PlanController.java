@@ -1,13 +1,11 @@
 package com.planner.travel.domain.planner.controller;
 
-import com.planner.travel.domain.planner.dto.request.PlanBoxCreateRequest;
 import com.planner.travel.domain.planner.dto.request.PlanCreateRequest;
 import com.planner.travel.domain.planner.dto.request.PlanUpdateRequest;
 import com.planner.travel.domain.planner.service.PlanService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
-import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;

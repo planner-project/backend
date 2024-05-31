@@ -34,7 +34,7 @@ public class PlanService {
 
     @Transactional(readOnly = true)
     public void create(PlanCreateRequest request, Long planBoxId, Long plannerId) {
-        PlanBox planBox = planBoxRepository.findById(plannerId)
+        PlanBox planBox = planBoxRepository.findById(planBoxId)
                 .orElseThrow(() -> new EntityNotFoundException("PlanBox not found"));
 
         Plan plan = Plan.builder()
@@ -44,6 +44,7 @@ public class PlanService {
                 .content(request.content())
                 .address(request.address())
                 .isDeleted(false)
+                .planBox(planBox)
                 .build();
 
         planRepository.save(plan);
@@ -55,15 +56,22 @@ public class PlanService {
                 .orElseThrow(() -> new EntityNotFoundException("Plan not found for id: " + planId));
 
 //        // Plan 정보 업데이트
-//        if (request.isPrivate() != plan.isPrivate()) {
-//            plan.updateIsPrivate(request.isPrivate());
-//        }]
-//        if ()
-//        plan.setPrivate(request.isPrivate()); // update~
-//        plan.setTitle(request.title());
-//        plan.setTime(request.time());
-//        plan.setContent(request.content());
-//        plan.setAddress(request.address());
+        if (request.isPrivate() != plan.isPrivate()) {
+            plan.updateIsPrivate(request.isPrivate());
+        }
+        if (request.title().isEmpty()) {
+            plan.updateTitle(request.title());
+        }
+        if (request.time() != plan.getTime()){
+            plan.updateTime(request.time());
+        }
+
+        if (request.content().isEmpty() ) {
+            plan.updateContent(request.content());
+        }
+        if (request.address().isEmpty()) {
+            plan.updateAddress(request.address());
+        }
 
         // Plan 엔티티 저장
         planRepository.save(plan);
@@ -74,7 +82,7 @@ public class PlanService {
         Plan plan = planRepository.findById(planId)
                 .orElseThrow(() -> new EntityNotFoundException("Plan not found for id: " + planId));
 
-//        plan.setDeleted(true);
+        plan.deleted(true);
 
         // Plan 엔티티 저장
         planRepository.save(plan);
