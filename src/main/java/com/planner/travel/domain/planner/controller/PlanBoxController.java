@@ -38,7 +38,7 @@ public class PlanBoxController {
     }
 
     @MessageMapping(value = "/planner/{plannerId}/update")
-    public void updateDate(@DestinationVariable Long plannerId, @Header("Authorization") String accessToken, PlanBoxUpdateRequest request) {
+    public void updateDate(@DestinationVariable Long plannerId, @RequestBody PlanBoxUpdateRequest request) {
         planBoxService.update(request, plannerId);
 
         simpMessagingTemplate.convertAndSend("/sub/planner/" + plannerId,
@@ -46,10 +46,10 @@ public class PlanBoxController {
         );
     }
     @MessageMapping(value = "/planner/{plannerId}/delete")
-    public void deleteDate(@DestinationVariable Long plannerId, @Header("Authorization") String accessToken) {
+    public void deleteDate(@DestinationVariable Long plannerId) {
         planBoxService.delete(plannerId);
 
-        simpMessagingTemplate.convertAndSend("/sub/planner/" + plannerId,
+    simpMessagingTemplate.convertAndSend("/sub/planner/" + plannerId,
                 Map.of("type", "delete-planBox", "message", planBoxService.getAllPlanBox(plannerId)) // <- 해당 주소를 구독하는 모든 사람이 CUD 과정을 볼 수 있습니다.
         );
     }
