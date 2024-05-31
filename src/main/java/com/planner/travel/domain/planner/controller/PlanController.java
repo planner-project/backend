@@ -20,35 +20,35 @@ public class PlanController {
     private final SimpMessagingTemplate simpMessagingTemplate;
 
     @MessageMapping(value = "/planner/{plannerId}/planBox/{planBoxId}/create") // <- 프론트가 보내는 주소 입니다.
-    public void createDate(@DestinationVariable Long planBoxId, @DestinationVariable Long plannerId, @RequestBody PlanCreateRequest request) {
+    public void createDate(@DestinationVariable("plannerId") Long plannerId, @DestinationVariable("planBoxId") Long planBoxId, @RequestBody PlanCreateRequest request) {
         // 서비스를 작성해주세요
-        planService.create(request,planBoxId, plannerId);
+        planService.create(request, planBoxId);
 
         // 결과값은 항상 같습니다.
         simpMessagingTemplate.convertAndSend("/sub/planner/" + plannerId,
-                Map.of("type", "create-plan", "message", planService.getAllPlan(plannerId)) //
+                Map.of("type", "create-plan", "message", planService.getAllPlan(planBoxId)) //
         );
     }
 
-    @MessageMapping(value = "/planner/{plannerId}/planBox/{planBoxId}/update") // <- 프론트가 보내는 주소 입니다.
-    public void updateDate( @DestinationVariable Long plannerId,  @RequestBody PlanUpdateRequest request) {
+    @MessageMapping(value = "/planner/{plannerId}/planBox/{planBoxId}/update/{planId}") // <- 프론트가 보내는 주소 입니다.
+    public void updateDate( @DestinationVariable Long plannerId,@DestinationVariable("planBoxId") Long planBoxId,@DestinationVariable("planId") Long planId,  @RequestBody PlanUpdateRequest request) {
         // 서비스를 작성해주세요
-        planService.update(request,  plannerId);
+        planService.update(request, planId);
 
         // 결과값은 항상 같습니다.
         simpMessagingTemplate.convertAndSend("/sub/planner/" + plannerId,
-                Map.of("type", "update-plan", "message", planService.getAllPlan(plannerId))
+                Map.of("type", "update-plan", "message", planService.getAllPlan(planBoxId))
         );
     }
 
-    @MessageMapping(value = "/planner/{plannerId}/planBox/{planBoxId}/delete") // <- 프론트가 보내는 주소 입니다.
-    public void createDate( @DestinationVariable Long plannerId) {
+    @MessageMapping(value = "/planner/{plannerId}/planBox/{planBoxId}/delete/{planId}") // <- 프론트가 보내는 주소 입니다.
+    public void deleteDate( @DestinationVariable("plannerId") Long plannerId,@DestinationVariable("planBoxId") Long planBoxId,@DestinationVariable("planId") Long planId) {
         // 서비스를 작성해주세요
-        planService.delete(plannerId);
+        planService.delete(planId);
 
         // 결과값은 항상 같습니다.
         simpMessagingTemplate.convertAndSend("/sub/planner/" + plannerId,
-                Map.of("type", "delete-plan", "message", planService.getAllPlan(plannerId))
+                Map.of("type", "delete-plan", "message", planService.getAllPlan(planBoxId))
         );
     }
 }

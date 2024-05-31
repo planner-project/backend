@@ -45,9 +45,9 @@ public class PlanBoxController {
                 Map.of("type", "update-planBox", "message", planBoxService.getAllPlanBox(plannerId))
         );
     }
-    @MessageMapping(value = "/planner/{plannerId}/delete")
-    public void deleteDate(@DestinationVariable Long plannerId) {
-        planBoxService.delete(plannerId);
+    @MessageMapping(value = "/planner/{plannerId}/delete/{planBoxId}")
+    public void deleteDate(@DestinationVariable("plannerId") Long plannerId, @DestinationVariable("planBoxId") Long planBoxId) {
+        planBoxService.delete(planBoxId);
 
     simpMessagingTemplate.convertAndSend("/sub/planner/" + plannerId,
                 Map.of("type", "delete-planBox", "message", planBoxService.getAllPlanBox(plannerId)) // <- 해당 주소를 구독하는 모든 사람이 CUD 과정을 볼 수 있습니다.

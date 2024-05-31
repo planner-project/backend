@@ -10,6 +10,7 @@ import com.planner.travel.domain.planner.entity.Planner;
 import com.planner.travel.domain.planner.query.PlanQueryService;
 import com.planner.travel.domain.planner.repository.PlanBoxRepository;
 import com.planner.travel.domain.planner.repository.PlanRepository;
+import com.planner.travel.domain.planner.repository.PlannerRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,22 +19,25 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.planner.travel.domain.planner.entity.QPlanner.planner;
+
 @Service
 @RequiredArgsConstructor
 public class PlanService {
     private final PlanBoxRepository planBoxRepository;
     private final PlanRepository planRepository;
+    private final PlannerRepository plannerRepository;
     private final PlanQueryService planQueryService;
 
     @Transactional(readOnly = true)
-    public List<PlanResponse> getAllPlan(Long plannerId) {
+    public List<PlanResponse> getAllPlan(Long planBoxId) {
 
-        return planQueryService.findPlanByPlanBoxId(plannerId);
+        return planQueryService.findPlanByPlanBoxId(planBoxId);
     }
 
 
-    @Transactional(readOnly = true)
-    public void create(PlanCreateRequest request, Long planBoxId, Long plannerId) {
+    @Transactional
+    public void create(PlanCreateRequest request, Long planBoxId) {
         PlanBox planBox = planBoxRepository.findById(planBoxId)
                 .orElseThrow(() -> new EntityNotFoundException("PlanBox not found"));
 
@@ -49,7 +53,7 @@ public class PlanService {
 
         planRepository.save(plan);
     }
-    @Transactional(readOnly = true)
+    @Transactional
     public void update(PlanUpdateRequest request, Long planId) {
         // Plan 엔티티 조회
         Plan plan = planRepository.findById(planId)
@@ -76,7 +80,7 @@ public class PlanService {
         // Plan 엔티티 저장
         planRepository.save(plan);
     }
-    @Transactional(readOnly = true)
+    @Transactional
     public void delete(Long planId) {
         // Plan 엔티티 조회
         Plan plan = planRepository.findById(planId)
