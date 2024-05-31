@@ -88,7 +88,7 @@ public class PlanBoxService {
         PlanBox planBox = planBoxRepository.findById(planBoxId)
                 .orElseThrow(() -> new EntityNotFoundException("PlanBox not found for id: " + planBoxId));
 
-        planBox.Deleted(true);
+        planBox.deleted(true);
 
         planBoxRepository.save(planBox);
 

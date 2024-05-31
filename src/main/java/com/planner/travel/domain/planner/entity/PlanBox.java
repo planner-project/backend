@@ -33,6 +33,6 @@ public class PlanBox {
     public void updatePrivate(boolean isPrivate) {
         this.isPrivate = isPrivate;
     }
-    public void Deleted(boolean isDeleted) {this.isDeleted = isDeleted;}
+    public void deleted(boolean isDeleted) {this.isDeleted = isDeleted;}
 
 }

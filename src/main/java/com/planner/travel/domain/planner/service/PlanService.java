@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -54,7 +55,11 @@ public class PlanService {
                 .orElseThrow(() -> new EntityNotFoundException("Plan not found for id: " + planId));
 
         // Plan 정보 업데이트
-        plan.setPrivate(request.isPrivate());
+        if (request.isPrivate() != plan.isPrivate()) {
+            plan.updateIsPrivate(request.isPrivate());
+        }]
+        if ()
+        plan.setPrivate(request.isPrivate()); // update~
         plan.setTitle(request.title());
         plan.setTime(request.time());
         plan.setContent(request.content());
