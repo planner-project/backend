@@ -102,8 +102,7 @@ public class PlannerQueryService {
         );
     }
 
-    public List<LocalDate> updateStartDateAndEndDate(Long plannerId) {
-        QPlanner qPlanner = QPlanner.planner;
+    public List<String> updateStartDateAndEndDate(Long plannerId) {
         QPlanBox qPlanBox = QPlanBox.planBox;
 
         LocalDate minDate = queryFactory
@@ -118,6 +117,10 @@ public class PlannerQueryService {
                 .where(qPlanBox.planner.id.eq(plannerId))
                 .fetchOne();
 
-        return List.of(minDate, maxDate);
+        if (minDate == null || maxDate == null) {
+            return List.of("", "");
+        }
+
+        return List.of(minDate.toString(), maxDate.toString());
     }
 }

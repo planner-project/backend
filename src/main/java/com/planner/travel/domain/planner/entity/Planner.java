@@ -22,9 +22,9 @@ public class Planner {
 
     private String title;
 
-    private LocalDate startDate;
+    private String startDate;
 
-    private LocalDate endDate;
+    private String endDate;
 
     private boolean isDeleted;
 
@@ -35,11 +35,11 @@ public class Planner {
         this.title = title;
     }
 
-    public void updateStartDate(LocalDate startDate) {
+    public void updateStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public void updateEndDate(LocalDate endDate) {
+    public void updateEndDate(String endDate) {
         this.endDate = endDate;
     }
 
