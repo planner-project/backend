@@ -38,6 +38,7 @@ public class PlanBoxQueryService {
 
         List<PlanBoxResponse> planBoxResponses = planBoxes.stream()
                 .map(planBox -> new PlanBoxResponse(
+                        planBox.getId(),
                         planBox.getPlanDate(),
                         planBox.isPrivate(),
                         planQueryService.findPlanByPlanBoxId(planBox.getId())
