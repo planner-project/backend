@@ -25,30 +25,11 @@ Parameters::
 
 
 Request::
-```http
-GET /api/v1/users/1/planners/1/group HTTP/1.1
-Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzE2MjExNzE3LCJleHAiOjE3MTYyMTI2MTd9.WW7oSRd1h1s-qPSnOiUdlMGc6C2hrDGBANaEEOBrZBM
-Host: localhost:8080
-```
+include::{snippets}/isGroupMember/http-request.adoc[]
 
 Response::
 결과 값이 `false` 인 경우 그룹 멤버와 관련된 메뉴를 숨겨야 합니다.
-```http
-HTTP/1.1 200 OK
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json
-X-Content-Type-Options: nosniff
-X-XSS-Protection: 0
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
-Pragma: no-cache
-Expires: 0
-X-Frame-Options: DENY
-
-false
-```
+include::{snippets}/isGroupMember/http-response.adoc[]
 
 === 2. 그룹 멤버 리스트 반환
 Parameters::
@@ -67,49 +48,16 @@ Parameters::
 |===
 
 Request::
-```http
-GET /api/v1/users/1/planners/1/group HTTP/1.1
-Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzE2MjExNzE3LCJleHAiOjE3MTYyMTI2MTd9.WW7oSRd1h1s-qPSnOiUdlMGc6C2hrDGBANaEEOBrZBM
-Host: localhost:8080
-```
+include::{snippets}/getGroupMembers/http-request.adoc[]
 
 Response::
+include::{snippets}/getGroupMembers/response-fields.adoc[]
+include::{snippets}/getGroupMembers/http-response.adoc[]
 
-```http
-HTTP/1.1 200 OK
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json
-X-Content-Type-Options: nosniff
-X-XSS-Protection: 0
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
-Pragma: no-cache
-Expires: 0
-X-Frame-Options: DENY
+=== 3. 그룹 멤버 추가
+NOTE: _플래너를 만든 사람(Host) 은 플래너 생성 당시에 자동으로 추가됩니다._  +
+_때문에 *host 나 이미 추가한 사람을 다시 추가 한다면* `INVALID_VALUE_04` 코드를 반환 합니다._
 
-[
-  {
-    "groupMemberId": 3,
-    "userId": 3,
-    "nickname": "시은",
-    "userTag": 1234,
-    "profileImageUrl": "",
-    "isHost": true
-  },
-  {
-    "groupMemberId": 4,
-    "userId": 4,
-    "nickname": "지은",
-    "userTag": 1234,
-    "profileImageUrl": "",
-    "isHost": false
-  }
-]
-```
-
-=== 3. _그룹 멤버 추가_
 Parameters::
 
 [cols=2*,options=header]
@@ -121,55 +69,20 @@ Parameters::
 |플래너 인덱스
 |===
 
-PUBLISH::
-```
-/pub/planner/{plannerId}/members/create
-```
-Request Body 에 아래와 같이 넣어줍니다.
-```json
-{
-  "userId": 4
-}
-```
+Request::
+include::{snippets}/addGroupMember/request-fields.adoc[]
+include::{snippets}/addGroupMember/http-request.adoc[]
 
-플래너를 만든 사람(Host) 은 플래너 생성 당시에 자동으로 추가됩니다.  +
-때문에 *host 나 이미 추가한 사람을 다시 추가 한다면* `INVALID_VALUE_04` 코드를 반환 합니다.
-
-SUBSCRIBE::
-```
-/sub/planner/{plannerId}
-```
-발행 주소에 제대로 값을 보내면 구독 주소에서 그룹 멤버 리스트를 반환합니다. +
-실시간으로 많은 데이터가 섞여 들어오니, `type` 을 기준으로 분류해주세요.
-```json
-[
-  {
-    "type": "add-group-member",
-    "message": [
-      {
-        "groupMemberId": 3,
-        "userId": 3,
-        "nickname": "시은",
-        "userTag": 1234,
-        "profileImageUrl": "",
-        "isHost": true
-      },
-      {
-        "groupMemberId": 4,
-        "userId": 4,
-        "nickname": "지은",
-        "userTag": 1234,
-        "profileImageUrl": "",
-        "isHost": false
-      }
-    ]
-  }
-]
-
-```
+Response::
+include::{snippets}/addGroupMember/response-fields.adoc[]
+include::{snippets}/addGroupMember/http-response.adoc[]
 
 
-=== 4. _그룹 멤버 삭제_
+=== 4. 그룹 멤버 삭제
+NOTE: _플래너를 만든 사람(Host) 은 멤버를 내보낼 수 있도록 내보내기 버튼을 생성해 주세요._  +
+_멤버로 초대된 사람은 그룹을 나갈 수 있도록 나가기 버튼을 생성해 주세요._ +
+_둘다 요청 주소는 같습니다. 사용자의 편의성과 비즈니스 로직을 위해 분류해 주세요._
+
 Parameters::
 
 [cols=4*,options=header]
@@ -185,43 +98,10 @@ Parameters::
 |그룹 멤버 인덱스
 |===
 
+Request::
+include::{snippets}/deleteGroupMember/http-request.adoc[]
 
-PUBLISH::
-```
-/pub/planner/{plannerId}/members/{memberId}/delete
-```
-Request Body 에 아래와 같이 넣어줍니다.
-```json
-{
-  "groupMemberId": 3
-}
-```
+Response::
+include::{snippets}/deleteGroupMember/response-fields.adoc[]
+include::{snippets}/deleteGroupMember/http-response.adoc[]
 
-*플래너를 만든 사람(Host) 은* 멤버를 내보낼 수 있도록 내보내기 버튼을 생성해 주세요.  +
-*멤버로 초대된 사람은* 그룹을 나갈 수 있도록 나가기 버튼을 생성해 주세요. +
-둘다 요청 주소는 같습니다. 사용자의 편의성과 비즈니스 로직을 위해 분류해 주세요.
-
-SUBSCRIBE::
-```
-/sub/planner/{plannerId}
-```
-발행 주소에 제대로 값을 보내면 구독 주소에서 그룹 멤버 리스트를 반환합니다. +
-실시간으로 많은 데이터가 섞여 들어오니, `type` 을 기준으로 분류해주세요.
-```json
-[
-  {
-    "type": "delete-group-member",
-    "message": [
-      {
-        "groupMemberId": 3,
-        "userId": 3,
-        "nickname": "시은",
-        "userTag": 1234,
-        "profileImageUrl": "",
-        "isHost": true
-      }
-    ]
-  }
-]
-
-```
