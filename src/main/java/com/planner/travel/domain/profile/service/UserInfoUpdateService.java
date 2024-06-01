@@ -33,6 +33,10 @@ public class UserInfoUpdateService {
             user.updateBirthday(request.birthday());
         }
 
+        if (request.gender() != null) {
+            user.updateGender(request.gender());
+        }// 추가 부분
+
 //        if (isValid(request.phoneNumber())) {
 //            user.updatePhoneNumber(request.phoneNumber());
 //        }

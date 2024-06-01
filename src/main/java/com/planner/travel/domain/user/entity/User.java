@@ -41,6 +41,7 @@ public class User {
 
     private String provider;
 
+    private String gender; //추가 부분
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profileId")
@@ -55,9 +56,9 @@ public class User {
         this.nickname = nickname;
     }
 
-    public void updateBirthday(LocalDate birthday) {
-        this.birthday = birthday;
-    }
+    public void updateBirthday(LocalDate birthday) {this.birthday = birthday;}
+
+    public void updateGender(String gender) {this.gender = gender;} //수정 부분
 
 //    public void updatePhoneNumber(String phoneNumber) {
 //        this.phoneNumber = phoneNumber;

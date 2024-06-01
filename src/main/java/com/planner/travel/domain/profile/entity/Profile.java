@@ -17,6 +17,8 @@ public class Profile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String gender;//추가 내용
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "imageId")
     private Image image;
