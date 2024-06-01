@@ -6,7 +6,9 @@ import com.planner.travel.domain.planner.dto.response.PlannerResponse;
 import com.planner.travel.domain.planner.entity.Planner;
 import com.planner.travel.domain.planner.entity.QPlanBox;
 import com.planner.travel.domain.planner.entity.QPlanner;
+import com.planner.travel.domain.profile.entity.QProfile;
 import com.planner.travel.domain.user.entity.QUser;
+import com.planner.travel.global.util.image.entity.QImage;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,8 @@ public class PlannerQueryService {
         QUser qUser = QUser.user;
         QGroupMember qGroupMember = QGroupMember.groupMember;
         QPlanner qPlanner = QPlanner.planner;
+        QImage qImage = QImage.image;
+        QProfile qProfile = QProfile.profile;
 
         List<Planner> planners = queryFactory
                 .select(qPlanner)
@@ -44,13 +48,27 @@ public class PlannerQueryService {
                 .fetch();
 
         return planners.stream()
-                .map(planner -> new PlannerListResponse(
-                        planner.getId(),
-                        planner.getTitle(),
-                        planner.getStartDate(),
-                        planner.getEndDate(),
-                        planner.isPrivate()
-                ))
+                .map(planner -> {
+                    List<String> profileImages = queryFactory
+                            .select(qImage.imageUrl.coalesce(""))
+                            .from(qGroupMember)
+                            .join(qGroupMember.user, qUser)
+                            .leftJoin(qUser.profile, qProfile)
+                            .leftJoin(qProfile.image, qImage)
+                            .where(qGroupMember.planner.eq(planner)
+                                    .and(qGroupMember.isLeaved.isFalse()))
+                            .limit(3)
+                            .fetch();
+
+                    return new PlannerListResponse(
+                            planner.getId(),
+                            planner.getTitle(),
+                            planner.getStartDate().toString(),
+                            planner.getEndDate().toString(),
+                            planner.isPrivate(),
+                            profileImages
+                    );
+                })
                 .collect(Collectors.toList());
     }
 
@@ -58,6 +76,8 @@ public class PlannerQueryService {
         QUser qUser = QUser.user;
         QGroupMember qGroupMember = QGroupMember.groupMember;
         QPlanner qPlanner = QPlanner.planner;
+        QImage qImage = QImage.image;
+        QProfile qProfile = QProfile.profile;
 
         List<Planner> planners = queryFactory
                 .select(qPlanner)
@@ -72,13 +92,27 @@ public class PlannerQueryService {
                 .fetch();
 
         return planners.stream()
-                .map(planner -> new PlannerListResponse(
-                        planner.getId(),
-                        planner.getTitle(),
-                        planner.getStartDate(),
-                        planner.getEndDate(),
-                        planner.isPrivate()
-                ))
+                .map(planner -> {
+                    List<String> profileImages = queryFactory
+                            .select(qImage.imageUrl.coalesce(""))
+                            .from(qGroupMember)
+                            .join(qGroupMember.user, qUser)
+                            .leftJoin(qUser.profile, qProfile)
+                            .leftJoin(qProfile.image, qImage)
+                            .where(qGroupMember.planner.eq(planner)
+                                    .and(qGroupMember.isLeaved.isFalse()))
+                            .limit(3)
+                            .fetch();
+
+                    return new PlannerListResponse(
+                            planner.getId(),
+                            planner.getTitle(),
+                            planner.getStartDate().toString(),
+                            planner.getEndDate().toString(),
+                            planner.isPrivate(),
+                            profileImages
+                    );
+                })
                 .collect(Collectors.toList());
     }
 
