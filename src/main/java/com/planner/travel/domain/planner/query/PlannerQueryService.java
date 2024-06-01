@@ -93,6 +93,9 @@ public class PlannerQueryService {
 
         return planners.stream()
                 .map(planner -> {
+                    String startDate = "";
+                    String endDate = "";
+
                     List<String> profileImages = queryFactory
                             .select(qImage.imageUrl.coalesce(""))
                             .from(qGroupMember)
@@ -104,11 +107,19 @@ public class PlannerQueryService {
                             .limit(3)
                             .fetch();
 
+                    if (planner.getStartDate() != null) {
+                        startDate = planner.getStartDate();
+                    }
+
+                    if (planner.getEndDate() != null) {
+                        endDate = planner.getEndDate();
+                    }
+
                     return new PlannerListResponse(
                             planner.getId(),
                             planner.getTitle(),
-                            planner.getStartDate().toString(),
-                            planner.getEndDate().toString(),
+                            startDate,
+                            endDate,
                             planner.isPrivate(),
                             profileImages
                     );
