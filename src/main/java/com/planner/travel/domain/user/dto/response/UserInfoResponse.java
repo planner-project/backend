@@ -1,5 +1,7 @@
 package com.planner.travel.domain.user.dto.response;
 
+import com.planner.travel.domain.user.entity.Sex;
+
 import java.time.LocalDate;
 
 public record UserInfoResponse(
@@ -8,5 +10,7 @@ public record UserInfoResponse(
         Long userTag,
         LocalDate birthday,
         String profileImgUrl,
-        boolean isBirthday) {
+        boolean isBirthday,
+        Sex sex
+        ) {
 }

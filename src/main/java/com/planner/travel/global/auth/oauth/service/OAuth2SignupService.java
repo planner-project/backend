@@ -3,6 +3,7 @@ package com.planner.travel.global.auth.oauth.service;
 import com.planner.travel.domain.profile.entity.Profile;
 import com.planner.travel.domain.profile.repository.ProfileRepository;
 import com.planner.travel.domain.user.entity.Role;
+import com.planner.travel.domain.user.entity.Sex;
 import com.planner.travel.domain.user.entity.User;
 import com.planner.travel.domain.user.repository.UserRepository;
 import com.planner.travel.global.auth.oauth.entity.OAuth2UserInfo;
@@ -56,6 +57,7 @@ public class OAuth2SignupService {
                 .signupDate(LocalDateTime.now())
                 .isWithdrawal(false)
                 .userTag(randomNumberUtil.set())
+                .sex(Sex.NONE)
                 .build();
 
         userRepository.save(user);

@@ -41,6 +41,8 @@ public class User {
 
     private String provider;
 
+    @Enumerated(value = EnumType.STRING)
+    private Sex sex;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profileId")
@@ -57,6 +59,10 @@ public class User {
 
     public void updateBirthday(LocalDate birthday) {
         this.birthday = birthday;
+    }
+
+    public void updateSex(Sex sex) {
+        this.sex = sex;
     }
 
 //    public void updatePhoneNumber(String phoneNumber) {

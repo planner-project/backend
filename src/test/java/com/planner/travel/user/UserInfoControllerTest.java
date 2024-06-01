@@ -1,6 +1,7 @@
 package com.planner.travel.user;
 import com.planner.travel.domain.user.controller.UserInfoController;
 import com.planner.travel.domain.user.dto.response.UserInfoResponse;
+import com.planner.travel.domain.user.entity.Sex;
 import com.planner.travel.domain.user.service.UserInfoService;
 import com.planner.travel.global.ApiDocumentUtil;
 import com.planner.travel.global.jwt.token.SubjectExtractor;
@@ -49,7 +50,9 @@ public class UserInfoControllerTest {
                 1234L,
                 LocalDate.parse("1996-11-20"),
                 "",
-                false);
+                false,
+                Sex.NONE
+        );
 
         when(tokenExtractor.getAccessTokenFromHeader(any(HttpServletRequest.class))).thenReturn(fakeToken);
         when(subjectExtractor.getUserIdFromToken(fakeToken)).thenReturn(expectedUserId);
@@ -62,6 +65,8 @@ public class UserInfoControllerTest {
                 .andExpect(jsonPath("$.nickname").value(expectedUserInfo.nickname()))
                 .andExpect(jsonPath("$.userTag").value(expectedUserInfo.userTag()))
                 .andExpect(jsonPath("$.isBirthday").value(expectedUserInfo.isBirthday()))
+                .andExpect(jsonPath("$.sex").value(expectedUserInfo.sex().toString()))
+
                 .andDo(MockMvcRestDocumentation.document("userInfo",
                         ApiDocumentUtil.getDocumentRequest(),
                         ApiDocumentUtil.getDocumentResponse(),
@@ -71,7 +76,8 @@ public class UserInfoControllerTest {
                                 PayloadDocumentation.fieldWithPath("userTag").description("유저 태그"),
                                 PayloadDocumentation.fieldWithPath("birthday").description("유저 생년월일"),
                                 PayloadDocumentation.fieldWithPath("profileImgUrl").description("프로필 이미지 url"),
-                                PayloadDocumentation.fieldWithPath("isBirthday").description("유저 생일 여부")
+                                PayloadDocumentation.fieldWithPath("isBirthday").description("유저 생일 여부"),
+                                PayloadDocumentation.fieldWithPath("sex").description("유저 성별")
                         )
                 ));
     }

@@ -7,6 +7,7 @@ import com.planner.travel.domain.profile.entity.Profile;
 import com.planner.travel.domain.profile.repository.ProfileRepository;
 import com.planner.travel.domain.profile.service.ProfileImageService;
 import com.planner.travel.domain.profile.service.UserInfoUpdateService;
+import com.planner.travel.domain.user.entity.Sex;
 import com.planner.travel.domain.user.entity.User;
 import com.planner.travel.domain.user.repository.UserRepository;
 import com.planner.travel.global.ApiDocumentUtil;
@@ -107,6 +108,7 @@ public class ProfileControllerTest {
                 .signupDate(LocalDateTime.now())
                 .userTag(1234L)
                 .profile(profile)
+                .sex(Sex.NONE)
                 .build();
 
         userRepository.save(user);
@@ -180,7 +182,7 @@ public class ProfileControllerTest {
         User beforeUser = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
         String beforePassword = beforeUser.getPassword();
 
-        UserInfoUpdateRequest request = new UserInfoUpdateRequest("123qwe!@#!@#", null, null);
+        UserInfoUpdateRequest request =new UserInfoUpdateRequest("123qwe!@#!@#", null, null, Sex.NONE);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .patch("/api/v1/users/{userId}/info", userId)
@@ -194,7 +196,8 @@ public class ProfileControllerTest {
                         PayloadDocumentation.requestFields(
                                 PayloadDocumentation.fieldWithPath("password").description("영어, 숫자, 특수 문자 포함 8 - 20 자리 비밀번호"),
                                 PayloadDocumentation.fieldWithPath("nickname").description("특수 문자를 포함 하지 않는 2-12 자 닉네임"),
-                                PayloadDocumentation.fieldWithPath("birthday").description("생년월일")
+                                PayloadDocumentation.fieldWithPath("birthday").description("생년월일"),
+                                PayloadDocumentation.fieldWithPath("sex").description("유저 성별")
                         )
                 ));
 
@@ -208,7 +211,7 @@ public class ProfileControllerTest {
         User beforeUser = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
         String beforeNickname = beforeUser.getNickname();
 
-        UserInfoUpdateRequest request = new UserInfoUpdateRequest(null, "수민", null);
+        UserInfoUpdateRequest request = new UserInfoUpdateRequest(null, "수민", null, Sex.NONE);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .patch("/api/v1/users/{userId}/info", userId)
@@ -222,7 +225,8 @@ public class ProfileControllerTest {
                         PayloadDocumentation.requestFields(
                                 PayloadDocumentation.fieldWithPath("password").description("영어, 숫자, 특수 문자 포함 8 - 20 자리 비밀번호"),
                                 PayloadDocumentation.fieldWithPath("nickname").description("특수 문자를 포함 하지 않는 2-12 자 닉네임"),
-                                PayloadDocumentation.fieldWithPath("birthday").description("생년월일")
+                                PayloadDocumentation.fieldWithPath("birthday").description("생년월일"),
+                                PayloadDocumentation.fieldWithPath("sex").description("유저 성별")
                         )
                 ));
 
@@ -236,7 +240,7 @@ public class ProfileControllerTest {
         User beforeUser = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
         LocalDate beforeBirthday = beforeUser.getBirthday();
 
-        UserInfoUpdateRequest request = new UserInfoUpdateRequest(null, null, LocalDate.parse("1998-04-06"));
+        UserInfoUpdateRequest request = new UserInfoUpdateRequest(null, null, LocalDate.parse("1998-04-06"), Sex.NONE);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .patch("/api/v1/users/{userId}/info", userId)
@@ -250,11 +254,41 @@ public class ProfileControllerTest {
                         PayloadDocumentation.requestFields(
                                 PayloadDocumentation.fieldWithPath("password").description("영어, 숫자, 특수 문자 포함 8 - 20 자리 비밀번호"),
                                 PayloadDocumentation.fieldWithPath("nickname").description("특수 문자를 포함 하지 않는 2-12 자 닉네임"),
-                                PayloadDocumentation.fieldWithPath("birthday").description("생년월일")
+                                PayloadDocumentation.fieldWithPath("birthday").description("생년월일"),
+                                PayloadDocumentation.fieldWithPath("sex").description("유저 성별")
                         )
                 ));
 
         User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
         assert !beforeBirthday.equals(user.getBirthday());
+    }
+
+    @Test
+    @DisplayName("유저 정보 수정 - 성별")
+    public void updateSex() throws Exception {
+        User beforeUser = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        Sex beforeSex = beforeUser.getSex();
+
+        UserInfoUpdateRequest request = new UserInfoUpdateRequest(null, null, null, Sex.WOMAN);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .patch("/api/v1/users/{userId}/info", userId)
+                        .header("Authorization", validAccessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andDo(MockMvcRestDocumentation.document("updateSex",
+                        ApiDocumentUtil.getDocumentRequest(),
+                        ApiDocumentUtil.getDocumentResponse(),
+                        PayloadDocumentation.requestFields(
+                                PayloadDocumentation.fieldWithPath("password").description("영어, 숫자, 특수 문자 포함 8 - 20 자리 비밀번호"),
+                                PayloadDocumentation.fieldWithPath("nickname").description("특수 문자를 포함 하지 않는 2-12 자 닉네임"),
+                                PayloadDocumentation.fieldWithPath("birthday").description("생년월일"),
+                                PayloadDocumentation.fieldWithPath("sex").description("유저 성별")
+                        )
+                ));
+
+        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        assert !beforeSex.equals(user.getSex());
     }
 }

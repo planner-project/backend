@@ -2,6 +2,7 @@ package com.planner.travel.global.auth.basic.service;
 
 import com.planner.travel.domain.profile.entity.Profile;
 import com.planner.travel.domain.profile.repository.ProfileRepository;
+import com.planner.travel.domain.user.entity.Sex;
 import com.planner.travel.global.auth.basic.dto.response.SignupRequest;
 import com.planner.travel.domain.user.entity.Role;
 import com.planner.travel.domain.user.entity.User;
@@ -57,6 +58,7 @@ public class SignupService {
                 .nickname(signupRequest.getNickname())
                 .userTag(randomNumberUtil.set())
                 .role(Role.USER)
+                .sex(Sex.NONE)
                 .signupDate(LocalDateTime.now())
                 .birthday(signupRequest.getBirthday())
 //                .phoneNumber(signupRequest.getPhoneNumber())

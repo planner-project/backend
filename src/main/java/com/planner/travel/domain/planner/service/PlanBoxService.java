@@ -21,10 +21,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class PlanBoxService {
-
-    // get 은 쿼리문을 작성 해야 해서 일단은 이를 제외한 기능만 생성 해 주세요.
-    // delete 의 경우 이전과 같이 isDeleted 를 true 로 변경 해주면 됩니다.
-    // update 의 경우 userInfoUpdateService 와 유저 엔티티를 참고 하여 작성 해 주세요.
     private final PlannerRepository plannerRepository;
     private final PlanBoxRepository planBoxRepository;
 
@@ -75,12 +71,10 @@ public class PlanBoxService {
 
     @Transactional
     public List<PlanBoxResponse> delete(Long planBoxId) {
-
         PlanBox planBox = planBoxRepository.findById(planBoxId)
                 .orElseThrow(() -> new EntityNotFoundException("PlanBox not found for id: " + planBoxId));
 
         planBox.deleted(true);
-
         planBoxRepository.save(planBox);
 
         return planBoxQueryService.findPlanBoxesByPlannerId(planBoxId);
