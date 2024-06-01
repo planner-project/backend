@@ -636,7 +636,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/v1/users/7/planners HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzE3MTY3MjgwLCJleHAiOjE3MTcxNjgxODB9.tMLIfexUfJa3e7JfojLxGuYmkQ067sxmdkJRW-o0cCc
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzE3MjM3NzI5LCJleHAiOjE3MTcyMzg2Mjl9.e21k5JtKJuRUSayHN1o523-AC6Ywcz7T8kpul_z0-rQ
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -680,18 +680,23 @@ Host: localhost:8080</code></pre>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].startDate</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">여행 시작 날짜</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].endDate</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">여행 끝 날짜</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].isPrivate</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">플래너 공개 여부</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].profileImages</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">그룹 멤버 프로필 이미지</p></td>
 </tr>
 </tbody>
 </table>
@@ -708,26 +713,29 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 376
+Content-Length: 456
 
 [ {
   "plannerId" : 12,
-  "title" : "테스트 플래너3",
-  "startDate" : null,
-  "endDate" : null,
-  "isPrivate" : false
+  "title" : "테스트 플래너2",
+  "startDate" : "",
+  "endDate" : "",
+  "isPrivate" : false,
+  "profileImages" : [ "" ]
 }, {
   "plannerId" : 11,
   "title" : "테스트 플래너2",
-  "startDate" : null,
-  "endDate" : null,
-  "isPrivate" : true
+  "startDate" : "",
+  "endDate" : "",
+  "isPrivate" : false,
+  "profileImages" : [ "", "" ]
 }, {
   "plannerId" : 10,
   "title" : "테스트 플래너1",
-  "startDate" : null,
-  "endDate" : null,
-  "isPrivate" : false
+  "startDate" : "",
+  "endDate" : "",
+  "isPrivate" : true,
+  "profileImages" : [ "", "" ]
 } ]</code></pre>
 </div>
 </div>
@@ -766,7 +774,7 @@ Content-Length: 376
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/v1/users/3/planners HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0IiwiaWF0IjoxNzE3MTY3MjgwLCJleHAiOjE3MTcxNjgxODB9.3asIXQCXbQZ0J0Ko-CZy4Yh4CYeGvaK8oymFMW0fs4M
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0IiwiaWF0IjoxNzE3MjM3NzI5LCJleHAiOjE3MTcyMzg2Mjl9.CEHcotxSWLC_c6dGE7GsgMH-EHMxdjWBlemV0JYf1H0
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -819,18 +827,23 @@ Host: localhost:8080</code></pre>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].startDate</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">여행 시작 날짜</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].endDate</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">여행 끝 날짜</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].isPrivate</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">플래너 공개 여부</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].profileImages</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">그룹 멤버 프로필 이미지</p></td>
 </tr>
 </tbody>
 </table>
@@ -847,20 +860,22 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 250
+Content-Length: 302
 
 [ {
   "plannerId" : 6,
-  "title" : "테스트 플래너3",
-  "startDate" : null,
-  "endDate" : null,
-  "isPrivate" : false
+  "title" : "테스트 플래너2",
+  "startDate" : "",
+  "endDate" : "",
+  "isPrivate" : false,
+  "profileImages" : [ "" ]
 }, {
-  "plannerId" : 4,
-  "title" : "테스트 플래너1",
-  "startDate" : null,
-  "endDate" : null,
-  "isPrivate" : false
+  "plannerId" : 5,
+  "title" : "테스트 플래너2",
+  "startDate" : "",
+  "endDate" : "",
+  "isPrivate" : false,
+  "profileImages" : [ "", "" ]
 } ]</code></pre>
 </div>
 </div>
@@ -926,7 +941,7 @@ Content-Length: 250
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/v1/users/9/planners HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5IiwiaWF0IjoxNzE3MTY3MjgwLCJleHAiOjE3MTcxNjgxODB9.vzNxfTXOge433jn2JJCtCeGIn3j4oSJ67RE3WKGH6fU
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5IiwiaWF0IjoxNzE3MjM3NzI5LCJleHAiOjE3MTcyMzg2Mjl9.ncNOhXF4mR1499DaNMYCwpdOtF_vPiaFUK9zuJr6kJg
 Content-Length: 61
 Host: localhost:8080
 
@@ -1037,7 +1052,7 @@ X-Frame-Options: DENY</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /api/v1/users/1/planners/4 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzE3MTY3Mjc5LCJleHAiOjE3MTcxNjgxNzl9.EQb1JbjUe8jXbpamnIj9yXi8fPM_qPSKeBE-uFO4JCE
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzE3MjM3NzI4LCJleHAiOjE3MTcyMzg2Mjh9.3nzVJmErP6KYSUU5bIH5S6NWrjIpd0Ir5X-DF9vk1q0
 Content-Length: 62
 Host: localhost:8080
 
@@ -1141,7 +1156,7 @@ X-Frame-Options: DENY</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /api/v1/users/5/planners/9 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiaWF0IjoxNzE3MTY3MjgwLCJleHAiOjE3MTcxNjgxODB9.PG7mSqhR6jeoHmeHvBdAXISJDhA_zapKk7PyqP9PoaA
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiaWF0IjoxNzE3MjM3NzI5LCJleHAiOjE3MTcyMzg2Mjl9.EbkLABDc7VYOeBecRWejUVP-L84y0MRaI7sX5XtAa0s
 Content-Length: 18
 Host: localhost:8080
 

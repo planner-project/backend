@@ -3,12 +3,14 @@ package com.planner.travel.planner;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.planner.travel.domain.group.dto.request.GroupMemberAddRequest;
+import com.planner.travel.domain.group.entity.GroupMember;
 import com.planner.travel.domain.group.repository.GroupMemberRepository;
 import com.planner.travel.domain.group.service.GroupMemberService;
 import com.planner.travel.domain.planner.dto.request.PlannerCreateRequest;
 import com.planner.travel.domain.planner.dto.request.PlannerDeleteRequest;
 import com.planner.travel.domain.planner.dto.request.PlannerUpdateRequest;
 import com.planner.travel.domain.planner.dto.response.PlannerListResponse;
+import com.planner.travel.domain.planner.entity.Planner;
 import com.planner.travel.domain.planner.repository.PlannerRepository;
 import com.planner.travel.domain.planner.service.PlannerListService;
 import com.planner.travel.domain.profile.entity.Profile;
@@ -157,24 +159,74 @@ public class PlannerControllerTest {
     }
 
     private void createTestPlanners() {
-        PlannerCreateRequest request1 = new PlannerCreateRequest(
-                "테스트 플래너1",
-                false
-        );
+        Planner planner1 = Planner.builder()
+                .isPrivate(true)
+                .isDeleted(false)
+                .title("테스트 플래너1")
+                .startDate("")
+                .endDate("")
+                .build();
 
-        PlannerCreateRequest request2 = new PlannerCreateRequest(
-                "테스트 플래너2",
-                true
-        );
+        Planner planner2 = Planner.builder()
+                .isPrivate(false)
+                .isDeleted(false)
+                .title("테스트 플래너2")
+                .startDate("")
+                .endDate("")
+                .build();
 
-        PlannerCreateRequest request3 = new PlannerCreateRequest(
-                "테스트 플래너3",
-                false
-        );
+        Planner planner3 = Planner.builder()
+                .isPrivate(false)
+                .isDeleted(false)
+                .title("테스트 플래너2")
+                .startDate("")
+                .endDate("")
+                .build();
 
-        plannerListService.create(request1, userId1);
-        plannerListService.create(request2, userId1);
-        plannerListService.create(request3, userId1);
+        GroupMember groupMember1 = GroupMember.builder()
+                .planner(planner1)
+                .isLeaved(false)
+                .isHost(true)
+                .user(userRepository.findById(userId1).get())
+                .build();
+
+        GroupMember groupMember2 = GroupMember.builder()
+                .planner(planner2)
+                .isLeaved(false)
+                .isHost(true)
+                .user(userRepository.findById(userId1).get())
+                .build();
+
+        GroupMember groupMember3 = GroupMember.builder()
+                .planner(planner3)
+                .isLeaved(false)
+                .isHost(true)
+                .user(userRepository.findById(userId1).get())
+                .build();
+
+        GroupMember groupMember4 = GroupMember.builder()
+                .planner(planner1)
+                .isLeaved(false)
+                .isHost(false)
+                .user(userRepository.findById(userId1).get())
+                .build();
+
+        GroupMember groupMember5 = GroupMember.builder()
+                .planner(planner2)
+                .isLeaved(false)
+                .isHost(false)
+                .user(userRepository.findById(userId1).get())
+                .build();
+
+        plannerRepository.save(planner1);
+        plannerRepository.save(planner2);
+        plannerRepository.save(planner3);
+        groupMemberRepository.save(groupMember1);
+        groupMemberRepository.save(groupMember2);
+        groupMemberRepository.save(groupMember3);
+        groupMemberRepository.save(groupMember4);
+        groupMemberRepository.save(groupMember5);
+
     }
 
     @Test
@@ -195,7 +247,8 @@ public class PlannerControllerTest {
                                 PayloadDocumentation.fieldWithPath("[].title").description("플래너 제목"),
                                 PayloadDocumentation.fieldWithPath("[].startDate").description("여행 시작 날짜"),
                                 PayloadDocumentation.fieldWithPath("[].endDate").description("여행 끝 날짜"),
-                                PayloadDocumentation.fieldWithPath("[].isPrivate").description("플래너 공개 여부")
+                                PayloadDocumentation.fieldWithPath("[].isPrivate").description("플래너 공개 여부"),
+                                PayloadDocumentation.fieldWithPath("[].profileImages").description("그룹 멤버 프로필 이미지")
                         )
                 ));
     }
@@ -218,7 +271,8 @@ public class PlannerControllerTest {
                                 PayloadDocumentation.fieldWithPath("[].title").description("플래너 제목"),
                                 PayloadDocumentation.fieldWithPath("[].startDate").description("여행 시작 날짜"),
                                 PayloadDocumentation.fieldWithPath("[].endDate").description("여행 끝 날짜"),
-                                PayloadDocumentation.fieldWithPath("[].isPrivate").description("플래너 공개 여부")
+                                PayloadDocumentation.fieldWithPath("[].isPrivate").description("플래너 공개 여부"),
+                                PayloadDocumentation.fieldWithPath("[].profileImages").description("그룹 멤버 프로필 이미지")
                         )
                 ));
 

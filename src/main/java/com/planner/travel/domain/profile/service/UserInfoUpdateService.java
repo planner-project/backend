@@ -16,7 +16,6 @@ public class UserInfoUpdateService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    // 일반 유저 정보 수정
     @Transactional
     public void update(Long userId, UserInfoUpdateRequest request) {
         User user = userFinder.find(userId);
@@ -36,6 +35,10 @@ public class UserInfoUpdateService {
 //        if (isValid(request.phoneNumber())) {
 //            user.updatePhoneNumber(request.phoneNumber());
 //        }
+
+        if (isValid(request.sex().toString())) {
+            user.updateSex(request.sex());
+        }
 
         userRepository.save(user);
     }

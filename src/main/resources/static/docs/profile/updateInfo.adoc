@@ -43,6 +43,8 @@ include::{snippets}/updateProfileImageToBasic/http-request.adoc[]
 Response::
 include::{snippets}/updateProfileImageToBasic/http-response.adoc[]
 
+WARNING: _**아래 부터는 유저 성별을 변경 하지 않더 라도 현재 유저 성별을 꼭 넣어서 보내주세요.**_
+
 === 2. 유저 비밀번호 변경
 Parameter::
 [cols=2*,options=header]
@@ -97,7 +99,27 @@ include::{snippets}/updateBirthday/http-request.adoc[]
 Response::
 include::{snippets}/updateBirthday/http-response.adoc[]
 
-=== 5. 예외 처리
+=== 5. 유저 성별 수정
+NOTE: `String` 의 형태로 "WOMAN", "NONE", "MAN" 셋 중 하나를 넣어 주세요.
+
+Parameter::
+[cols=2*,options=header]
+|===
+|path variable
+|설명
+
+|userId
+|유저 인덱스
+|===
+
+Request::
+include::{snippets}/updateSex/request-fields.adoc[]
+include::{snippets}/updateSex/http-request.adoc[]
+
+Response::
+include::{snippets}/updateSex/http-response.adoc[]
+
+=== 6. 예외 처리
 
 WARNING: _유효하지 않은 `닉네임` 과 `비밀번호` 로 요청할 시 아래와 같은 예외를 반환합니다._
 

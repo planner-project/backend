@@ -605,7 +605,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>ver. 0.0.0</p>
 </li>
 <li>
-<p>Last update 24.05.28</p>
+<p>Last update 24.06.01</p>
 </li>
 </ul>
 </div>
@@ -981,6 +981,11 @@ Host: localhost:8080</code></pre>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">유저 생일 여부</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sex</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유저 성별</p></td>
+</tr>
 </tbody>
 </table>
 <div class="listingblock">
@@ -996,7 +1001,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 140
+Content-Length: 158
 
 {
   "userId" : 1,
@@ -1004,7 +1009,8 @@ Content-Length: 140
   "userTag" : 1234,
   "birthday" : "1996-11-20",
   "profileImgUrl" : "",
-  "isBirthday" : false
+  "isBirthday" : false,
+  "sex" : "NONE"
 }</code></pre>
 </div>
 </div>
@@ -1052,7 +1058,7 @@ Content-Length: 140
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /api/v1/users HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzE3MTY3NzkzLCJleHAiOjE3MTcxNjg2OTN9.pb_8JBThOhLMo0r-CttbYsthxdiRnW9tjdSkNAiuIoE
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNzE3MjMxNzI5LCJleHAiOjE3MTcyMzI2Mjl9.vizMfix7l2WWp9dn8T1UcLLSeQt3ocUxB-4qvmJIMo4
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1106,17 +1112,17 @@ X-Frame-Options: DENY</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_2_그룹_기능"><a class="link" href="#_2_그룹_기능"><a href="planner/groupMember.html">2. 그룹 기능</a></a></h3>
+<h3 id="_2_그룹_기능"><a class="link" href="#_2_그룹_기능"><a href="planner/group.html">2. 그룹 기능</a></a></h3>
 <div class="ulist">
 <ul>
 <li>
 <p>그룹 멤버 검색</p>
 </li>
 <li>
-<p><em>그룹 멤버 추가</em></p>
+<p>그룹 멤버 추가</p>
 </li>
 <li>
-<p><em>그룹 멤버 삭제</em></p>
+<p>그룹 멤버 삭제</p>
 </li>
 </ul>
 </div>
@@ -1218,7 +1224,7 @@ X-Frame-Options: DENY</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-06-01 00:52:46 +0900
+Last updated 2024-06-01 21:27:46 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
