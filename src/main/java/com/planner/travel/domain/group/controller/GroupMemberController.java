@@ -45,7 +45,7 @@ public class GroupMemberController {
 
     @PatchMapping(value = "/{userId}/planners/{plannerId}/group")
     public ResponseEntity<List<GroupMemberResponse>> deleteGroupMember(@PathVariable("plannerId") Long plannerId, @RequestBody GroupMemberDeleteRequest request) {
-        groupMemberService.deleteGroupMembers(plannerId, request);
+        groupMemberService.deleteGroupMembers(request);
         List<GroupMemberResponse> groupMemberResponses = groupMemberService.getAllGroupMembers(plannerId);
 
         return ResponseEntity.ok(groupMemberResponses);
