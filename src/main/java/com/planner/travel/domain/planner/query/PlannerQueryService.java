@@ -49,6 +49,9 @@ public class PlannerQueryService {
 
         return planners.stream()
                 .map(planner -> {
+                    String startDate = "";
+                    String endDate = "";
+
                     List<String> profileImages = queryFactory
                             .select(qImage.imageUrl.coalesce(""))
                             .from(qGroupMember)
@@ -60,11 +63,19 @@ public class PlannerQueryService {
                             .limit(3)
                             .fetch();
 
+                    if (planner.getStartDate() != null) {
+                        startDate = planner.getStartDate();
+                    }
+
+                    if (planner.getEndDate() != null) {
+                        endDate = planner.getEndDate();
+                    }
+
                     return new PlannerListResponse(
                             planner.getId(),
                             planner.getTitle(),
-                            planner.getStartDate().toString(),
-                            planner.getEndDate().toString(),
+                            startDate,
+                            endDate,
                             planner.isPrivate(),
                             profileImages
                     );
@@ -129,6 +140,8 @@ public class PlannerQueryService {
 
     public PlannerResponse findPlannerById(Long plannerId) {
         QPlanner qPlanner = QPlanner.planner;
+        String startDate = "";
+        String endDate = "";
 
         Planner planner = queryFactory
                 .selectFrom(qPlanner)
@@ -137,11 +150,19 @@ public class PlannerQueryService {
                 )
                 .fetchOne();
 
+        if (planner.getStartDate() != null) {
+            startDate = planner.getStartDate();
+        }
+
+        if (planner.getEndDate() != null) {
+            endDate = planner.getEndDate();
+        }
+
         return new PlannerResponse(
                 planner.getId(),
                 planner.getTitle(),
-                planner.getStartDate(),
-                planner.getEndDate(),
+                startDate,
+                endDate,
                 planner.isPrivate(),
                 planBoxQueryService.findPlanBoxesByPlannerId(planner.getId())
         );
@@ -149,23 +170,29 @@ public class PlannerQueryService {
 
     public List<String> updateStartDateAndEndDate(Long plannerId) {
         QPlanBox qPlanBox = QPlanBox.planBox;
+        String minDate = "";
+        String maxDate = "";
 
-        LocalDate minDate = queryFactory
+        LocalDate minLocalDate = queryFactory
                 .select(qPlanBox.planDate.min())
                 .from(qPlanBox)
                 .where(qPlanBox.planner.id.eq(plannerId))
                 .fetchOne();
 
-        LocalDate maxDate = queryFactory
+        LocalDate maxLocalDate = queryFactory
                 .select(qPlanBox.planDate.max())
                 .from(qPlanBox)
                 .where(qPlanBox.planner.id.eq(plannerId))
                 .fetchOne();
 
-        if (minDate == null || maxDate == null) {
-            return List.of("", "");
+        if(minLocalDate != null) {
+            minDate = String.valueOf(minLocalDate);
         }
 
-        return List.of(minDate.toString(), maxDate.toString());
+        if(maxLocalDate != null) {
+            maxDate = String.valueOf(maxLocalDate);
+        }
+
+        return List.of(minDate, maxDate);
     }
 }
