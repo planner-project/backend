@@ -41,8 +41,8 @@ public class GroupMemberQueryService {
                 ))
                 .from(qGroupMember)
                 .join(qGroupMember.user, qUser)
-                .leftJoin(qUser.profile, qProfile)
-                .leftJoin(qProfile.image, qImage)
+                .join(qUser.profile, qProfile)
+                .join(qProfile.image, qImage)
                 .where(qGroupMember.planner.id.eq(plannerId)
                         .and(qGroupMember.isLeaved.eq(false)))
                 .fetch();
@@ -63,7 +63,7 @@ public class GroupMemberQueryService {
         return count != null && count > 0;
     }
 
-    public GroupMember findGroupMemberId(Long userId, Long plannerId) {
+    public GroupMember findGroupMember(Long userId, Long plannerId) {
         QGroupMember qGroupMember = QGroupMember.groupMember;
 
         GroupMember groupMember = queryFactory

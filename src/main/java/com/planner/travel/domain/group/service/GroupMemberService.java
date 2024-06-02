@@ -10,7 +10,6 @@ import com.planner.travel.domain.planner.entity.Planner;
 import com.planner.travel.domain.planner.repository.PlannerRepository;
 import com.planner.travel.domain.user.entity.User;
 import com.planner.travel.domain.user.repository.UserRepository;
-import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -48,26 +47,30 @@ public class GroupMemberService {
         Planner planner = plannerRepository.findById(plannerId)
                 .orElseThrow(() -> new EntityNotFoundException("Planner not found"));
 
-        if (!groupMemberQueryService.validateGroupMember(user.getId(), planner.getId())) {
-            GroupMember groupMember = GroupMember.builder()
+        GroupMember groupMember = groupMemberQueryService.findGroupMember(request.userId(), plannerId);
+
+        if (groupMember == null) {
+            GroupMember newGroupMember = GroupMember.builder()
                     .isHost(false)
                     .isLeaved(false)
                     .user(user)
                     .planner(planner)
                     .build();
 
-            groupMemberRepository.save(groupMember);
+            groupMemberRepository.save(newGroupMember);
 
         } else {
-            throw new EntityExistsException("이미 존재하는 유저 입니다.");
+            groupMember.updateIsLeaved(false);
+
+            groupMemberRepository.save(groupMember);
         }
     }
 
     @Transactional
-    public void deleteGroupMembers(Long plannerId, GroupMemberDeleteRequest request) {
+    public void deleteGroupMembers(GroupMemberDeleteRequest request) {
         GroupMember groupMember = groupMemberRepository.findById(request.groupMemberId())
                 .orElseThrow(() -> new EntityNotFoundException("Group member not found"));
 
-        groupMember.deleteGroupMember(true);
+        groupMember.updateIsLeaved(true);
     }
 }

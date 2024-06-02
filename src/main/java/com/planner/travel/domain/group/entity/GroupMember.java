@@ -33,11 +33,7 @@ public class GroupMember {
     private User user;
 
 
-    public void deleteGroupMember(boolean isLeaved) {
+    public void updateIsLeaved (boolean isLeaved) {
         this.isLeaved = isLeaved;
-    }
-
-    public void updatePlanner(Planner planner) {
-        this.planner = planner;
     }
 }

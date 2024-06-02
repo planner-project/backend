@@ -86,9 +86,9 @@ public class PlannerListService {
 
     @Transactional
     public void delete(PlannerDeleteRequest request, Long plannerId) {
-        GroupMember groupMember = groupMemberQueryService.findGroupMemberId(request.userId(), plannerId);
+        GroupMember groupMember = groupMemberQueryService.findGroupMember(request.userId(), plannerId);
 
-        groupMember.deleteGroupMember(true);
+        groupMember.updateIsLeaved(true);
         groupMemberRepository.save(groupMember);
     }
 
