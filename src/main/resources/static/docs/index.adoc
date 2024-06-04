@@ -226,8 +226,10 @@ PUBLISH::
 Request Body 에 아래와 같이 넣어줍니다.
 ```json
 {
-  "planDate": "1996-11-20",
-  "isPrivate": false
+  "userId": 4,
+  "nickname": "시은",
+  "profileImgUrl": "",
+  "message": "안녀엉"
 }
 ```
 
@@ -252,6 +254,5 @@ SUBSCRIBE::
       }
   }
 ]
-
 ```
 
