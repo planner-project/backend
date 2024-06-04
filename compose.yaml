@@ -24,19 +24,6 @@ services:
     volumes:
       - redis-data:/data
 
-  app:
-    build:
-      dockerfile: Dockerfile
-    ports:
-      - "8080:8080"
-    env_file:
-      - docker.env
-    depends_on:
-      mysql:
-        condition: service_healthy
-      redis:
-        condition: service_started
-
 volumes:
   mysql-data:
   redis-data:
