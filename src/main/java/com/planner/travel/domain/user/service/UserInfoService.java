@@ -25,8 +25,8 @@ public class UserInfoService {
                 user.getNickname(),
                 user.getUserTag(),
                 user.getBirthday(),
-                user.getProfile().getImage().getImageUrl(),
                 user.getEmail(),
+                user.getProfile().getImage().getImageUrl(),
                 isBirthdayToday(user.getBirthday()),
                 user.getSex()
         );
