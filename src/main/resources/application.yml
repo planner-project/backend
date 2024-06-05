@@ -1,4 +1,7 @@
 spring:
+  docker:
+    compose:
+      enabled: ${DOCKER_COMPOSE_ENABLED}
   main:
     allow-bean-definition-overriding: true
 #  mail:

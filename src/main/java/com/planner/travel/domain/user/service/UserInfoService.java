@@ -18,7 +18,7 @@ public class UserInfoService {
 
     public UserInfoResponse get(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
         return new UserInfoResponse(
                 user.getId(),
@@ -26,6 +26,7 @@ public class UserInfoService {
                 user.getUserTag(),
                 user.getBirthday(),
                 user.getProfile().getImage().getImageUrl(),
+                user.getEmail(),
                 isBirthdayToday(user.getBirthday()),
                 user.getSex()
         );

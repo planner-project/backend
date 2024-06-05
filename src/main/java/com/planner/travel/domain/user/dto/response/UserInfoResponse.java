@@ -9,6 +9,7 @@ public record UserInfoResponse(
         String nickname,
         Long userTag,
         LocalDate birthday,
+        String email,
         String profileImgUrl,
         boolean isBirthday,
         Sex sex
