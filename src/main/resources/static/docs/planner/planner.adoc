@@ -359,21 +359,20 @@ SUBSCRIBE::
   {
     "type": "create-plan",
     "message":
-      [
-          {
-            {
-              "planId": 1,
-              "isPrivate": false,
-              "title": "plan 제목",
-              "time": "10:20",
-              "content": "plan 내용",
-              "address": "plan 주소"
-            }
-          }
-      ]
+      [ {
+        "planBoxId" : 4,
+        "planDate" : "2024-06-07",
+        "planResponses" : [ {
+          "planId" : 4,
+          "isPrivate" : false,
+          "title" : "제목",
+          "time" : "19:14:50.713",
+          "content" : "내용",
+          "address" : "주소"
+        } ]
+      } ]
   }
 ]
-
 ```
 
 === 2. 플랜 수정
