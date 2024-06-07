@@ -54,7 +54,10 @@ public class PlanBoxService {
     }
 
     @Transactional
-    public List<PlanBoxResponse> update(PlanBoxUpdateRequest request,Long planBoxId) {
+    public List<PlanBoxResponse> update(PlanBoxUpdateRequest request, Long plannerId, Long planBoxId) {
+        Planner planner = plannerRepository.findById(plannerId)
+                .orElseThrow(() -> new EntityNotFoundException("Planner not found"));
+
         PlanBox planBox = planBoxRepository.findById(planBoxId)
                 .orElseThrow(() -> new EntityNotFoundException("PlanBox not found for id: " + planBoxId));
 
@@ -64,6 +67,10 @@ public class PlanBoxService {
         }
 
         planBoxRepository.save(planBox);
+
+        List<String> localDates = plannerQueryService.updateStartDateAndEndDate(plannerId);
+        planner.updateStartDate(localDates.get(0));
+        planner.updateStartDate(localDates.get(1));
 
         return planBoxQueryService.findPlanBoxesByPlannerId(planBoxId);
 
