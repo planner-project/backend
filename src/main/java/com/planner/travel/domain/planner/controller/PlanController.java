@@ -2,6 +2,7 @@ package com.planner.travel.domain.planner.controller;
 
 import com.planner.travel.domain.planner.dto.request.PlanCreateRequest;
 import com.planner.travel.domain.planner.dto.request.PlanUpdateRequest;
+import com.planner.travel.domain.planner.service.PlanBoxService;
 import com.planner.travel.domain.planner.service.PlanService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class PlanController {
     private final PlanService planService;
+    private final PlanBoxService planBoxService;
     private final SimpMessagingTemplate simpMessagingTemplate;
 
     @MessageMapping(value = "/planner/{plannerId}/planBox/{planBoxId}/create")
@@ -24,7 +26,7 @@ public class PlanController {
         planService.create(request, planBoxId);
 
         simpMessagingTemplate.convertAndSend("/sub/planner/" + plannerId,
-                Map.of("type", "create-plan", "message", planService.getAllPlan(planBoxId))
+                Map.of("type", "create-planBox", "message", planBoxService.getAllPlanBox(plannerId))
         );
     }
 
@@ -33,7 +35,7 @@ public class PlanController {
         planService.update(request, planId);
 
         simpMessagingTemplate.convertAndSend("/sub/planner/" + plannerId,
-                Map.of("type", "update-plan", "message", planService.getAllPlan(planBoxId))
+                Map.of("type", "update-plan", "message", planBoxService.getAllPlanBox(plannerId))
         );
     }
 
@@ -42,7 +44,7 @@ public class PlanController {
         planService.delete(planId);
 
         simpMessagingTemplate.convertAndSend("/sub/planner/" + plannerId,
-                Map.of("type", "delete-plan", "message", planService.getAllPlan(planBoxId))
+                Map.of("type", "delete-plan", "message", planBoxService.getAllPlanBox(plannerId))
         );
     }
 }

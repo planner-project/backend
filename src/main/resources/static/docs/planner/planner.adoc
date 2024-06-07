@@ -192,15 +192,20 @@ SUBSCRIBE::
   {
     "type": "create-planBox",
     "message":
-      {
-        "planBoxId": 1,
-        "planDate": "2024-03-08",
-        "isPrivate": false,
-        "planResponses": []
-      }
+      [ {
+        "planBoxId" : 4,
+        "planDate" : "2024-06-07",
+        "planResponses" : [ {
+          "planId" : 4,
+          "isPrivate" : false,
+          "title" : "제목",
+          "time" : "19:14:50.713",
+          "content" : "내용",
+          "address" : "주소"
+        } ]
+      } ]
   }
 ]
-
 ```
 
 === 2. 플랜 박스 수정
@@ -243,26 +248,20 @@ SUBSCRIBE::
   {
     "type": "update-planBox",
     "message":
-      [
-        {
-          "planBoxId": 1,
-          "planDate": "2024-03-08",
-          "isPrivate": true,
-          "planResponses": [
-            {
-              "planId": 1,
-              "isPrivate": false,
-              "title": "plan 제목",
-              "time":  "10:20",
-              "content": "plan 내용",
-              "address": "plan 주소"
-            }
-          ]
-        }
-      ]
+      [ {
+        "planBoxId" : 4,
+        "planDate" : "2024-06-07",
+        "planResponses" : [ {
+          "planId" : 4,
+          "isPrivate" : false,
+          "title" : "제목",
+          "time" : "19:14:50.713",
+          "content" : "내용",
+          "address" : "주소"
+        } ]
+      } ]
   }
 ]
-
 ```
 
 === 3. 플랜 박스 삭제
@@ -296,10 +295,21 @@ SUBSCRIBE::
 [
   {
     "type": "delete-planBox",
-    "message": []
+    "message":
+      [ {
+        "planBoxId" : 4,
+        "planDate" : "2024-06-07",
+        "planResponses" : [ {
+          "planId" : 4,
+          "isPrivate" : false,
+          "title" : "제목",
+          "time" : "19:14:50.713",
+          "content" : "내용",
+          "address" : "주소"
+        } ]
+      } ]
   }
 ]
-
 ```
 
 == 플랜
@@ -414,21 +424,20 @@ SUBSCRIBE::
   {
     "type": "update-plan",
     "message":
-      [
-          {
-            {
-              "planId": 1,
-              "isPrivate": false,
-              "title": "plan 제목",
-              "time": "12:20",
-              "content": "plan 내용",
-              "address": "plan 주소"
-            }
-          }
-      ]
+      [ {
+        "planBoxId" : 4,
+        "planDate" : "2024-06-07",
+        "planResponses" : [ {
+          "planId" : 4,
+          "isPrivate" : false,
+          "title" : "제목",
+          "time" : "19:14:50.713",
+          "content" : "내용",
+          "address" : "주소"
+        } ]
+      } ]
   }
 ]
-
 ```
 
 === 3. 플랜 삭제
@@ -465,8 +474,19 @@ SUBSCRIBE::
 [
   {
     "type": "delete-plan",
-    "message": []
+    "message":
+      [ {
+        "planBoxId" : 4,
+        "planDate" : "2024-06-07",
+        "planResponses" : [ {
+          "planId" : 4,
+          "isPrivate" : false,
+          "title" : "제목",
+          "time" : "19:14:50.713",
+          "content" : "내용",
+          "address" : "주소"
+        } ]
+      } ]
   }
 ]
-
 ```

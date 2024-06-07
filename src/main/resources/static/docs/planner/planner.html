@@ -1448,12 +1448,18 @@ X-Frame-Options: DENY</code></pre>
   {
     "type": "create-planBox",
     "message":
-      {
-        "planBoxId": 1,
-        "planDate": "2024-03-08",
-        "isPrivate": false,
-        "planResponses": []
-      }
+      [ {
+        "planBoxId" : 4,
+        "planDate" : "2024-06-07",
+        "planResponses" : [ {
+          "planId" : 4,
+          "isPrivate" : false,
+          "title" : "제목",
+          "time" : "19:14:50.713",
+          "content" : "내용",
+          "address" : "주소"
+        } ]
+      } ]
   }
 ]</code></pre>
 </div>
@@ -1530,23 +1536,18 @@ X-Frame-Options: DENY</code></pre>
   {
     "type": "update-planBox",
     "message":
-      [
-        {
-          "planBoxId": 1,
-          "planDate": "2024-03-08",
-          "isPrivate": true,
-          "planResponses": [
-            {
-              "planId": 1,
-              "isPrivate": false,
-              "title": "plan 제목",
-              "time":  "10:20",
-              "content": "plan 내용",
-              "address": "plan 주소"
-            }
-          ]
-        }
-      ]
+      [ {
+        "planBoxId" : 4,
+        "planDate" : "2024-06-07",
+        "planResponses" : [ {
+          "planId" : 4,
+          "isPrivate" : false,
+          "title" : "제목",
+          "time" : "19:14:50.713",
+          "content" : "내용",
+          "address" : "주소"
+        } ]
+      } ]
   }
 ]</code></pre>
 </div>
@@ -1611,7 +1612,19 @@ X-Frame-Options: DENY</code></pre>
 <pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">[
   {
     "type": "delete-planBox",
-    "message": []
+    "message":
+      [ {
+        "planBoxId" : 4,
+        "planDate" : "2024-06-07",
+        "planResponses" : [ {
+          "planId" : 4,
+          "isPrivate" : false,
+          "title" : "제목",
+          "time" : "19:14:50.713",
+          "content" : "내용",
+          "address" : "주소"
+        } ]
+      } ]
   }
 ]</code></pre>
 </div>
@@ -1799,18 +1812,18 @@ X-Frame-Options: DENY</code></pre>
   {
     "type": "update-plan",
     "message":
-      [
-          {
-            {
-              "planId": 1,
-              "isPrivate": false,
-              "title": "plan 제목",
-              "time": "12:20",
-              "content": "plan 내용",
-              "address": "plan 주소"
-            }
-          }
-      ]
+      [ {
+        "planBoxId" : 4,
+        "planDate" : "2024-06-07",
+        "planResponses" : [ {
+          "planId" : 4,
+          "isPrivate" : false,
+          "title" : "제목",
+          "time" : "19:14:50.713",
+          "content" : "내용",
+          "address" : "주소"
+        } ]
+      } ]
   }
 ]</code></pre>
 </div>
@@ -1879,7 +1892,19 @@ X-Frame-Options: DENY</code></pre>
 <pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">[
   {
     "type": "delete-plan",
-    "message": []
+    "message":
+      [ {
+        "planBoxId" : 4,
+        "planDate" : "2024-06-07",
+        "planResponses" : [ {
+          "planId" : 4,
+          "isPrivate" : false,
+          "title" : "제목",
+          "time" : "19:14:50.713",
+          "content" : "내용",
+          "address" : "주소"
+        } ]
+      } ]
   }
 ]</code></pre>
 </div>
@@ -1890,7 +1915,7 @@ X-Frame-Options: DENY</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-06-07 19:17:07 +0900
+Last updated 2024-06-07 21:17:37 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
