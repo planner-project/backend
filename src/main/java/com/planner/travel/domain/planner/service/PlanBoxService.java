@@ -26,7 +26,6 @@ public class PlanBoxService {
 
     private final PlannerQueryService plannerQueryService;
     private final PlanBoxQueryService planBoxQueryService;
-    private final PlannerListService plannerListService;
 
     @Transactional(readOnly = true)
     public List<PlanBoxResponse> getAllPlanBox(Long plannerId) {

@@ -80,4 +80,16 @@ public class GroupMemberQueryService {
 
         return groupMember;
     }
+
+    public int getGroupMemberSize(Long plannerId) {
+        QGroupMember qGroupMember = QGroupMember.groupMember;
+
+        List<GroupMember> groupMembers = queryFactory
+                .selectFrom(qGroupMember)
+                .where(qGroupMember.planner.id.eq(plannerId)
+                        .and(qGroupMember.isLeaved.isFalse()))
+                .fetch();
+
+        return groupMembers.size();
+    }
 }
