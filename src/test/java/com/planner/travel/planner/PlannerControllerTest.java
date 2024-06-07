@@ -2,17 +2,17 @@ package com.planner.travel.planner;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.planner.travel.domain.group.dto.request.GroupMemberAddRequest;
 import com.planner.travel.domain.group.entity.GroupMember;
 import com.planner.travel.domain.group.repository.GroupMemberRepository;
-import com.planner.travel.domain.group.service.GroupMemberService;
 import com.planner.travel.domain.planner.dto.request.PlannerCreateRequest;
 import com.planner.travel.domain.planner.dto.request.PlannerDeleteRequest;
 import com.planner.travel.domain.planner.dto.request.PlannerUpdateRequest;
-import com.planner.travel.domain.planner.dto.response.PlannerListResponse;
+import com.planner.travel.domain.planner.entity.Plan;
+import com.planner.travel.domain.planner.entity.PlanBox;
 import com.planner.travel.domain.planner.entity.Planner;
+import com.planner.travel.domain.planner.repository.PlanBoxRepository;
+import com.planner.travel.domain.planner.repository.PlanRepository;
 import com.planner.travel.domain.planner.repository.PlannerRepository;
-import com.planner.travel.domain.planner.service.PlannerListService;
 import com.planner.travel.domain.profile.entity.Profile;
 import com.planner.travel.domain.profile.repository.ProfileRepository;
 import com.planner.travel.domain.user.entity.User;
@@ -31,7 +31,6 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.restdocs.payload.PayloadDocumentation;
 import org.springframework.test.web.servlet.MockMvc;
@@ -39,7 +38,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.time.LocalTime;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -52,7 +51,10 @@ public class PlannerControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private PlannerListService plannerListService;
+    private PlanRepository planRepository;
+
+    @Autowired
+    private PlanBoxRepository planBoxRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -72,8 +74,6 @@ public class PlannerControllerTest {
     @Autowired
     private GroupMemberRepository groupMemberRepository;
 
-    @Autowired
-    private GroupMemberService groupMemberService;
 
     private Long userId1;
     private Long userId2;
@@ -85,6 +85,8 @@ public class PlannerControllerTest {
 
     @BeforeEach
     void setUp() {
+        planRepository.deleteAll();
+        planBoxRepository.deleteAll();
         groupMemberRepository.deleteAll();
         plannerRepository.deleteAll();
         userRepository.deleteAll();
@@ -169,6 +171,22 @@ public class PlannerControllerTest {
                 .endDate(String.valueOf(LocalDate.now().plusDays(1)))
                 .build();
 
+        PlanBox planBox = PlanBox.builder()
+                .planner(planner1)
+                .planDate(LocalDate.now())
+                .isDeleted(false)
+                .build();
+
+        Plan plan = Plan.builder()
+                .planBox(planBox)
+                .title("제목")
+                .address("주소")
+                .content("내용")
+                .time(LocalTime.now())
+                .isDeleted(false)
+                .isPrivate(false)
+                .build();
+
         Planner planner2 = Planner.builder()
                 .isPrivate(false)
                 .isDeleted(false)
@@ -211,9 +229,13 @@ public class PlannerControllerTest {
         plannerRepository.save(planner1);
         plannerRepository.save(planner2);
         plannerRepository.save(planner3);
+
         groupMemberRepository.save(groupMember1);
         groupMemberRepository.save(groupMember2);
         groupMemberRepository.save(groupMember3);
+
+        planBoxRepository.save(planBox);
+        planRepository.save(plan);
 
         plannerId1 = planner1.getId();
     }
@@ -262,6 +284,41 @@ public class PlannerControllerTest {
                                 PayloadDocumentation.fieldWithPath("[].endDate").description("여행 끝 날짜"),
                                 PayloadDocumentation.fieldWithPath("[].isPrivate").description("플래너 공개 여부"),
                                 PayloadDocumentation.fieldWithPath("[].profileImages").description("그룹 멤버 프로필 이미지")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("플래너 정보 반환")
+    public void getPlanner() throws Exception {
+        createTestPlanners();
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/api/v1/users/{userId}/planners/{plannerId}", userId1, plannerId1)
+                        .header("Authorization", validAccessToken1)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(MockMvcRestDocumentation.document("getPlannerInfo",
+                        ApiDocumentUtil.getDocumentRequest(),
+                        ApiDocumentUtil.getDocumentResponse(),
+                        PayloadDocumentation.responseFields(
+                                PayloadDocumentation.fieldWithPath("plannerId").description("플래너 ID"),
+                                PayloadDocumentation.fieldWithPath("title").description("플래너 제목"),
+                                PayloadDocumentation.fieldWithPath("startDate").description("플래너 시작 날짜"),
+                                PayloadDocumentation.fieldWithPath("endDate").description("플래너 종료 날짜"),
+                                PayloadDocumentation.fieldWithPath("isPrivate").description("플래너 비공개 여부"),
+                                PayloadDocumentation.fieldWithPath("planBoxResponses").description("플랜 박스 응답 리스트")
+                        ).andWithPrefix("planBoxResponses[].",
+                                PayloadDocumentation.fieldWithPath("planBoxId").description("플랜 박스 ID"),
+                                PayloadDocumentation.fieldWithPath("planDate").description("플랜 박스 날짜"),
+                                PayloadDocumentation.fieldWithPath("planResponses").description("플랜 응답 리스트")
+                        ).andWithPrefix("planBoxResponses[].planResponses[].",
+                                PayloadDocumentation.fieldWithPath("planId").description("플랜 ID"),
+                                PayloadDocumentation.fieldWithPath("isPrivate").description("플랜 비공개 여부"),
+                                PayloadDocumentation.fieldWithPath("title").description("플랜 제목"),
+                                PayloadDocumentation.fieldWithPath("time").description("플랜 시간"),
+                                PayloadDocumentation.fieldWithPath("content").description("플랜 내용"),
+                                PayloadDocumentation.fieldWithPath("address").description("플랜 주소")
                         )
                 ));
     }
