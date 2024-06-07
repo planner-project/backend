@@ -6,7 +6,6 @@ import java.util.*;
 public record PlanBoxResponse(
         Long planBoxId,
         LocalDate planDate,
-        boolean isPrivate,
         List<PlanResponse> planResponses
 ) {
 }

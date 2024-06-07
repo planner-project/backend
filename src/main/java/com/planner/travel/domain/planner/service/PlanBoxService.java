@@ -42,7 +42,6 @@ public class PlanBoxService {
 
         PlanBox planBox = PlanBox.builder()
                 .planDate(request.planDate())
-                .isPrivate(request.isPrivate())
                 .planner(planner)
                 .build();
 
@@ -63,7 +62,6 @@ public class PlanBoxService {
 
         if (request.planDate() != null) {
             planBox.updatePlanDate(request.planDate());
-            planBox.updatePrivate(request.isPrivate());
         }
 
         planBoxRepository.save(planBox);
