@@ -42,13 +42,13 @@ public class PlanBoxService {
         PlanBox planBox = PlanBox.builder()
                 .planDate(request.planDate())
                 .planner(planner)
+                .isDeleted(false)
                 .build();
 
         planBoxRepository.save(planBox);
 
-        List<String> localDates = plannerQueryService.updateStartDateAndEndDate(plannerId);
-        planner.updateStartDate(localDates.get(0));
-        planner.updateStartDate(localDates.get(1));
+        planner.updateStartDate(plannerQueryService.getStartDate(plannerId));
+        planner.updateEndDate(plannerQueryService.getEndDate(plannerId));
     }
 
     @Transactional
@@ -65,21 +65,25 @@ public class PlanBoxService {
 
         planBoxRepository.save(planBox);
 
-        List<String> localDates = plannerQueryService.updateStartDateAndEndDate(plannerId);
-        planner.updateStartDate(localDates.get(0));
-        planner.updateStartDate(localDates.get(1));
+        planner.updateStartDate(plannerQueryService.getStartDate(plannerId));
+        planner.updateEndDate(plannerQueryService.getEndDate(plannerId));
 
         return planBoxQueryService.findPlanBoxesByPlannerId(planBoxId);
-
     }
 
     @Transactional
-    public List<PlanBoxResponse> delete(Long planBoxId) {
+    public List<PlanBoxResponse> delete(Long plannerId, Long planBoxId) {
+        Planner planner = plannerRepository.findById(plannerId)
+                .orElseThrow(() -> new EntityNotFoundException("Planner not found"));
+
         PlanBox planBox = planBoxRepository.findById(planBoxId)
                 .orElseThrow(() -> new EntityNotFoundException("PlanBox not found for id: " + planBoxId));
 
         planBox.deleted(true);
         planBoxRepository.save(planBox);
+
+        planner.updateStartDate(plannerQueryService.getStartDate(plannerId));
+        planner.updateEndDate(plannerQueryService.getEndDate(plannerId));
 
         return planBoxQueryService.findPlanBoxesByPlannerId(planBoxId);
     }

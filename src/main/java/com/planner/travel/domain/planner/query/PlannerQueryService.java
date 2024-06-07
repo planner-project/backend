@@ -67,8 +67,8 @@ public class PlannerQueryService {
     private List<PlannerListResponse> getPlannerListResponses(List<GroupMember> planners) {
         return planners.stream()
                 .map(planner -> {
-                    String startDate = "";
-                    String endDate = "";
+                    String startDate = planner.getPlanner().getStartDate();
+                    String endDate = planner.getPlanner().getEndDate();
 
                     List<String> profileImages = new ArrayList<>();
                     List<GroupMember> groupMembers = planners.stream().toList();
@@ -88,12 +88,12 @@ public class PlannerQueryService {
                         profileImages.add(profileImgUrl);
                     }
 
-                    if (planner.getPlanner().getStartDate() != null) {
-                        startDate = planner.getPlanner().getStartDate();
+                    if (planner.getPlanner().getStartDate() == null) {
+                        startDate = "";
                     }
 
-                    if (planner.getPlanner().getEndDate() != null) {
-                        endDate = planner.getPlanner().getEndDate();
+                    if (planner.getPlanner().getEndDate() == null) {
+                        endDate = "";
                     }
 
                     return new PlannerListResponse(
@@ -138,19 +138,12 @@ public class PlannerQueryService {
         );
     }
 
-    public List<String> updateStartDateAndEndDate(Long plannerId) {
+    public String getStartDate(Long plannerId) {
         QPlanBox qPlanBox = QPlanBox.planBox;
         String minDate = "";
-        String maxDate = "";
 
         LocalDate minLocalDate = queryFactory
                 .select(qPlanBox.planDate.min())
-                .from(qPlanBox)
-                .where(qPlanBox.planner.id.eq(plannerId))
-                .fetchOne();
-
-        LocalDate maxLocalDate = queryFactory
-                .select(qPlanBox.planDate.max())
                 .from(qPlanBox)
                 .where(qPlanBox.planner.id.eq(plannerId))
                 .fetchOne();
@@ -159,10 +152,23 @@ public class PlannerQueryService {
             minDate = String.valueOf(minLocalDate);
         }
 
+        return minDate;
+    }
+
+    public String getEndDate(Long plannerId) {
+        QPlanBox qPlanBox = QPlanBox.planBox;
+        String maxDate = "";
+
+        LocalDate maxLocalDate = queryFactory
+                .select(qPlanBox.planDate.max())
+                .from(qPlanBox)
+                .where(qPlanBox.planner.id.eq(plannerId))
+                .fetchOne();
+
         if(maxLocalDate != null) {
             maxDate = String.valueOf(maxLocalDate);
         }
 
-        return List.of(minDate, maxDate);
+        return maxDate;
     }
 }

@@ -41,7 +41,7 @@ public class PlanBoxController {
 
     @MessageMapping(value = "/planner/{plannerId}/delete/{planBoxId}")
     public void deleteDate(@DestinationVariable("plannerId") Long plannerId, @DestinationVariable("planBoxId") Long planBoxId) {
-        planBoxService.delete(planBoxId);
+        planBoxService.delete(plannerId, planBoxId);
 
     simpMessagingTemplate.convertAndSend("/sub/planner/" + plannerId,
                 Map.of("type", "delete-planBox", "message", planBoxService.getAllPlanBox(plannerId))

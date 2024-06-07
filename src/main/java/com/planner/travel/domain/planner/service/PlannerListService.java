@@ -53,8 +53,8 @@ public class PlannerListService {
 
         Planner planner = Planner.builder()
                 .title(request.title())
-                .startDate(null)
-                .endDate(null)
+                .startDate("")
+                .endDate("")
                 .isPrivate(request.isPrivate())
                 .isDeleted(false)
                 .build();
