@@ -68,7 +68,6 @@ public class PlannerListService {
 
         plannerRepository.save(planner);
         groupMemberRepository.save(groupMember);
-        userRepository.save(user);
     }
 
     @Transactional

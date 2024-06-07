@@ -561,9 +561,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_1_2_다른_유저의_플래너_리스트_반환">1.2. 다른 유저의 플래너 리스트 반환</a></li>
 </ul>
 </li>
-<li><a href="#_2_플래너_생성">2. 플래너 생성</a></li>
-<li><a href="#_3_플래너_수정">3. 플래너 수정</a></li>
-<li><a href="#_4_플래너_삭제">4. 플래너 삭제</a></li>
+<li><a href="#_2_플래너_정보_반환">2. 플래너 정보 반환</a></li>
+<li><a href="#_3_플래너_생성">3. 플래너 생성</a></li>
+<li><a href="#_4_플래너_수정">4. 플래너 수정</a></li>
+<li><a href="#_5_플래너_삭제">5. 플래너 삭제</a></li>
 </ul>
 </li>
 <li><a href="#_플랜_박스">플랜 박스</a>
@@ -634,9 +635,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/v1/users/7/planners HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/v1/users/9/planners HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzE3MjM3NzI5LCJleHAiOjE3MTcyMzg2Mjl9.e21k5JtKJuRUSayHN1o523-AC6Ywcz7T8kpul_z0-rQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5IiwiaWF0IjoxNzE3NzU1MjkwLCJleHAiOjE3MTc3NTYxOTB9.3EBjn2VIAUbnt1snnuO4vJOH8jRQxC1RjuvKKr2AkEg
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -713,29 +714,29 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 456
+Content-Length: 532
 
 [ {
-  "plannerId" : 12,
-  "title" : "테스트 플래너2",
-  "startDate" : "",
-  "endDate" : "",
+  "plannerId" : 15,
+  "title" : "테스트 플래너3",
+  "startDate" : "2024-06-07",
+  "endDate" : "2024-06-08",
   "isPrivate" : false,
-  "profileImages" : [ "" ]
+  "profileImages" : [ "", "", "" ]
 }, {
-  "plannerId" : 11,
+  "plannerId" : 14,
   "title" : "테스트 플래너2",
-  "startDate" : "",
-  "endDate" : "",
+  "startDate" : "2024-06-07",
+  "endDate" : "2024-06-08",
   "isPrivate" : false,
-  "profileImages" : [ "", "" ]
+  "profileImages" : [ "", "", "" ]
 }, {
-  "plannerId" : 10,
+  "plannerId" : 13,
   "title" : "테스트 플래너1",
-  "startDate" : "",
-  "endDate" : "",
+  "startDate" : "2024-06-07",
+  "endDate" : "2024-06-08",
   "isPrivate" : true,
-  "profileImages" : [ "", "" ]
+  "profileImages" : [ "", "", "" ]
 } ]</code></pre>
 </div>
 </div>
@@ -774,7 +775,7 @@ Content-Length: 456
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/v1/users/3/planners HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0IiwiaWF0IjoxNzE3MjM3NzI5LCJleHAiOjE3MTcyMzg2Mjl9.CEHcotxSWLC_c6dGE7GsgMH-EHMxdjWBlemV0JYf1H0
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0IiwiaWF0IjoxNzE3NzU1MjkwLCJleHAiOjE3MTc3NTYxOTB9.riHjvXoum5X1sL_Gg8urIvbrDNw_E714nGoip_y1pf0
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -860,20 +861,20 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 302
+Content-Length: 346
 
 [ {
   "plannerId" : 6,
-  "title" : "테스트 플래너2",
-  "startDate" : "",
-  "endDate" : "",
+  "title" : "테스트 플래너3",
+  "startDate" : "2024-06-07",
+  "endDate" : "2024-06-08",
   "isPrivate" : false,
-  "profileImages" : [ "" ]
+  "profileImages" : [ "", "" ]
 }, {
   "plannerId" : 5,
   "title" : "테스트 플래너2",
-  "startDate" : "",
-  "endDate" : "",
+  "startDate" : "2024-06-07",
+  "endDate" : "2024-06-08",
   "isPrivate" : false,
   "profileImages" : [ "", "" ]
 } ]</code></pre>
@@ -882,7 +883,184 @@ Content-Length: 302
 </div>
 </div>
 <div class="sect2">
-<h3 id="_2_플래너_생성"><a class="link" href="#_2_플래너_생성">2. 플래너 생성</a></h3>
+<h3 id="_2_플래너_정보_반환"><a class="link" href="#_2_플래너_정보_반환">2. 플래너 정보 반환</a></h3>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Parameters</dt>
+</dl>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">path variable</th>
+<th class="tableblock halign-left valign-top">설명</th>
+<th class="tableblock halign-left valign-top">path variable</th>
+<th class="tableblock halign-left valign-top">설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">userId</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유저 인덱스</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">plannerId</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">플래너 인덱스</p></td>
+</tr>
+</tbody>
+</table>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Request</dt>
+</dl>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/v1/users/7/planners/10 HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzE3NzU1MjkwLCJleHAiOjE3MTc3NTYxOTB9.bvnsIUceZEkyNG_TcFofJYK2oatoxF11KXISJI4Qm84
+Host: localhost:8080</code></pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Response</dt>
+</dl>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>plannerId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">플래너 ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>title</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">플래너 제목</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>startDate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">플래너 시작 날짜</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>endDate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">플래너 종료 날짜</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isPrivate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">플래너 비공개 여부</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>planBoxResponses</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">플랜 박스 응답 리스트</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>planBoxResponses[].planBoxId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">플랜 박스 ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>planBoxResponses[].planDate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">플랜 박스 날짜</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>planBoxResponses[].planResponses</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">플랜 응답 리스트</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>planBoxResponses[].planResponses[].planId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">플랜 ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>planBoxResponses[].planResponses[].isPrivate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">플랜 비공개 여부</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>planBoxResponses[].planResponses[].title</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">플랜 제목</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>planBoxResponses[].planResponses[].time</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">플랜 시간</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>planBoxResponses[].planResponses[].content</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">플랜 내용</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>planBoxResponses[].planResponses[].address</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">플랜 주소</p></td>
+</tr>
+</tbody>
+</table>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Length: 417
+
+{
+  "plannerId" : 10,
+  "title" : "테스트 플래너1",
+  "startDate" : "2024-06-07",
+  "endDate" : "2024-06-08",
+  "isPrivate" : true,
+  "planBoxResponses" : [ {
+    "planBoxId" : 4,
+    "planDate" : "2024-06-07",
+    "planResponses" : [ {
+      "planId" : 4,
+      "isPrivate" : false,
+      "title" : "제목",
+      "time" : "19:14:50.713",
+      "content" : "내용",
+      "address" : "주소"
+    } ]
+  } ]
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_3_플래너_생성"><a class="link" href="#_3_플래너_생성">3. 플래너 생성</a></h3>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Parameters</dt>
@@ -906,6 +1084,18 @@ Content-Length: 302
 </tr>
 </tbody>
 </table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<em>플래너 제목은 2 자에서 20 자로 제한 됩니다.</em>
+</td>
+</tr>
+</table>
+</div>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Request</dt>
@@ -939,9 +1129,9 @@ Content-Length: 302
 </table>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/v1/users/9/planners HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/v1/users/11/planners HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5IiwiaWF0IjoxNzE3MjM3NzI5LCJleHAiOjE3MTcyMzg2Mjl9.ncNOhXF4mR1499DaNMYCwpdOtF_vPiaFUK9zuJr6kJg
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMSIsImlhdCI6MTcxNzc1NTI5MCwiZXhwIjoxNzE3NzU2MTkwfQ.tB2QCfAdDJqGOnrVChqIvAq87ZsdiVDa6HuamBo0aq0
 Content-Length: 61
 Host: localhost:8080
 
@@ -972,7 +1162,7 @@ X-Frame-Options: DENY</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_3_플래너_수정"><a class="link" href="#_3_플래너_수정">3. 플래너 수정</a></h3>
+<h3 id="_4_플래너_수정"><a class="link" href="#_4_플래너_수정">4. 플래너 수정</a></h3>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Parameters</dt>
@@ -1050,9 +1240,9 @@ X-Frame-Options: DENY</code></pre>
 </table>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /api/v1/users/1/planners/4 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /api/v1/users/1/planners/1 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzE3MjM3NzI4LCJleHAiOjE3MTcyMzg2Mjh9.3nzVJmErP6KYSUU5bIH5S6NWrjIpd0Ir5X-DF9vk1q0
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzE3NzU1MjkwLCJleHAiOjE3MTc3NTYxOTB9.kloWssojOkpbojFNv521TgLi9Ke-8mlcO3X90ZfqjXs
 Content-Length: 62
 Host: localhost:8080
 
@@ -1083,7 +1273,7 @@ X-Frame-Options: DENY</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_4_플래너_삭제"><a class="link" href="#_4_플래너_삭제">4. 플래너 삭제</a></h3>
+<h3 id="_5_플래너_삭제"><a class="link" href="#_5_플래너_삭제">5. 플래너 삭제</a></h3>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -1154,9 +1344,9 @@ X-Frame-Options: DENY</code></pre>
 </table>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /api/v1/users/5/planners/9 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /api/v1/users/5/planners/7 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiaWF0IjoxNzE3MjM3NzI5LCJleHAiOjE3MTcyMzg2Mjl9.EbkLABDc7VYOeBecRWejUVP-L84y0MRaI7sX5XtAa0s
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiaWF0IjoxNzE3NzU1MjkwLCJleHAiOjE3MTc3NTYxOTB9.t74MnNeJd7Vjk5M1zYtTAnNNPtxhT2EDJehtQbJ9FuM
 Content-Length: 18
 Host: localhost:8080
 
@@ -1700,7 +1890,7 @@ X-Frame-Options: DENY</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-06-01 01:30:16 +0900
+Last updated 2024-06-07 19:17:07 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

@@ -47,22 +47,24 @@ public class GroupMemberService {
         Planner planner = plannerRepository.findById(plannerId)
                 .orElseThrow(() -> new EntityNotFoundException("Planner not found"));
 
-        GroupMember groupMember = groupMemberQueryService.findGroupMember(request.userId(), plannerId);
+        if (validateGroupMemberSize(plannerId)) {
+            GroupMember groupMember = groupMemberQueryService.findGroupMember(request.userId(), plannerId);
 
-        if (groupMember == null) {
-            GroupMember newGroupMember = GroupMember.builder()
-                    .isHost(false)
-                    .isLeaved(false)
-                    .user(user)
-                    .planner(planner)
-                    .build();
+            if (groupMember == null) {
+                GroupMember newGroupMember = GroupMember.builder()
+                        .isHost(false)
+                        .isLeaved(false)
+                        .user(user)
+                        .planner(planner)
+                        .build();
 
-            groupMemberRepository.save(newGroupMember);
+                groupMemberRepository.save(newGroupMember);
 
-        } else {
-            groupMember.updateIsLeaved(false);
+            } else {
+                groupMember.updateIsLeaved(false);
 
-            groupMemberRepository.save(groupMember);
+                groupMemberRepository.save(groupMember);
+            }
         }
     }
 
@@ -72,5 +74,14 @@ public class GroupMemberService {
                 .orElseThrow(() -> new EntityNotFoundException("Group member not found"));
 
         groupMember.updateIsLeaved(true);
+    }
+
+    private boolean validateGroupMemberSize(Long plannerId) {
+        int size = groupMemberQueryService.getGroupMemberSize(plannerId);
+        if (size > 10) {
+            throw new IllegalArgumentException("Group size must be under 10");
+        }
+
+        return true;
     }
 }

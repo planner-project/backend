@@ -40,7 +40,6 @@ public class PlanBoxQueryService {
                 .map(planBox -> new PlanBoxResponse(
                         planBox.getId(),
                         planBox.getPlanDate(),
-                        planBox.isPrivate(),
                         planQueryService.findPlanByPlanBoxId(planBox.getId())
                 ))
                 .collect(Collectors.toList());

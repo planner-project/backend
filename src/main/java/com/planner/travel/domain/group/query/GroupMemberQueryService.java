@@ -3,6 +3,7 @@ package com.planner.travel.domain.group.query;
 import com.planner.travel.domain.group.dto.response.GroupMemberResponse;
 import com.planner.travel.domain.group.entity.GroupMember;
 import com.planner.travel.domain.group.entity.QGroupMember;
+import com.planner.travel.domain.planner.entity.QPlanner;
 import com.planner.travel.domain.profile.entity.QProfile;
 import com.planner.travel.domain.user.entity.QUser;
 import com.planner.travel.global.util.image.entity.QImage;
@@ -13,10 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GroupMemberQueryService {
-
     private final JPAQueryFactory queryFactory;
 
     @Autowired
@@ -26,37 +27,41 @@ public class GroupMemberQueryService {
 
     public List<GroupMemberResponse> findGroupMembersByPlannerId(Long plannerId) {
         QGroupMember qGroupMember = QGroupMember.groupMember;
-        QUser qUser = QUser.user;
-        QProfile qProfile = QProfile.profile;
-        QImage qImage = QImage.image;
 
-        return queryFactory
-                .select(Projections.constructor(GroupMemberResponse.class,
-                        qGroupMember.id,
-                        qUser.id,
-                        qUser.nickname,
-                        qUser.userTag,
-                        qImage.imageUrl.coalesce("").as("imageUrl"),
-                        qGroupMember.isHost
-                ))
-                .from(qGroupMember)
-                .join(qGroupMember.user, qUser)
-                .join(qUser.profile, qProfile)
-                .join(qProfile.image, qImage)
+        List<GroupMember> groupMembers = queryFactory
+                .selectFrom(qGroupMember)
                 .where(qGroupMember.planner.id.eq(plannerId)
-                        .and(qGroupMember.isLeaved.eq(false)))
+                        .and(qGroupMember.isLeaved.isFalse())
+                )
                 .fetch();
+
+        return groupMembers.stream()
+                .map(groupMember -> {
+                    String profileImgUrl = groupMember.getUser().getProfile().getImage().getImageUrl();
+
+                    if (profileImgUrl.isEmpty()) {
+                        profileImgUrl = "";
+                    }
+
+                    return new GroupMemberResponse(
+                            groupMember.getId(),
+                            groupMember.getUser().getId(),
+                            groupMember.getUser().getNickname(),
+                            groupMember.getUser().getUserTag(),
+                            profileImgUrl,
+                            groupMember.isHost()
+                    );
+                })
+                .collect(Collectors.toList());
     }
 
     public boolean validateGroupMember(Long userId, Long plannerId) {
-        QUser qUser = QUser.user;
         QGroupMember qGroupMember = QGroupMember.groupMember;
 
         Long count = queryFactory
                 .select(qGroupMember.count())
                 .from(qGroupMember)
-                .join(qGroupMember.user, qUser)
-                .where(qUser.id.eq(userId)
+                .where(qGroupMember.user.id.eq(userId)
                         .and(qGroupMember.planner.id.eq(plannerId)))
                 .fetchOne();
 
@@ -67,13 +72,24 @@ public class GroupMemberQueryService {
         QGroupMember qGroupMember = QGroupMember.groupMember;
 
         GroupMember groupMember = queryFactory
-                .select(qGroupMember)
-                .from(qGroupMember)
+                .selectFrom(qGroupMember)
                 .where(qGroupMember.user.id.eq(userId)
                         .and(qGroupMember.planner.id.eq(plannerId))
                         .and(qGroupMember.isLeaved.isFalse()))
                 .fetchOne();
 
         return groupMember;
+    }
+
+    public int getGroupMemberSize(Long plannerId) {
+        QGroupMember qGroupMember = QGroupMember.groupMember;
+
+        List<GroupMember> groupMembers = queryFactory
+                .selectFrom(qGroupMember)
+                .where(qGroupMember.planner.id.eq(plannerId)
+                        .and(qGroupMember.isLeaved.isFalse()))
+                .fetch();
+
+        return groupMembers.size();
     }
 }

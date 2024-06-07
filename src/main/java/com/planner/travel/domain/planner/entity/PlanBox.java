@@ -20,8 +20,6 @@ public class PlanBox {
 
     private boolean isDeleted;
 
-    private boolean isPrivate;
-
     @ManyToOne(fetch= FetchType.LAZY)
     @JoinColumn(name = "plannerId")
     private Planner planner;
@@ -29,9 +27,6 @@ public class PlanBox {
 
     public void updatePlanDate(LocalDate planDate) {
         this.planDate = planDate;
-    }
-    public void updatePrivate(boolean isPrivate) {
-        this.isPrivate = isPrivate;
     }
     public void deleted(boolean isDeleted) {this.isDeleted = isDeleted;}
 

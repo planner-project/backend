@@ -31,7 +31,7 @@ public class SignupService {
 
     @Transactional
     public void signup(SignupRequest signupRequest) {
-        userRepository.findByEmailAndProvider(signupRequest.getEmail(), "basic")
+        userRepository.findByEmailAndProvider(signupRequest.email(), "basic")
                 .ifPresent(u -> {
                     throw new IllegalArgumentException();
                 });
@@ -53,14 +53,14 @@ public class SignupService {
         profileRepository.save(profile);
 
         User user = User.builder()
-                .email(signupRequest.getEmail())
-                .password(passwordEncoder.encode(signupRequest.getPassword()))
-                .nickname(signupRequest.getNickname())
+                .email(signupRequest.email())
+                .password(passwordEncoder.encode(signupRequest.password()))
+                .nickname(signupRequest.nickname())
                 .userTag(randomNumberUtil.set())
                 .role(Role.USER)
                 .sex(Sex.NONE)
                 .signupDate(LocalDateTime.now())
-                .birthday(signupRequest.getBirthday())
+                .birthday(signupRequest.birthday())
 //                .phoneNumber(signupRequest.getPhoneNumber())
                 .isWithdrawal(false)
                 .profile(profile)

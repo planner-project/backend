@@ -1,5 +1,6 @@
 package com.planner.travel.domain.planner.query;
 
+import com.planner.travel.domain.group.entity.GroupMember;
 import com.planner.travel.domain.group.entity.QGroupMember;
 import com.planner.travel.domain.planner.dto.response.PlannerListResponse;
 import com.planner.travel.domain.planner.dto.response.PlannerResponse;
@@ -11,10 +12,12 @@ import com.planner.travel.domain.user.entity.QUser;
 import com.planner.travel.global.util.image.entity.QImage;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,108 +33,75 @@ public class PlannerQueryService {
     }
 
     public List<PlannerListResponse> findMyPlannersByUserId(Long userId) {
-        QUser qUser = QUser.user;
         QGroupMember qGroupMember = QGroupMember.groupMember;
         QPlanner qPlanner = QPlanner.planner;
-        QImage qImage = QImage.image;
-        QProfile qProfile = QProfile.profile;
 
-        List<Planner> planners = queryFactory
-                .select(qPlanner)
-                .from(qGroupMember)
-                .join(qGroupMember.user, qUser)
-                .join(qGroupMember.planner, qPlanner)
+        List<GroupMember> planners = queryFactory
+                .selectFrom(qGroupMember)
                 .where(qGroupMember.user.id.eq(userId)
                         .and(qGroupMember.isLeaved.isFalse())
                 )
                 .orderBy(qPlanner.id.desc())
                 .fetch();
 
-        return planners.stream()
-                .map(planner -> {
-                    String startDate = "";
-                    String endDate = "";
-
-                    List<String> profileImages = queryFactory
-                            .select(qImage.imageUrl.coalesce(""))
-                            .from(qGroupMember)
-                            .join(qGroupMember.user, qUser)
-                            .leftJoin(qUser.profile, qProfile)
-                            .leftJoin(qProfile.image, qImage)
-                            .where(qGroupMember.planner.eq(planner)
-                                    .and(qGroupMember.isLeaved.isFalse()))
-                            .limit(3)
-                            .fetch();
-
-                    if (planner.getStartDate() != null) {
-                        startDate = planner.getStartDate();
-                    }
-
-                    if (planner.getEndDate() != null) {
-                        endDate = planner.getEndDate();
-                    }
-
-                    return new PlannerListResponse(
-                            planner.getId(),
-                            planner.getTitle(),
-                            startDate,
-                            endDate,
-                            planner.isPrivate(),
-                            profileImages
-                    );
-                })
-                .collect(Collectors.toList());
+        return getPlannerListResponses(planners);
     }
 
     public List<PlannerListResponse> findPlannersByUserId(Long userId) {
-        QUser qUser = QUser.user;
         QGroupMember qGroupMember = QGroupMember.groupMember;
         QPlanner qPlanner = QPlanner.planner;
-        QImage qImage = QImage.image;
-        QProfile qProfile = QProfile.profile;
 
-        List<Planner> planners = queryFactory
-                .select(qPlanner)
-                .from(qGroupMember)
-                .join(qGroupMember.user, qUser)
-                .join(qGroupMember.planner, qPlanner)
+        List<GroupMember> planners = queryFactory
+                .selectFrom(qGroupMember)
                 .where(qGroupMember.user.id.eq(userId)
-                        .and(qPlanner.isPrivate.isFalse())
-                        .and(qGroupMember.isLeaved.isFalse())
-                )
+                        .and(qGroupMember.planner.isPrivate.isFalse())
+                        .and(qGroupMember.isLeaved.isFalse()
+                ))
                 .orderBy(qPlanner.id.desc())
                 .fetch();
 
+        return getPlannerListResponses(planners);
+    }
+
+    @NotNull
+    private List<PlannerListResponse> getPlannerListResponses(List<GroupMember> planners) {
         return planners.stream()
                 .map(planner -> {
                     String startDate = "";
                     String endDate = "";
 
-                    List<String> profileImages = queryFactory
-                            .select(qImage.imageUrl.coalesce(""))
-                            .from(qGroupMember)
-                            .join(qGroupMember.user, qUser)
-                            .leftJoin(qUser.profile, qProfile)
-                            .leftJoin(qProfile.image, qImage)
-                            .where(qGroupMember.planner.eq(planner)
-                                    .and(qGroupMember.isLeaved.isFalse()))
-                            .limit(3)
-                            .fetch();
+                    List<String> profileImages = new ArrayList<>();
+                    List<GroupMember> groupMembers = planners.stream().toList();
 
-                    if (planner.getStartDate() != null) {
-                        startDate = planner.getStartDate();
+                    int lastId = groupMembers.size();
+                    if (lastId > 3) {
+                        lastId = 3;
                     }
 
-                    if (planner.getEndDate() != null) {
-                        endDate = planner.getEndDate();
+                    for (int i = 0; i < lastId; i++) {
+                        String profileImgUrl = groupMembers.get(i).getUser().getProfile().getImage().getImageUrl();
+
+                        if (!profileImgUrl.isEmpty()) {
+                            profileImgUrl = "";
+                        }
+
+                        profileImages.add(profileImgUrl);
+                    }
+
+                    if (planner.getPlanner().getStartDate() != null) {
+                        startDate = planner.getPlanner().getStartDate();
+                    }
+
+                    if (planner.getPlanner().getEndDate() != null) {
+                        endDate = planner.getPlanner().getEndDate();
                     }
 
                     return new PlannerListResponse(
-                            planner.getId(),
-                            planner.getTitle(),
+                            planner.getPlanner().getId(),
+                            planner.getPlanner().getTitle(),
                             startDate,
                             endDate,
-                            planner.isPrivate(),
+                            planner.getPlanner().isPrivate(),
                             profileImages
                     );
                 })
@@ -150,11 +120,11 @@ public class PlannerQueryService {
                 )
                 .fetchOne();
 
-        if (planner.getStartDate() != null) {
+        if (!planner.getStartDate().isEmpty()) {
             startDate = planner.getStartDate();
         }
 
-        if (planner.getEndDate() != null) {
+        if (!planner.getEndDate().isEmpty()) {
             endDate = planner.getEndDate();
         }
 

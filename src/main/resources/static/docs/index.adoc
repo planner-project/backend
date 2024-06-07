@@ -9,7 +9,7 @@
 
 .About Docs
 - ver. 0.0.0
-- Last update 24.06.01
+- Last update 24.06.07
 
 == 공통 기능 (Common)
 ---
