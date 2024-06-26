@@ -9,8 +9,6 @@ import com.planner.travel.domain.user.entity.User;
 import com.planner.travel.domain.user.repository.UserRepository;
 import com.planner.travel.global.util.RandomNumberUtil;
 import com.planner.travel.global.util.image.entity.Category;
-import com.planner.travel.global.util.image.entity.Image;
-import com.planner.travel.global.util.image.repository.ImageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,7 +23,6 @@ import java.time.LocalDateTime;
 public class SignupService {
     private final UserRepository userRepository;
     private final ProfileRepository profileRepository;
-    private final ImageRepository imageRepository;
     private final PasswordEncoder passwordEncoder;
     private final RandomNumberUtil randomNumberUtil;
 
@@ -36,18 +33,8 @@ public class SignupService {
                     throw new IllegalArgumentException();
                 });
 
-        Image image = Image.builder()
-                .category(Category.PROFILE)
-                .imageUrl("")
-                .createdAt(LocalDateTime.now())
-                .isThumb(false)
-                .isDeleted(false)
-                .build();
-
-        imageRepository.save(image);
-
         Profile profile = Profile.builder()
-                .image(image)
+                .profileImageUrl("Default")
                 .build();
 
         profileRepository.save(profile);
