@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -28,8 +27,8 @@ public class PlanBoxService {
     private final PlanBoxQueryService planBoxQueryService;
 
     @Transactional(readOnly = true)
-    public List<PlanBoxResponse> getAllPlanBox(Long plannerId) {
-        List<PlanBoxResponse> planBoxResponses = planBoxQueryService.findPlanBoxesByPlannerId(plannerId);
+    public List<PlanBoxResponse> getAllPlanBox(Long plannerId, String status) {
+        List<PlanBoxResponse> planBoxResponses = planBoxQueryService.findPlanBoxesByPlannerId(plannerId, status);
 
         return planBoxResponses;
     }
@@ -68,7 +67,7 @@ public class PlanBoxService {
         planner.updateStartDate(plannerQueryService.getStartDate(plannerId));
         planner.updateEndDate(plannerQueryService.getEndDate(plannerId));
 
-        return planBoxQueryService.findPlanBoxesByPlannerId(planBoxId);
+        return planBoxQueryService.findPlanBoxesByPlannerId(planBoxId, "my");
     }
 
     @Transactional
@@ -85,6 +84,6 @@ public class PlanBoxService {
         planner.updateStartDate(plannerQueryService.getStartDate(plannerId));
         planner.updateEndDate(plannerQueryService.getEndDate(plannerId));
 
-        return planBoxQueryService.findPlanBoxesByPlannerId(planBoxId);
+        return planBoxQueryService.findPlanBoxesByPlannerId(planBoxId, "my");
     }
 }
